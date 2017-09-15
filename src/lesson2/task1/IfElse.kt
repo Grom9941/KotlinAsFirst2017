@@ -33,8 +33,19 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
-
+fun ageDescription(age: Int): String {
+    return if ((age % 100 > 4) && (age % 100 < 21)) {
+        "" + age + " лет"
+    } else
+        if (age % 10 == 1) {
+          "" + age + " год"
+        } else
+            if ((age % 10 > 1) && (age % 10 < 5)) {
+                "" + age + " года"
+            } else {
+                "" + age + " лет"
+            }
+}
 /**
  * Простая
  *
@@ -44,7 +55,12 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val s= ((t1 * v1) + (t2 * v2) + (t3 * v3)) / 2
+    if (t1 * v1 >= s) return s/v1 else
+        if ((t1*v1)+(t2*v2) >= s) return t1 + ((s - t1 * v1) / v2) else
+          return  (t1 + t2 + ((s - (t1 * v1) - (t2 * v2)) / v3))
+}
 
 /**
  * Простая
@@ -57,8 +73,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
-
+                       rookX2: Int, rookY2: Int): Int {
+    var s:Int; s=0
+    if ((kingX == rookX1) || (kingY == rookY1)) s++
+    if ((kingX == rookX2) || (kingY == rookY2)) s++
+    if (s==2) return 3 else
+     if (s==0) return 0 else
+      if ((kingX == rookX1) || (kingY == rookY1)) return 1 else return 2
+}
 /**
  * Простая
  *
