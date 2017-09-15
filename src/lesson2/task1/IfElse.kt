@@ -2,6 +2,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 
 /**
  * Пример
@@ -93,7 +94,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    var s:Int; s=0
+    if ((kingX == rookX) || (kingY == rookY)) s++
+    if (((bishopX-bishopY)==(kingX-kingY)) || ((bishopX+bishopY)==(kingX+kingY))) s++
+            if (s==0) return 0 else
+            if (s==2) return 3 else
+    if ((kingX == rookX) || (kingY == rookY)) return 1 else return 2
+}
 
 /**
  * Простая
@@ -103,7 +111,23 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val max:Double;
+    if ((a>b+c) || (b>a+c) || (c>b+a)) return -1 else {
+
+    if ((a>b) && (a>c)) {
+        max=a;a=b;b=c;
+    }
+    if ((b>a) && (b>c)) {
+        max=b;b=c;
+    }
+    if ((c>a) && (c>b)) {
+        max = c;
+    }
+
+        if (sqr(max)=sqr(a)+sqr(b)) return 1 else
+         if (sqr(max)<sqr(a)+sqr(b)) return 0 else return 2
+}
 
 /**
  * Средняя
