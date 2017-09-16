@@ -111,23 +111,21 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val max:Double;
-    if ((a>b+c) || (b>a+c) || (c>b+a)) return -1 else {
+fun triangleKind(a: Double, b: Double, c: Double):Int =
 
-    if ((a>b) && (a>c)) {
-        max=a;a=b;b=c;
-    }
-    if ((b>a) && (b>c)) {
-        max=b;b=c;
-    }
-    if ((c>a) && (c>b)) {
-        max = c;
-    }
+    if ((a > b + c) || (b > a + c) || (c > b + a)) -1 else
 
-        if (sqr(max)=sqr(a)+sqr(b)) return 1 else
-         if (sqr(max)<sqr(a)+sqr(b)) return 0 else return 2
-}
+        if ((a > b) && (a > c)) {
+            if (sqr(a) == sqr(b) + sqr(c)) 1 else
+                if (sqr(a) < sqr(b) + sqr(c)) 0 else 2
+        } else
+            if ((b > a) && (b > c)) {
+                if (sqr(b) == sqr(a) + sqr(c)) 1 else
+                    if (sqr(b) < sqr(a) + sqr(c)) 0 else 2
+            } else
+                    if (sqr(c) == sqr(a) + sqr(b)) 1 else
+                        if (sqr(c) < sqr(a) + sqr(b)) 0 else 2
+
 
 /**
  * Средняя
@@ -137,4 +135,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
+        if ((b<c) || (d<a)) -1 else
+         if ((a<=c) && (d<=b)) d-c else
+             if ((c<=b) && (b<=d) && (a<c)) b-c else
+                 if ((c<=a) && (b<=d)) b-a else
+                     //if ((c<=a) && (d<=b))
+                         d-a
