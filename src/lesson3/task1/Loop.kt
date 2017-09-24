@@ -1,5 +1,8 @@
+
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
+
+import kotlin.system.exitProcess
 
 /**
  * Пример
@@ -9,7 +12,7 @@ package lesson3.task1
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -60,15 +63,30 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Найти количество цифр в заданном числе n.
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var s=n
+    var s1=0
+    while (s>=10) {
+        s=s/10
+        s1++
+    }
+    s1++
+    return s1
+}
 
-/**
- * Простая
- *
- * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
- * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
- */
-fun fib(n: Int): Int = TODO()
+    /**
+     * Простая
+     *
+     * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
+     * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
+     */
+
+fun fib(n: Int): Int {
+        var s=0
+        if (n in 1..2) s++ else if (n>2)
+            s=s+ fib(n-1)+ fib(n-2)
+        return s
+    }
 
 /**
  * Простая
@@ -76,13 +94,19 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    if (m > n)
+        for (i in 2..n) if ((n % i == 0) && (m % i == 0)) return i.toInt()
+        else
+            for (i in 2..m) if ((n % i == 0) && (m % i == 0)) return i.toInt()
+}
 
 /**
- * Простая
- *
- * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
- */
+  * Простая
+  *
+  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
+  */
+
 fun minDivisor(n: Int): Int = TODO()
 
 /**
