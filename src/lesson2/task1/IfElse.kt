@@ -35,13 +35,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    return if ((age % 100 > 4) && (age % 100 < 21)) {
+    return if (age % 100 in 5..20) {
         "" + age + " лет"
     } else
         if (age % 10 == 1) {
           "" + age + " год"
         } else
-            if ((age % 10 > 1) && (age % 10 < 5)) {
+            if (age % 10 in 2..4) {
                 "" + age + " года"
             } else {
                 "" + age + " лет"
@@ -58,9 +58,8 @@ fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
     val s= ((t1 * v1) + (t2 * v2) + (t3 * v3)) / 2
-    if (t1 * v1 >= s) return s/v1 else
-        if ((t1*v1)+(t2*v2) >= s) return t1 + ((s - t1 * v1) / v2) else
-          return  (t1 + t2 + ((s - (t1 * v1) - (t2 * v2)) / v3))
+    return if (t1 * v1 >= s) s/v1 else
+        if ((t1*v1)+(t2*v2) >= s) t1 + ((s - t1 * v1) / v2) else (t1 + t2 + ((s - (t1 * v1) - (t2 * v2)) / v3))
 }
 
 /**
@@ -78,9 +77,9 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
     var s:Int; s=0
     if ((kingX == rookX1) || (kingY == rookY1)) s++
     if ((kingX == rookX2) || (kingY == rookY2)) s++
-    if (s==2) return 3 else
-     if (s==0) return 0 else
-      if ((kingX == rookX1) || (kingY == rookY1)) return 1 else return 2
+   return if (s==2) 3 else
+     if (s==0) 0 else
+      if ((kingX == rookX1) || (kingY == rookY1)) 1 else 2
 }
 /**
  * Простая
@@ -98,9 +97,9 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
     var s:Int; s=0
     if ((kingX == rookX) || (kingY == rookY)) s++
     if (((bishopX-bishopY)==(kingX-kingY)) || ((bishopX+bishopY)==(kingX+kingY))) s++
-            if (s==0) return 0 else
-            if (s==2) return 3 else
-    if ((kingX == rookX) || (kingY == rookY)) return 1 else return 2
+          return if (s==0) 0 else
+            if (s==2) 3 else
+    if ((kingX == rookX) || (kingY == rookY)) 1 else 2
 }
 
 /**
@@ -111,22 +110,31 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double):Int =
-
-    if ((a > b + c) || (b > a + c) || (c > b + a)) -1 else
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
         if ((a > b) && (a > c)) {
-            if (sqr(a) == sqr(b) + sqr(c)) 1 else
-                if (sqr(a) < sqr(b) + sqr(c)) 0 else 2
-        } else
-            if ((b > a) && (b > c)) {
-                if (sqr(b) == sqr(a) + sqr(c)) 1 else
-                    if (sqr(b) < sqr(a) + sqr(c)) 0 else 2
-            } else
-                    if (sqr(c) == sqr(a) + sqr(b)) 1 else
-                        if (sqr(c) < sqr(a) + sqr(b)) 0 else 2
+            val s1 = a;
+            val s2 = b;
+            val s3 = c;
+            return if (sqr(s1) == sqr(s2) + sqr(s3)) 1 else
+                if (sqr(s1) < sqr(s2) + sqr(s3)) 0 else 2}
 
+        if ((b > a) && (b > c)) {
+                val s1 = b;
+                val s2 = a;
+                val s3 = c;
+            return if (sqr(s1) == sqr(s2) + sqr(s3)) 1 else
+                if (sqr(s1) < sqr(s2) + sqr(s3)) 0 else 2} else
+            {
+                val s1 = c;
+                val s2 = a;
+                val s3 = b;
+            return if (sqr(s1) == sqr(s2) + sqr(s3)) 1 else
+                if (sqr(s1) < sqr(s2) + sqr(s3)) 0 else 2 }
 
+    }
+}
 /**
  * Средняя
  *
