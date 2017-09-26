@@ -2,6 +2,8 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import lesson1.task1.sqr
+import java.lang.Math.round
 import java.lang.Math.sqrt
 import kotlin.system.exitProcess
 
@@ -148,7 +150,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     for (i in 2..s) if ((n % i == 0) && (m % i == 0)) {
         s=1; break
     }
-    if (s==1) return false else return true
+   return s!=1
 }
 
 /**
@@ -159,9 +161,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var s=0
-    for (i in 1..n) if (i*i>m) {s=i; break}
-    if (s<=n) return true else return false
+    var s :Int = Math.sqrt(m.toDouble()).toInt()
+    if (s*s < m) s++
+    return s<=Math.sqrt(n.toDouble())
 }
 
 /**
