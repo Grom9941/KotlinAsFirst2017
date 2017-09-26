@@ -3,6 +3,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import java.util.Collections.swap
 
 /**
  * Пример
@@ -113,28 +114,22 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
-        if ((a > b) && (a > c)) {
-            val s1 = a;
-            val s2 = b;
-            val s3 = c;
-            return if (sqr(s1) == sqr(s2) + sqr(s3)) 1 else
-                if (sqr(s1) < sqr(s2) + sqr(s3)) 0 else 2}
+            if ((b > a) && (b > c)) swap(a,b)
+            if ((c>a) && (c>b)) swap(c,a)
 
-        if ((b > a) && (b > c)) {
-                val s1 = b;
-                val s2 = a;
-                val s3 = c;
-            return if (sqr(s1) == sqr(s2) + sqr(s3)) 1 else
-                if (sqr(s1) < sqr(s2) + sqr(s3)) 0 else 2} else
-            {
-                val s1 = c;
-                val s2 = a;
-                val s3 = b;
-            return if (sqr(s1) == sqr(s2) + sqr(s3)) 1 else
-                if (sqr(s1) < sqr(s2) + sqr(s3)) 0 else 2 }
+            return if (sqr(a) == sqr(b) + sqr(c)) 1 else
+                if (sqr(a) < sqr(b) + sqr(c)) 0 else 2}
+
 
     }
+
+fun swap(a: Double, b: Double) {
+    val s=a
+    val a=b
+    val b=s
+
 }
+
 /**
  * Средняя
  *
