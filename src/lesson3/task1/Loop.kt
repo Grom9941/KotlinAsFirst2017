@@ -173,8 +173,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var s=1.1
-    while (abs(s.toDouble())<eps)
+    var s=x
+    var i=1
+    var sin=x%(2* PI)
+    while (abs(s)>=eps){
+        s=-s*(x%(2* PI))/((i*2+1)*(i*2)).toDouble()*(x%(2* PI))
+        i=i+1
+        sin=sin+s
+    }
+    return(sin)
 }
 
 /**
@@ -184,7 +191,17 @@ fun sin(x: Double, eps: Double): Double {
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var s=1.0
+    var i=1
+    var cos=1.0
+    while (abs(s)>=eps){
+        s= -s*(x%(2* PI))/((i*2-1)*(i*2)).toDouble()*(x%(2* PI))
+        i=i+1
+        cos=cos+s
+    }
+    return(cos)
+}
 
 /**
  * Средняя
