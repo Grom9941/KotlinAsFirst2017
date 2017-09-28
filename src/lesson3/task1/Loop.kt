@@ -209,7 +209,16 @@ fun cos(x: Double, eps: Double): Double {
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var s=0
+    var n1=n
+    while (n1>=10) {
+        s=s*10+(n1%10)
+        n1 = n1/10
+    }
+    s=s*10+(n1%10)
+    return s
+}
 
 /**
  * Средняя
@@ -218,7 +227,20 @@ fun revert(n: Int): Int = TODO()
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var n1=n
+    var s=1
+    while (n1>=10) { s=s*10; n1=n1/10 }
+
+    n1=n
+  while (n1>=10) {
+      if ((n1/s) != (n1%10)) return false
+      n1=(n1%s)/10
+      s=s/100
+
+  }
+ return true
+}
 
 /**
  * Средняя
@@ -226,7 +248,16 @@ fun isPalindrome(n: Int): Boolean = TODO()
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var n1=n
+    var s=1
+    var k=1
+    var ch=0
+    while (n1>=10) {n1=n1/10; s=s*10}
+    k=s/10
+    ch=n/s
+    w
+}
 
 /**
  * Сложная
