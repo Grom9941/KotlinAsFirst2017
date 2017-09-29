@@ -75,7 +75,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var s:Int; s=0
+    var s=0
     if ((kingX == rookX1) || (kingY == rookY1)) s++
     if ((kingX == rookX2) || (kingY == rookY2)) s++
    return if (s==2) 3 else
@@ -95,7 +95,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    var s:Int; s=0
+    var s=0
     if ((kingX == rookX) || (kingY == rookY)) s++
     if (((bishopX-bishopY)==(kingX-kingY)) || ((bishopX+bishopY)==(kingX+kingY))) s++
           return if (s==0) 0 else
@@ -112,23 +112,19 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
+    var s=a
+    var s1=b
+    var s2=c
     if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
-            if ((b > a) && (b > c)) swap(a,b)
-            if ((c>a) && (c>b)) swap(c,a)
+            if ((b > a) && (b > c)) {s=b; s1=a; s2=c}
+            if ((c>a) && (c>b)) {s=c; s1=b; s2=a}
 
-            return if (sqr(a) == sqr(b) + sqr(c)) 1 else
-                if (sqr(a) < sqr(b) + sqr(c)) 0 else 2}
+            return if (sqr(s) == sqr(s1) + sqr(s2)) 1 else
+                if (sqr(s) < sqr(s1) + sqr(s2)) 0 else 2}
 
 
     }
-
-fun swap(a: Double, b: Double) {
-    val s=a
-    val a=b
-    val b=s
-
-}
 
 /**
  * Средняя
