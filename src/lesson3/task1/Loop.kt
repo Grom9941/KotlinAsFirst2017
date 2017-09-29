@@ -69,7 +69,7 @@ fun digitNumber(n: Int): Int {
     var s=n
     var s1=1
     while (s>=10) {
-        s=s/10
+        s/=10
         s1++
     }
     return s1
@@ -98,9 +98,9 @@ fun lcm(m: Int, n: Int): Int {
     var s1=n
     while (s!=s1)
     if (s1 > s)
-        s1=s1-s
+        s1-=s
     else
-        s=s-s1
+        s-=s1
 
     return m*n/s
 }
@@ -178,8 +178,8 @@ fun sin(x: Double, eps: Double): Double {
     var sin=x%(2* PI)
     while (abs(s)>=eps){
         s=-s*(x%(2* PI))/((i*2+1)*(i*2)).toDouble()*(x%(2* PI))
-        i=i+1
-        sin=sin+s
+        i+=1
+        sin+=s
     }
     return(sin)
 }
@@ -197,8 +197,8 @@ fun cos(x: Double, eps: Double): Double {
     var cos=1.0
     while (abs(s)>=eps){
         s= -s*(x%(2* PI))/((i*2-1)*(i*2)).toDouble()*(x%(2* PI))
-        i=i+1
-        cos=cos+s
+        i+=1
+        cos+=s
     }
     return(cos)
 }
@@ -248,16 +248,28 @@ fun isPalindrome(n: Int): Boolean {
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
-//{
-  //  var n1=n
-   // var s=1
-   // var k=1
-    //var ch=0
-    //while (n1>=10) {n1=n1/10; s=s*10}
-    //k=s/10
-    //ch=n/s
-    //w }
+fun hasDifferentDigits(n: Int): Boolean {
+
+  var n1=n
+  var leng=1
+  var ch=0
+    var kol=0
+  while (n1>=10) {n1/=10; kol+=1; leng*=10}
+    n1=kol
+    var k=leng
+
+    for (i in 1..kol) { k=leng
+        for (j in 1..n1) {
+            k = leng / 10
+            ch = n / k % 10
+
+            if (ch!=(n/leng%10)) return true
+        }
+        leng/=10
+        n1-=1
+    }
+    return false
+}
 
 /**
  * Сложная
@@ -266,7 +278,12 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+ var k=0
+    var n1=n
+    while (n1)
+
+}
 
 /**
  * Сложная
