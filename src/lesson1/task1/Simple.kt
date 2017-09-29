@@ -8,7 +8,7 @@ import java.lang.Math.*
  *
  * Вычисление квадрата вещественного числа
  */
-fun sqr(x: Double) = x * x
+fun sqr(x: Double): Double = x * x
 
 /**
  * Пример
@@ -71,7 +71,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double =
-        (grad+(min+sec/60.0)/60.0)* PI/180
+        (grad+(min+sec/60.0)/60)* PI/180
 
 /**
  * Тривиальная
@@ -99,7 +99,7 @@ fun thirdDigit(number: Int): Int =
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int =
-        ((hoursArrive*60)+minutesArrive)-((hoursDepart*60)+minutesDepart)
+        hoursArrive*60+minutesArrive-(hoursDepart*60)-minutesDepart
 /**
  * Простая
  *
@@ -108,7 +108,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double =
-        pow(((percent+100)).toDouble(), 3.0)*initial/1000000
+        pow((percent+100)/100.toDouble(), 3.0)*initial
 
 /**
  * Простая
