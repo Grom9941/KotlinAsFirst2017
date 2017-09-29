@@ -67,12 +67,11 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var s=n
-    var s1=0
+    var s1=1
     while (s>=10) {
         s=s/10
         s1++
     }
-    s1++
     return s1
 }
 
@@ -84,10 +83,8 @@ fun digitNumber(n: Int): Int {
      */
 
 fun fib(n: Int): Int {
-        var s=0
-        if (n in 1..2) s++ else if (n>2)
-            s=s+ fib(n-1)+ fib(n-2)
-        return s
+        if (n in 1..2) return 1
+           return fib(n-1)+ fib(n-2)
     }
 
 /**
@@ -97,12 +94,14 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var s=1
-    if (m > n) {
-        for (i in 2..n) if ((n % i == 0) && (m % i == 0)) {s=i; break}
-    } else {
-        for (i in 2..m) if ((n % i == 0) && (m % i == 0)) {s=i; break}
-    }
+    var s=m
+    var s1=n
+    while (s!=s1)
+    if (s1 > s)
+        s1=s1-s
+    else
+        s=s-s1
+
     return m*n/s
 }
 
@@ -114,7 +113,7 @@ fun lcm(m: Int, n: Int): Int {
 
 fun minDivisor(n: Int): Int {
     var s=1
-    for (i in 2..Math.sqrt(n.toDouble()).toInt()+1)
+    for (i in 2..Math.ceil(Math.sqrt(n.toDouble())).toInt())
         if (n % i == 0) {
             s=i; break
         }
@@ -146,7 +145,8 @@ fun maxDivisor(n: Int): Int {
 fun isCoPrime(m: Int, n: Int): Boolean {
     var s=0
     if (m>n) s=n else s=m
-    for (i in 2..s) if ((n % i == 0) && (m % i == 0)) {
+    for (i in 2..s)
+        if ((n % i == 0) && (m % i == 0)) {
         s=1; break
     }
    return s!=1
