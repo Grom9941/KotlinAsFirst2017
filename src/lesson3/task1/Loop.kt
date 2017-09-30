@@ -312,4 +312,30 @@ k++
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var k=0
+    var n1=n
+    var k1=1
+    while (n1>k1) {
+        k+=1
+        if (k in 1..6) k1=1
+        if (k in 7..11) k1=2
+        if (k in 12..15) k1=3
+        n1-=k1
+    }
+    k++
+    k1=fib(k)
+    if (k in 1..6) {
+        if (n1 == 1) k = k1 % 10
+    }
+    if (k in 7..11){
+        if (n1==1) k=k1/10
+        if (n1==2) k=k1%10
+    }
+    if (k in 12..15){
+        if (n1==3) k=k1%10
+        if (n1==1) k=k1/100
+        if (n1==2) k=k1/10%10
+    }
+    return k
+}
