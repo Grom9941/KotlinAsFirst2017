@@ -66,7 +66,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    var s=n
+    var s=abs(n)
     var s1=1
     while (s>=10) {
         s/=10
@@ -144,6 +144,7 @@ fun maxDivisor(n: Int): Int {
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     var s=0
+    if ((n==1) || (m==1)) return true
     if (m>n) s=n else s=m
     for (i in 2..s)
         if ((n % i == 0) && (m % i == 0)) {
@@ -212,11 +213,10 @@ fun cos(x: Double, eps: Double): Double {
 fun revert(n: Int): Int {
     var s=0
     var n1=n
-    while (n1>=10) {
+    while (n1>=1) {
         s=s*10+(n1%10)
-        n1 = n1/10
+        n1 /= 10
     }
-    s=s*10+(n1%10)
     return s
 }
 
@@ -236,7 +236,7 @@ fun isPalindrome(n: Int): Boolean {
   while (n1>=10) {
       if ((n1/s) != (n1%10)) return false
       n1=(n1%s)/10
-      s=s/100
+      s /= 100
 
   }
  return true
@@ -280,30 +280,36 @@ fun hasDifferentDigits(n: Int): Boolean {
  */
 fun squareSequenceDigit(n: Int): Int {
  var k=0
+    var k2=1
     var n1=n
     var k1=1
     while (n1>k1) {
         k+=1
-        if (k in 1..3) k1=1
-        if (k in 4..9) k1=2
-        if (k in 10..31) k1=3
-        n1-=k1
+        k2=k*k
+        n1--
+        k1=1
+        while (k2>9){
+            n1--
+            k2/=10
+            k1++
+        }
     }
 k++
-  if (k in 1..3) {
-      if (n1 == 1) k1 = k * k % 10
-  }
-    if (k in 4..9){
-        if (n1==1) k1=k*k/10
-        if (n1==2) k1=k*k%10
+    k=k*k
+    var s=0
+    while (k>=1) {
+        s=s*10+(k%10)
+        k /= 10
     }
-    if (k in 10..31){
-        if (n1==3) k1=k*k%10
-        if (n1==1) k1=k*k/100
-        if (n1==2) k1=k*k/10%10
+
+    while (n1>1){
+        n1--
+        s/=10
     }
-    return k1
+   return s%10
+
 }
+
 
 /**
  * Сложная
@@ -316,26 +322,28 @@ fun fibSequenceDigit(n: Int): Int {
     var k=0
     var n1=n
     var k1=1
+    var k2=0
     while (n1>k1) {
         k+=1
-        if (k in 1..6) k1=1
-        if (k in 7..11) k1=2
-        if (k in 12..15) k1=3
-        n1-=k1
+        k2= fib(k)
+        n1--
+        k1=1
+        while (k2>9){
+            n1--
+            k2/=10
+            k1++
+        }
     }
     k++
     k1=fib(k)
-    if (k in 1..6) {
-        if (n1 == 1) k = k1 % 10
+    var s=0
+    while (k1>=1) {
+        s=s*10+(k%10)
+        k1 /= 10
     }
-    if (k in 7..11){
-        if (n1==1) k=k1/10
-        if (n1==2) k=k1%10
+    while (n1>1){
+        n1--
+        s/=10
     }
-    if (k in 12..15){
-        if (n1==3) k=k1%10
-        if (n1==1) k=k1/100
-        if (n1==2) k=k1/10%10
-    }
-    return k
+    return s%10
 }
