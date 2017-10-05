@@ -67,8 +67,9 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var s=abs(n)
-    var s1=1
-    while (s>=10) {
+    if (n==0) return 1
+    var s1=0
+    while (s>0) {
         s/=10
         s1++
     }
@@ -97,11 +98,10 @@ fun lcm(m: Int, n: Int): Int {
     var s=m
     var s1=n
     while (s!=s1)
-    if (s1 > s)
-        s1-=s
-    else
-        s-=s1
-
+        if (s1>s)
+            s1-=s
+        else
+            s-=s1
     return m*n/s
 }
 
@@ -128,7 +128,7 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     var s=1
-    for (i in n-1 downTo 1)
+    for (i in n/2 downTo 1)
         if (n % i == 0) {
             s=i; break
         }
