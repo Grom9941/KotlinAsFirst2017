@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -40,7 +41,7 @@ fun ageDescription(age: Int): String {
         "" + age + " лет"
     } else
         if (age % 10 == 1) {
-          "" + age + " год"
+            "" + age + " год"
         } else
             if (age % 10 in 2..4) {
                 "" + age + " года"
@@ -48,6 +49,7 @@ fun ageDescription(age: Int): String {
                 "" + age + " лет"
             }
 }
+
 /**
  * Простая
  *
@@ -58,9 +60,10 @@ fun ageDescription(age: Int): String {
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    val s= ((t1 * v1) + (t2 * v2) + (t3 * v3)) / 2
-    return if (t1 * v1 >= s) s/v1 else
-        if ((t1*v1)+(t2*v2) >= s) t1 + ((s - t1 * v1) / v2) else (t1 + t2 + ((s - (t1 * v1) - (t2 * v2)) / v3))
+    val s = ((t1 * v1) + (t2 * v2) + (t3 * v3)) / 2
+    return if (t1 * v1 >= s) s / v1 else
+        if ((t1 * v1) + (t2 * v2) >= s) t1 + ((s - t1 * v1) / v2) else
+            (t1 + t2 + ((s - (t1 * v1) - (t2 * v2)) / v3))
 }
 
 /**
@@ -75,13 +78,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var s=0
-    if ((kingX == rookX1) || (kingY == rookY1)) s++
-    if ((kingX == rookX2) || (kingY == rookY2)) s++
-   return if (s==2) 3 else
-     if (s==0) 0 else
-      if ((kingX == rookX1) || (kingY == rookY1)) 1 else 2
+    var numb = 0
+    if ((kingX == rookX1) || (kingY == rookY1)) numb++
+    if ((kingX == rookX2) || (kingY == rookY2)) numb++
+    return if (numb == 2) 3 else
+        if (numb == 0) 0 else
+            if ((kingX == rookX1) || (kingY == rookY1)) 1 else 2
 }
+
 /**
  * Простая
  *
@@ -95,12 +99,12 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    var s=0
+    var s = 0
     if ((kingX == rookX) || (kingY == rookY)) s++
-    if (((bishopX-bishopY)==(kingX-kingY)) || ((bishopX+bishopY)==(kingX+kingY))) s++
-          return if (s==0) 0 else
-            if (s==2) 3 else
-    if ((kingX == rookX) || (kingY == rookY)) 1 else 2
+    if (((bishopX - bishopY) == (kingX - kingY)) || ((bishopX + bishopY) == (kingX + kingY))) s++
+    return if (s == 0) 0 else
+        if (s == 2) 3 else
+            if ((kingX == rookX) || (kingY == rookY)) 1 else 2
 }
 
 /**
@@ -112,19 +116,21 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var s=a
-    var s1=b
-    var s2=c
+    var s = a
+    var s1 = b
+    var s2 = c
     if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
-            if ((b > a) && (b > c)) {s=b; s1=a; s2=c}
-            if ((c>a) && (c>b)) {s=c; s1=b; s2=a}
-
-            return if (sqr(s) == sqr(s1) + sqr(s2)) 1 else
-                if (sqr(s) < sqr(s1) + sqr(s2)) 0 else 2}
-
-
+        if ((b > a) && (b > c)) {
+            s = b; s1 = a; s2 = c
+        }
+        if ((c > a) && (c > b)) {
+            s = c; s1 = b; s2 = a
+        }
+        return if (sqr(s) == sqr(s1) + sqr(s2)) 1 else
+            if (sqr(s) < sqr(s1) + sqr(s2)) 0 else 2
     }
+}
 
 /**
  * Средняя
@@ -135,8 +141,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
-        if ((b<c) || (d<a)) -1 else
-         if ((a<=c) && (d<=b)) d-c else
-             if ((c<=b) && (b<=d) && (a<c)) b-c else
-                 if ((c<=a) && (b<=d)) b-a else
-                         d-a
+        if ((b < c) || (d < a)) -1 else
+            if ((a <= c) && (d <= b)) d - c else
+                if ((c <= b) && (b <= d) && (a < c)) b - c else
+                    if ((c <= a) && (b <= d)) b - a else
+                        d - a

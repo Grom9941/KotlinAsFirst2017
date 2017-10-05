@@ -30,10 +30,10 @@ fun sqRoot(a: Double, b: Double, c: Double) = (-b + sqrt(discriminant(a, b, c)))
  * Поиск произведения корней квадратного уравнения
  */
 fun quadraticRootProduct(a: Double, b: Double, c: Double): Double {
-    val sd = sqrt(discriminant(a, b, c))
-    val x1 = (-b + sd) / (2 * a)
-    val x2 = (-b - sd) / (2 * a)
-    return x1 * x2 // Результат
+    val sd=sqrt(discriminant(a, b, c))
+    val x1=(-b + sd)/(2 * a)
+    val x2=(-b - sd)/(2 * a)
+    return x1*x2 // Результат
 }
 
 /**
@@ -71,7 +71,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double =
-        (grad+(min+sec/60.0)/60)* PI/180
+        (grad+(min+sec/60.0)/60)*PI/180
 
 /**
  * Тривиальная
@@ -80,7 +80,7 @@ fun angleInRadian(grad: Int, min: Int, sec: Int): Double =
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
 fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double =
-        sqrt(sqr(abs(x1-x2))+ sqr(abs(y1-y2)))
+        sqrt(sqr(abs(x1-x2))+sqr(abs(y1-y2)))
 
 /**
  * Простая
