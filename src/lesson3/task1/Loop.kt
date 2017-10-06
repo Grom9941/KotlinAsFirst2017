@@ -258,8 +258,8 @@ fun isPalindrome(n: Int): Boolean {
 fun hasDifferentDigits(n: Int): Boolean {
 
     var ch = 0
-    var kol = digitNumber(n)-1
-    var leng =Math.pow(10.0, kol.toDouble()).toInt()
+    var kol = digitNumber(n) - 1
+    var leng = Math.pow(10.0, kol.toDouble()).toInt()
     var n1 = kol
     var k = leng
 
@@ -291,13 +291,11 @@ fun squareSequenceDigit(n: Int): Int {
         chis += 1
         leng += digitNumber(chis * chis)
     }
-    var s = 0
-    chis *= chis
-    var ch1 = chis
+    chis *=chis
     for (i in 1..leng - n) {
-        ch1 /= 10
+        chis /= 10
     }
-    return ch1 % 10
+    return chis % 10
 }
 
 /**
@@ -308,31 +306,15 @@ fun squareSequenceDigit(n: Int): Int {
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var k = 0
-    var n1 = n
-    var k1 = 1
-    var k2 = 0
-    while (n1 > k1) {
-        k += 1
-        k2 = fib(k)
-        n1--
-        k1 = 1
-        while (k2 > 9) {
-            n1--
-            k2 /= 10
-            k1++
-        }
+    var leng=0
+    var chis=0
+ while (leng<n) {
+     chis+=1
+     leng += digitNumber(fib(chis))
+ }
+chis= fib(chis)
+    for (i in 1..leng-n) {
+        chis /=10
     }
-    k++
-    k1 = fib(k)
-    var s = 0
-    while (k1 >= 1) {
-        s = s * 10 + (k % 10)
-        k1 /= 10
-    }
-    while (n1 > 1) {
-        n1--
-        s /= 10
-    }
-    return s % 10
+    return chis%10
 }
