@@ -291,7 +291,7 @@ fun squareSequenceDigit(n: Int): Int {
         chis += 1
         leng += digitNumber(chis * chis)
     }
-    chis *=chis
+    chis *= chis
     for (i in 1..leng - n) {
         chis /= 10
     }
@@ -306,15 +306,15 @@ fun squareSequenceDigit(n: Int): Int {
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var leng=0
-    var chis=0
- while (leng<n) {
-     chis+=1
-     leng += digitNumber(fib(chis))
- }
-chis= fib(chis)
-    for (i in 1..leng-n) {
-        chis /=10
+    var leng = 0
+    var chis = 0
+    while (leng < n) {
+        chis += 1
+        leng += digitNumber(fib(chis))
     }
-    return chis%10
+    chis = fib(chis)
+    for (i in 1..leng - n) {
+        chis /= 10
+    }
+    return chis % 10
 }
