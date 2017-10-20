@@ -71,12 +71,14 @@ fun dateStrToDigit(str: String): String {
             "октября", "ноября", "декабря")
     return try {
         val s = str.split(" ")
-        val day = s[0].toInt()
-        val mo = mou.indexOf(s[1]) + 1
-        val year = s[2].toInt()
-        if (mo == 0) "" else
-            String.format("%02d.%02d.%d", day, mo, year)
-    } catch (e: IndexOutOfBoundsException) {
+        if (s.size > 2) {
+            val day = s[0].toInt()
+            val mo = mou.indexOf(s[1]) + 1
+            val year = s[2].toInt()
+            if (mo == 0) "" else
+                String.format("%02d.%02d.%d", day, mo, year)
+        } else ""
+    } catch (e:NumberFormatException) {
         ""
     }
 }
@@ -93,11 +95,13 @@ fun dateDigitToStr(digital: String): String {
             "октября", "ноября", "декабря")
     return try {
         val s = digital.split(".")
-        if ((s.size == 3) and (s[1].toInt() != 0)) {
-            val day = s[0].toInt()
-            val mo = mou[s[1].toInt() - 1]
-            val year = s[2].toInt()
-            String.format("%d %s %d", day, mo, year)
+        if (s.size>2) {
+            if ((s.size == 3) and (s[1].toInt() != 0)) {
+                val day = s[0].toInt()
+                val mo = mou[s[1].toInt() - 1]
+                val year = s[2].toInt()
+                String.format("%d %s %d", day, mo, year)
+            } else ""
         } else ""
     } catch (e: NumberFormatException) {
         ""
@@ -123,15 +127,17 @@ fun flattenPhoneNumber(phone: String): String {
         if ((phone[i]!=' ') and (phone[i]!='-') and (phone[i]!='(') and (phone[i]!=')'))
     list.add(phone[i])
     var j=0
-    if ((list[0]=='+') or (list[1] in rig)) {
-        j=1
-        for (i in 0 until list.size)
-            if (list[i] in rig) {
-                j += 1
-            }
-    }
-    return if (j>=list.size) list.joinToString(separator = "") else
-        ""
+    return if (list.size>0) {
+        if ((list[0] == '+') or (list[1] in rig)) {
+            j = 1
+            for (i in 0 until list.size)
+                if (list[i] in rig) {
+                    j += 1
+                }
+        }
+        if (j >= list.size) list.joinToString(separator = "") else
+            ""
+    } else ""
 }
 
 /**
@@ -148,6 +154,7 @@ fun bestLongJump(jumps: String): Int {
    try {
        var res = ""
        var max = 0
+       var met=0
        for (i in 0 until jumps.length)
            if ((jumps[i] != '%') and (jumps[i] != '-'))
                res += jumps[i]
@@ -155,10 +162,11 @@ fun bestLongJump(jumps: String): Int {
        for (part in res1) {
            if (part != "") {
                val numb = part.toInt()
+               met=1
                if (numb > max) max = numb
            }
        }
-       return if (max == 0) -1 else max
+       return if ((max == 0) and (met == 0))-1 else max
    }
    catch (e:NumberFormatException){
        return -1
@@ -180,17 +188,20 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     var res = ""
     var max = 0
-    for (i in 0 until jumps.length)
+    var met=0
+    for (i in 0 until jumps.length) {
         if (jumps[i] != '%')
             res += jumps[i]
+    }
     val res1 = res.split(' ')
     for (i in 0 until res1.size - 1) {
+        if (res[i].toInt()>=0) met=1
         if ((res1[i] != "") and (res1[i + 1] == "+")) {
             val numb = res1[i].toInt()
             if (numb > max) max = numb
         }
     }
-    return if (max == 0) -1 else max
+    return if ((max == 0) and (met == 0)) -1 else max
 }
 
 
@@ -204,19 +215,18 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    var sum = 0
-    val res1 = expression.split(' ')
-    sum += res1[0].toInt()
-    for (i in 1 until res1.size - 1 step 2)
-        if (res1[i] == "+") sum += res1[i + 1].toInt() else
-            sum -= res1[i + 1].toInt()
-    return sum
+   try {
+       var sum = 0
+       val res1 = expression.split(' ')
+       sum += res1[0].toInt()
+       for (i in 1 until res1.size - 1 step 2)
+           if (res1[i] == "+") sum += res1[i + 1].toInt() else
+               sum -= res1[i + 1].toInt()
+       return sum
+   } catch (e:NumberFormatException) {
+       throw IllegalArgumentException("For input string: $expression")
+   }
 }
-
-fun throwExample() {
-    throw IllegalArgumentException("Description")
-}
-
 /**
  * Сложная
  *
@@ -284,29 +294,26 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    val rim = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val rim1 = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val rim = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val rim1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var ch = -2
     var ch1 = -2
     var sum = 0
     var copy = roman
-    while (copy.length > 0) {
-        if (copy.length >= 1)
+    while (copy.isNotEmpty()) {
+        if (copy.isNotEmpty())
             ch = rim1.indexOf(copy[0].toString())
         if (copy.length >= 2)
             ch1 = rim1.indexOf(copy[0].toString() + copy[1].toString())
         if ((ch >= ch1) and (ch1 != -2) and (ch1 != -1)) ch = ch1
         if (ch == -1) {
             return ch
-            break
         } else sum += rim[ch]
-        if (copy.length - rim1[ch].length == 0) copy = "" else
-            copy = copy.substring(rim1[ch].length, copy.length)
+        copy = if (copy.length - rim1[ch].length == 0) "" else
+            copy.substring(rim1[ch].length, copy.length)
     }
-    return sum
-
-
-
+    return if (sum == 0) -1 else
+        sum
 }
 
 /**
