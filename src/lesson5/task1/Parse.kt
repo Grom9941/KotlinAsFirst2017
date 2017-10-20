@@ -254,6 +254,23 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
 
+    try {
+        var max = 0.0
+        var prod = ""
+        var str = description.split(';')
+        val r = str.joinToString(separator = " ")
+        str = r.split(' ')
+        if ((str.size==1) and (str[0]=="")) return "" else
+        for (i in 0 until str.size step 3)
+            if (max < str[i + 1].toDouble()) {
+                max = str[i + 1].toDouble()
+                prod = str[i]
+            }
+        return prod
+    }
+    catch (e:NumberFormatException){
+        return ""
+    }
 }
 
 /**
@@ -268,9 +285,29 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    var r=""
-    for (i in 0 until roman.length)
-        while (r in)
+    val rim = listOf<Int>(1000,900,500,400,100,90,50,40,10,9,5,4,1)
+    val rim1 = listOf<String>("M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I")
+    var ch=-2
+    var ch1=-2
+    var sum=0
+    var copy=roman
+    while (copy.length>0) {
+        if (copy.length>=1)
+            ch=rim1.indexOf(copy[0].toString())
+        if (copy.length>=2)
+            ch1=rim1.indexOf(copy[0].toString()+copy[1].toString())
+        if ((ch>=ch1) and (ch1!=-2) and (ch1!=-1))  ch=ch1
+        if (ch==-1) {
+            return ch
+            break
+        } else sum+=rim[ch]
+        if (copy.length-rim1[ch].length==0) copy="" else
+       copy=copy.substring(rim1[ch].length,copy.length)
+    }
+    return sum
+
+
+
 }
 
 /**
