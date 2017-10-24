@@ -156,6 +156,7 @@ class Tests {
         assertEquals(0.0, sin(Math.PI, 1e-5), 1e-5)
         assertEquals(-1.0, sin(3.0 * Math.PI / 2.0, 1e-5), 1e-5)
         assertEquals(0.0, sin(100 * Math.PI, 1e-5), 1e-5)
+        assertEquals(-0.29237170467366574,sin(-6.5798912800186224,1.0000022204460493e-10),1e-5)
     }
 
     @Test
@@ -191,11 +192,11 @@ class Tests {
     @Test
     @Tag("Normal")
     fun hasDifferentDigits() {
-        assertTrue(hasDifferentDigits(323))
+        assertFalse(hasDifferentDigits(777))
         assertTrue(hasDifferentDigits(54))
+        assertTrue(hasDifferentDigits(323))
         assertTrue(hasDifferentDigits(222266666))
         assertFalse(hasDifferentDigits(0))
-        assertFalse(hasDifferentDigits(777))
     }
 
     @Test
@@ -214,11 +215,11 @@ class Tests {
     @Test
     @Tag("Hard")
     fun fibSequenceDigit() {
-     //   assertEquals(1, fibSequenceDigit(1))
-    //    assertEquals(1, fibSequenceDigit(2))
+        assertEquals(1, fibSequenceDigit(1))
+        assertEquals(1, fibSequenceDigit(2))
         assertEquals(3, fibSequenceDigit(4))
-    //    assertEquals(2, fibSequenceDigit(9))
-    //    assertEquals(5, fibSequenceDigit(14))
-    //    assertEquals(2, fibSequenceDigit(20))
+        assertEquals(2, fibSequenceDigit(9))
+        assertEquals(5, fibSequenceDigit(14))
+        assertEquals(2, fibSequenceDigit(20))
     }
 }
