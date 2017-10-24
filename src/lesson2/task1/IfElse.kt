@@ -79,11 +79,15 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
     var numb = 0
-    if ((kingX == rookX1) || (kingY == rookY1)) numb++
-    if ((kingX == rookX2) || (kingY == rookY2)) numb++
+    val dang = (kingX == rookX1)
+    val dang1 = (kingY == rookY1)
+    val dang2 = (kingX == rookX2)
+    val dang3 = (kingY == rookY2)
+    if (dang || dang1) numb++
+    if (dang2 || dang3) numb++
     return if (numb == 2) 3 else
         if (numb == 0) 0 else
-            if ((kingX == rookX1) || (kingY == rookY1)) 1 else 2
+            if (dang || dang1) 1 else 2
 }
 
 /**
