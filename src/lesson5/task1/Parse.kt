@@ -195,7 +195,7 @@ fun bestHighJump(jumps: String): Int {
     }
     val res1 = res.split(' ')
     for (i in 0 until res1.size - 1) {
-        if (res[i].toInt()>=0) met=1
+        if ((res[i].toInt()>=0) and (res[i+1]=='%')) met=1
         if ((res1[i] != "") and (res1[i + 1] == "+")) {
             val numb = res1[i].toInt()
             if (numb > max) max = numb
@@ -276,6 +276,7 @@ fun mostExpensive(description: String): String {
                     max = str[i + 1].toDouble()
                     prod = str[i]
                 }
+        if (max==0.0) prod="Any good with price 0.0"
         return prod
     } catch (e: NumberFormatException) {
         return ""
@@ -296,24 +297,35 @@ fun mostExpensive(description: String): String {
 fun fromRoman(roman: String): Int {
     val rim = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     val rim1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    var ch = -2
-    var ch1 = -2
+    var k = 0
     var sum = 0
-    var copy = roman
-    while (copy.isNotEmpty()) {
-        if (copy.isNotEmpty())
-            ch = rim1.indexOf(copy[0].toString())
-        if (copy.length >= 2)
-            ch1 = rim1.indexOf(copy[0].toString() + copy[1].toString())
-        if ((ch >= ch1) and (ch1 != -2) and (ch1 != -1)) ch = ch1
-        if (ch == -1) {
-            return ch
-        } else sum += rim[ch]
-        copy = if (copy.length - rim1[ch].length == 0) "" else
-            copy.substring(rim1[ch].length, copy.length)
+    var i = 1000
+    var per: Int
+    var per1: Int
+    while (k < roman.length) {
+
+        per = rim1.indexOf(roman[k].toString())
+        if (per != -1) per = rim[per]
+        if (roman.length - k == 1) {
+            sum += per
+            i = per
+            k += 1
+        }
+        if (roman.length - k >= 2) {
+            per1 = rim1.indexOf(roman[k].toString() + roman[k + 1].toString())
+            if (per1 != -1) per1 = rim[per1]
+            if ((per > per1) and (per <= i)) {
+                i = per
+                sum += per
+                k += 1
+            } else {
+                i = per1
+                sum += per1
+                k += 2
+            }
+        }
     }
-    return if (sum == 0) -1 else
-        sum
+    return sum
 }
 
 /**
@@ -352,4 +364,31 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val list= mutableListOf<Int>()
+    var met=0
+    for (i in 0 until cells)
+        list.add(0)
+   var point=Math.floor((cells/2).toDouble()).toInt()
+    var limit1:Int
+    var point1=0
+    var point2=0
+if (limit>commands.length) limit1=commands.length-1 else
+    limit1=limit
+    var kol=0
+    for (i in 0 until limit1) {
+        point1=point
+        point2=i
+        if (commands[i]=='+') list[point]+=1
+        if (commands[i]=='-') list[point]-=1
+        if (commands[i]=='>') point+=1
+        if (commands[i]=='<') point-=1
+        if ((commands[i]=='[') and (list[point1]==0))
+            while ((commands[point2]!=']') and (kol!=0)){
+                point2+=1
+                if (commands[point2] == '[') kol += 1
+                if (commands[point2] == ']') kol -=1
+            }
+    }
+
+}
