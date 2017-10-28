@@ -364,31 +364,4 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    val list= mutableListOf<Int>()
-    var met=0
-    for (i in 0 until cells)
-        list.add(0)
-   var point=Math.floor((cells/2).toDouble()).toInt()
-    var limit1:Int
-    var point1=0
-    var point2=0
-if (limit>commands.length) limit1=commands.length-1 else
-    limit1=limit
-    var kol=0
-    for (i in 0 until limit1) {
-        point1=point
-        point2=i
-        if (commands[i]=='+') list[point]+=1
-        if (commands[i]=='-') list[point]-=1
-        if (commands[i]=='>') point+=1
-        if (commands[i]=='<') point-=1
-        if ((commands[i]=='[') and (list[point1]==0))
-            while ((commands[point2]!=']') and (kol!=0)){
-                point2+=1
-                if (commands[point2] == '[') kol += 1
-                if (commands[point2] == ']') kol -=1
-            }
-    }
-
-}
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
