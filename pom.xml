@@ -1,16 +1,27 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>ru.spbstu</groupId>
     <artifactId>kfirst</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>
+            UTF-8
+        </project.build.sourceEncoding>
+        <project.reporting.outputEncoding>
+            UTF-8
+        </project.reporting.outputEncoding>
+
         <kotlin.version>1.1.4</kotlin.version>
-        <junit.jupiter.version>5.0.0</junit.jupiter.version>
-        <junit.vintage.version>4.12.0</junit.vintage.version>
-        <junit.platform.version>1.0.0</junit.platform.version>
+        <junit.jupiter.version>5.0.0-RC2</junit.jupiter.version>
+        <junit.vintage.version>4.12.0-RC2</junit.vintage.version>
+        <junit.platform.version>1.0.0-RC2</junit.platform.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -27,22 +38,23 @@
             <artifactId>kotlin-runtime</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.jupiter.version}</version>
+            <version>LATEST</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
+            <version>LATEST</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>${junit.vintage.version}</version>
+            <version>LATEST</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -67,8 +79,10 @@
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>${junit.platform.version}</version>
+                        <artifactId>
+                            junit-platform-surefire-provider
+                        </artifactId>
+                        <version>LATEST</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -100,16 +114,21 @@
                 <configuration>
                     <packages>
                         <package>lesson1.task1</package>
+
                         <package>lesson2.task1</package>
                         <package>lesson2.task2</package>
+
                         <package>lesson3.task1</package>
                         <package>lesson4.task1</package>
                         <package>lesson5.task1</package>
+
                         <package>lesson6.task1</package>
                         <package>lesson6.task2</package>
                         <package>lesson6.task3</package>
+
                         <package>lesson7.task1</package>
                         <package>lesson7.task2</package>
+
                         <package>lesson8.task1</package>
                         <package>lesson8.task2</package>
                     </packages>
@@ -117,6 +136,7 @@
             </plugin>
         </plugins>
     </build>
+
     <pluginRepositories>
         <pluginRepository>
             <id>bintray-vorpal-research-kotlin-maven</id>
@@ -124,4 +144,5 @@
             <url>http://dl.bintray.com/vorpal-research/kotlin-maven</url>
         </pluginRepository>
     </pluginRepositories>
+
 </project>
