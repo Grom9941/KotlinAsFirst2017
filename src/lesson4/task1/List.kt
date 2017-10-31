@@ -237,6 +237,10 @@ fun factorizeToString(n: Int): String {
 fun convert(n: Int, base: Int): List<Int> {
 
     val convert = mutableListOf<Int>()
+    if (n==0) {
+        convert.add(0)
+        return convert
+    }
     var n1 = n
     while (n1 > 0) {
         convert.add(n1.rem(base))
@@ -254,6 +258,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
+    if (n==0) return "0"
     val a = convert(n, base)
     var convert = ""
     for (i in 0 until a.size)
@@ -291,8 +296,8 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     val a = mutableListOf<Int>()
-    for (i in 0 until str.length)
-        if (str[i].toInt() in 48 until 57) a.add(str[i].toInt() - 48) else
+    for (i in 0 .. str.length-1)
+        if (str[i] in '0' .. '9') a.add(str[i].toInt() - 48) else
             a.add(str[i].toInt() - 87)
     return decimal(a, base)
 }
@@ -386,7 +391,7 @@ fun russian(n: Int): String {
             str.add(n20[number[leng - 3] + 1])
             k += 1
         } else {
-            if (str[3] == "") {
+            if (str[k-1] == "") {
                 str.add("тысяч")
                 k += 1
             }
