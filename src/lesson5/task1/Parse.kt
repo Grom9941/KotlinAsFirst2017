@@ -125,7 +125,8 @@ fun flattenPhoneNumber(phone: String): String {
     val list= mutableListOf<Char>()
     for (i in 0 until phone.length)
         if ((phone[i]!=' ') and (phone[i]!='-') and (phone[i]!='(') and (phone[i]!=')'))
-    list.add(phone[i])
+            if ((phone[i] in '0'..'9') or (phone[i]=='+'))
+    list.add(phone[i]) else return ""
     var j=0
     return if (list.size>0) {
         if ((list[0] == '+') or (list[1] in rig)) {
@@ -197,6 +198,7 @@ fun bestHighJump(jumps: String): Int {
     for (i in 0 until res1.size - 1) {
         if ((res[i].toInt()>=0) and (res[i+1]=='%')) met=1
         if ((res1[i] != "") and (res1[i + 1] == "+")) {
+            met=1
             val numb = res1[i].toInt()
             if (numb > max) max = numb
         }
@@ -303,9 +305,8 @@ fun fromRoman(roman: String): Int {
     var per: Int
     var per1: Int
     while (k < roman.length) {
-
         per = rim1.indexOf(roman[k].toString())
-        if (per != -1) per = rim[per]
+        if (per != -1) per = rim[per] else return -1
         if (roman.length - k == 1) {
             sum += per
             i = per
