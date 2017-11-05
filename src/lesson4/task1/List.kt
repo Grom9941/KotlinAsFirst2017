@@ -392,7 +392,7 @@ fun russian(n: Int): String {
         str = double(leng-3,str.size,number,str,1).toMutableList()
     }
     if (leng + 1 >= 6) {
-        if ((str[leng - 1] == "") and (str[leng - 2] == "")) str.add("тысяч")
+        if ((str[str.size - 1] == "") and (str[str.size - 2] == "")) str.add("тысяч")
         str.add(n1000[number[leng - 5]])
     }
     for (i in 0 until str.size)
