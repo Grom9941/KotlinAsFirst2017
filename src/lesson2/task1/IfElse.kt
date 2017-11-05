@@ -38,15 +38,15 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     return if (age % 100 in 5..20) {
-        "" + age + " лет"
+        "$age лет"
     } else
         if (age % 10 == 1) {
-            "" + age + " год"
+            "$age год"
         } else
             if (age % 10 in 2..4) {
-                "" + age + " года"
+                "$age года"
             } else {
-                "" + age + " лет"
+                "$age лет"
             }
 }
 
@@ -78,16 +78,16 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var numb = 0
-    val dang = (kingX == rookX1)
-    val dang1 = (kingY == rookY1)
-    val dang2 = (kingX == rookX2)
-    val dang3 = (kingY == rookY2)
-    if (dang || dang1) numb++
-    if (dang2 || dang3) numb++
-    return if (numb == 2) 3 else
-        if (numb == 0) 0 else
-            if (dang || dang1) 1 else 2
+    var number = 0
+    val danger = (kingX == rookX1)
+    val danger1 = (kingY == rookY1)
+    val danger2 = (kingX == rookX2)
+    val danger3 = (kingY == rookY2)
+    if (danger || danger1) number++
+    if (danger2 || danger3) number++
+    return if (number == 2) 3 else
+        if (number == 0) 0 else
+            if (danger || danger1) 1 else 2
 }
 
 /**
@@ -125,11 +125,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     var s2 = c
     if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
-        if ((b > a) && (b > c)) {
-            s = b; s1 = a; s2 = c
+        if (maxOf(a,b,c) ==b) {
+            s = b;
+            s1 = a;
+            s2 = c
         }
-        if ((c > a) && (c > b)) {
-            s = c; s1 = b; s2 = a
+        if (maxOf(a,b,c)==c) {
+            s = c;
+            s1 = b;
+            s2 = a
         }
         return if (sqr(s) == sqr(s1) + sqr(s2)) 1 else
             if (sqr(s) < sqr(s1) + sqr(s2)) 0 else 2
