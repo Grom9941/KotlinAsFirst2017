@@ -344,6 +344,7 @@ val n1000 = listOf("", "сто", "двести", "триста", "четырес
         "восемьсот", "девятьсот")
 val n10000 = listOf("", "одна тысяча", "две тысячи", "три тысячи", "четыре тысячи", "пять тысяч",
         "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
+
 fun double(leng:Int,size:Int,number:List<Int>,str: List<String>,point:Int):List<String> {
     val str1 = str.toMutableList()
     val number2 = number[leng - 1] * 10 + number[leng]
