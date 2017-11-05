@@ -3,6 +3,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.minDivisor
+import java.lang.Math.pow
 import java.lang.StringBuilder
 
 /**
@@ -237,7 +238,7 @@ fun factorizeToString(n: Int): String {
 fun convert(n: Int, base: Int): List<Int> {
 
     val convert = mutableListOf<Int>()
-    if (n==0) {
+    if (n == 0) {
         convert.add(0)
         return convert
     }
@@ -258,13 +259,13 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    if (n==0) return "0"
+    if (n == 0) return "0"
     val a = convert(n, base)
-    var convert = ""
+    val convert = StringBuilder ()
     for (i in 0 until a.size)
-        convert += if (a[i] < 10) a[i] else
-            (a[i] + 87).toChar()
-    return convert
+        if (a[i] < 10) convert.append(a[i]) else
+            convert.append((a[i] + 87).toChar())
+    return convert.toString()
 }
 
 
@@ -277,7 +278,7 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var base1 = 0
-    var size = (Math.pow(base.toDouble(), (digits.size - 1).toDouble())).toInt()
+    var size = (pow(base.toDouble(), (digits.size - 1).toDouble())).toInt()
     for (i in 0 until digits.size) {
         base1 += digits[i] * size
         size /= base
@@ -295,11 +296,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val a = mutableListOf<Int>()
-    for (i in 0 .. str.length-1)
-        if (str[i] in '0' .. '9') a.add(str[i].toInt() - 48) else
-            a.add(str[i].toInt() - 87)
-    return decimal(a, base)
+    val list = mutableListOf<Int>()
+    for (i in 0 until str.length)
+        if (str[i] in '0' .. '9') list.add(str[i].toInt() - 48) else
+            list.add(str[i].toInt() - 87)
+    return decimal(list, base)
 }
 
 /**
@@ -311,20 +312,20 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var res=""
-    val rom = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val rom1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val res = StringBuilder ()
+    val roman = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val roman1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var n1 = n
     var i = 0
-    while (rom[i] > n) i += 1
+    while (roman[i] > n) i += 1
     while (n1 > 0) {
-        while (n1 - rom[i] >= 0) {
-            res += rom1[i]
-            n1 -= rom[i]
+        while (n1 - roman[i] >= 0) {
+            res.append(roman1[i])
+            n1 -= roman[i]
         }
         i += 1
     }
-    return res
+    return res.toString()
 }
 
 /**
@@ -343,64 +344,54 @@ val n1000 = listOf("", "сто", "двести", "триста", "четырес
         "восемьсот", "девятьсот")
 val n10000 = listOf("", "одна тысяча", "две тысячи", "три тысячи", "четыре тысячи", "пять тысяч",
         "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
+fun double(leng:Int,size:Int,number:List<Int>,str: List<String>,point:Int):List<String> {
+    val str1 = str.toMutableList()
+    val number2 = number[leng - 1] * 10 + number[leng]
+    if (number2 in 10..19) {
+        str1.removeAt(str.size - 1)
+        if (point == 1) str1.add("тысяч")
+        str1.add(n20[number[leng] + 1])
+    } else {
+        if ((str[str.size - 1] == "") and (point == 1)) {
+            str1.add("тысяч")
+        }
+        str1.add(n100[number[leng - 1]])
+    }
+    return str1
+}
 
 fun russian(n: Int): String {
 
     val number1 = mutableListOf<Int>()
     val res = mutableListOf<String>()
     var n1 = n
-    while (n1 > 9) {
+    while (n1 > 0) {
         number1.add(n1 % 10)
         n1 /= 10
     }
-    number1.add(n1 % 10)
     val number = number1.reversed()
-    val str = mutableListOf<String>()
+    var str = mutableListOf<String>()
     val leng = number.size - 1
-    var k = 0
 
     if (leng + 1 >= 1) {
         str.add(n10[number[leng]])
-        k += 1
     }
 
     if (leng + 1 >= 2) {
-        val ch12 = number[leng - 1] * 10 + number[leng]
-        if (ch12 in 10..19) {
-            str.removeAt(0)
-            str.add(n20[number[leng] + 1])
-        } else {
-            str.add(n100[number[leng - 1]])
-            k += 1
-        }
+        str = double(leng,str.size,number,str,0).toMutableList()
     }
     if (leng + 1 >= 3) {
         str.add(n1000[number[leng - 2]])
-        k += 1
     }
     if (leng + 1 >= 4) {
         str.add(n10000[number[leng - 3]])
-        k += 1
     }
 
     if (leng + 1 >= 5) {
-        val ch34 = number[leng - 4] * 10 + number[leng - 3]
-        if (ch34 in 10..19) {
-            str.removeAt(k - 1)
-            str.add("тысяч")
-            str.add(n20[number[leng - 3] + 1])
-            k += 1
-        } else {
-            if (str[k-1] == "") {
-                str.add("тысяч")
-                k += 1
-            }
-            str.add(n100[number[leng - 4]])
-            k += 1
-        }
+        str = double(leng-3,str.size,number,str,1).toMutableList()
     }
     if (leng + 1 >= 6) {
-        if ((str[k - 1] == "") and (str[k - 2] == "")) str.add("тысяч")
+        if ((str[leng - 1] == "") and (str[leng - 2] == "")) str.add("тысяч")
         str.add(n1000[number[leng - 5]])
     }
     for (i in 0 until str.size)
