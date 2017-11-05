@@ -236,7 +236,7 @@ fun revert(n: Int): Int {
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean {
-    val n1= revert(n)
+    val n1 = revert(n)
     return n1 == n
 }
 
@@ -247,17 +247,15 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
- var n1 = n
- var num = mutableListOf<Int>(0,0,0,0,0,0,0,0,0,0)
-    while (n1>=10) {
-        num[n1 % 10] += 1
+    val x = n % 10
+    var k = 0
+    var n1 = n
+    while (n1 > 0) {
         n1 /= 10
+        k += 1
     }
-    num[n1]+=1
-    n1=0
-    for (i in 0 .. 9)
-        if ( num[i] >= 1) n1+=1
-    return if (n1>=2) true else false
+    if (n == 0) k = 1
+        return k != digitCountInNumber(n, x)
 }
 
 /**
@@ -269,16 +267,16 @@ fun hasDifferentDigits(n: Int): Boolean {
  */
 fun squareSequenceDigit(n: Int): Int {
     var leng = 0
-    var chis = 0
+    var number = 0
     while (leng < n) {
-        chis += 1
-        leng += digitNumber(chis * chis)
+        number += 1
+        leng += digitNumber(number * number)
     }
-    chis *= chis
+    number *= number
     for (i in 1..leng - n) {
-        chis /= 10
+        number /= 10
     }
-    return chis % 10
+    return number % 10
 }
 
 /**
@@ -290,14 +288,14 @@ fun squareSequenceDigit(n: Int): Int {
  */
 fun fibSequenceDigit(n: Int): Int {
     var leng = 0
-    var chis = 0
+    var number = 0
     while (leng < n) {
-        chis += 1
-        leng += digitNumber(fib(chis))
+        number += 1
+        leng += digitNumber(fib(number))
     }
-    chis = fib(chis)
+    number = fib(number)
     for (i in 1..leng - n) {
-        chis /= 10
+        number /= 10
     }
-    return chis % 10
+    return number % 10
 }
