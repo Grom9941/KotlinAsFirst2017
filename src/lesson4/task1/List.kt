@@ -360,7 +360,6 @@ fun double(leng:Int,size:Int,number:List<Int>,str: List<String>,point:Int):List<
     }
     return str1
 }
-
 fun russian(n: Int): String {
 
     val number1 = mutableListOf<Int>()
