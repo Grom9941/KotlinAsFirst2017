@@ -73,7 +73,8 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = if (center.distance(other.center) <= radius + other.radius) 0.0 else center.distance(other.center) - radius - other.radius
+    fun distance(other: Circle): Double = if (center.distance(other.center) <= radius + other.radius) 0.0 else
+        center.distance(other.center) - radius - other.radius
 
 
     /**
@@ -204,8 +205,7 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     var par=Pair(circles[0],circles[1])
     var leng=Circle(circles[0].center,circles[0].radius).distance(Circle(circles[1].center,circles[1].radius))
     for (i in 0 until circles.size)
-    for (j in 0 until circles.size)
-        if (i != j)
+    for (j in i+1 until circles.size)
     {
         val dist = Circle(circles[i].center,circles[i].radius).distance(Circle(circles[j].center,circles[j].radius))
         if (leng > dist) {
@@ -243,5 +243,23 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Circle = TODO()
+fun minContainingCircle(vararg points: Point): Circle {
+    if (points.isEmpty()) IllegalArgumentException()
+    if (points.size == 1) return Circle(points[0], 0.0)
+    if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
+    var cicl = circleByThreePoints(points[0], points[1], points[2])
+    var radius = Double.MAX_VALUE
+    var have = 0
+    for (i in 0 until points.size) for (j in i+1 until points.size) for (k in j+1 until points.size)
+        if ((i != j) and (j != k) and (i != k)) {
+        have = 0
+        val cicl2 = circleByThreePoints(points[i], points[j], points[k])
+        for (i1 in 0 until points.size) if (!cicl2.contains(points[i1])) have = 1
+        if ((radius > cicl2.radius) and (have == 0)) {
+            radius = cicl2.radius
+            cicl = cicl2
+        }
+    }
+    return cicl
+}
 

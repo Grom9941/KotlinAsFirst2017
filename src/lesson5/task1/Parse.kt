@@ -326,7 +326,7 @@ fun fromRoman(roman: String): Int {
             }
         }
     }
-    if (sum==0) return -1 else return sum
+    return if (sum==0) -1 else sum
 }
 
 /**
@@ -365,4 +365,47 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+fun s1(ki1:Int,kol1:Int,commands:String):Int {
+var ki=ki1
+var kol=kol1
+while ((commands[ki] != ']') or  (kol != 0)) {
+    ki += 1
+    if (commands[ki] == '[') kol += 1
+    if (commands[ki] == ']') kol -= 1
+}
+    return ki
+}
+fun s2(ki1:Int,kol1:Int,commands:String):Int {
+var ki = ki1
+var kol = kol1
+while ((commands[ki] != '[') or  (kol != 0)) {
+    ki -= 1
+    if (commands[ki] == '[') kol -= 1
+    if (commands[ki] == ']') kol += 1
+}
+    return ki
+}
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val list= mutableListOf<Int>()
+    for (i in 0 until cells) list.add(0)
+    var ki=-1
+    var limit1=0
+    var point=Math.floor((cells/2).toDouble()).toInt()
+
+while ((ki < commands.length-1) and (limit1 < limit)){
+    ki += 1
+    limit1 +=1
+    if ((point in 0 until cells)) {
+        when {
+            commands[ki] == '+' -> list[point] += 1
+            commands[ki] == '-' -> list[point] -= 1
+            commands[ki] == '>' -> point += 1
+            commands[ki] == '<' -> point -= 1
+            (commands[ki] == '[') and (list[point] == 0) -> ki = s1(ki,1,commands)
+            (commands[ki] == ']') and (list[point] != 0) -> ki = s2(ki,1,commands)
+        }
+    }
+}
+return list
+}
