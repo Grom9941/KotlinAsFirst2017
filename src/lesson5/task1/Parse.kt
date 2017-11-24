@@ -280,7 +280,7 @@ fun mostExpensive(description: String): String {
                 }
         if (max==0.0) prod="Any good with price 0.0"
         return prod
-    } catch (e: NumberFormatException) {
+    } catch (e:Exception) {
         return ""
     }
 }
