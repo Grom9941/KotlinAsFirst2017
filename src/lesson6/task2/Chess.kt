@@ -2,6 +2,7 @@
 package lesson6.task2
 
 import lesson6.task3.Graph
+import java.util.*
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -233,25 +234,27 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int {
+fun graphh():Graph{
     val graph =Graph()
     for (i in 1 .. 8) for (j in 1 .. 8) graph.addVertex("$i$j")
-    for (i in 1 .. 8) for (j in 1 .. 8) {
-        //if (Square(i - 1, j - 2).inside()) {val i1 = i - 1;val j1 = j - 2;graph.connect("$i$j", "$i1$j1") }
-        //if (Square(i - 2, j - 1).inside()) {val i1 = i - 2;val j1 = j - 1;graph.connect("$i$j", "$i1$j1") }
-        if (Square(i + 1, j - 2).inside()) {val i1 = i + 1;val j1 = j - 2;graph.connect("$i$j", "$i1$j1") }
-        if (Square(i + 2, j - 1).inside()) {val i1 = i + 2;val j1 = j - 1;graph.connect("$i$j", "$i1$j1") }
-        //if (Square(i - 1, j + 2).inside()) {val i1 = i - 1;val j1 = j + 2;graph.connect("$i$j", "$i1$j1") }
-        //if (Square(i - 2, j + 1).inside()) {val i1 = i - 2;val j1 = j + 1;graph.connect("$i$j", "$i1$j1") }
-        if (Square(i + 1, j + 2).inside()) {val i1 = i + 1;val j1 = j + 2;graph.connect("$i$j", "$i1$j1") }
-        if (Square(i + 2, j + 1).inside()) {val i1 = i + 2;val j1 = j + 1;graph.connect("$i$j", "$i1$j1") }
-    }
+    for (i in 1 .. 8)
+        for (j in 1 .. 8) {
+            if (Square(i - 1, j - 2).inside()) {val i1 = i - 1;val j1 = j - 2;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i - 2, j - 1).inside()) {val i1 = i - 2;val j1 = j - 1;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i + 1, j - 2).inside()) {val i1 = i + 1;val j1 = j - 2;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i + 2, j - 1).inside()) {val i1 = i + 2;val j1 = j - 1;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i - 1, j + 2).inside()) {val i1 = i - 1;val j1 = j + 2;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i - 2, j + 1).inside()) {val i1 = i - 2;val j1 = j + 1;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i + 1, j + 2).inside()) {val i1 = i + 1;val j1 = j + 2;graph.connect("$i$j", "$i1$j1"); }
+            if (Square(i + 2, j + 1).inside()) {val i1 = i + 2;val j1 = j + 1;graph.connect("$i$j", "$i1$j1"); }
+        }
+    return graph
+}
+
+fun knightMoveNumber(start: Square, end: Square): Int {
+    val graph= graphh()
     if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException()
-    val sc=start.column
-    val sr =start.row
-    val ec =end.column
-    val er = end.row
-    return graph.dfs("$sc$sr", "$ec$er")
+    return graph.bfs("${start.column}${start.row}", "${end.column}${end.row}")
 }
 /**
  * Очень сложная
@@ -274,3 +277,26 @@ fun knightMoveNumber(start: Square, end: Square): Int {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
+/**fun bfs(start: String, finish: String) = bfs(this[start], this[finish])
+
+private fun bfs(start: Square, finish: Square): Int {
+    val queue = ArrayDeque<Square>()
+    queue.add(start)
+    val visited = mutableMapOf(start to 0)
+    while (queue.isNotEmpty()) {
+        val next = queue.poll()
+        val distance = visited[next]!!
+        if (next == finish) return distance
+        for (neighbor in next.neighbors) {
+            if (neighbor in visited) continue
+            visited.put(neighbor, distance + 1)
+            queue.add(neighbor)
+        }
+    }
+    return -1
+}
+
+fun knightTrajectory(start: Square, end: Square): List<Square> {
+    val graph= graphh()
+
+}*/
