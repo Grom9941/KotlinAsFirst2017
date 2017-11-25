@@ -4,6 +4,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson3.task1.minDivisor
 import java.lang.Math.pow
+import java.lang.Math.sqrt
 import java.lang.StringBuilder
 
 /**
@@ -114,7 +115,7 @@ fun abs(v: List<Double>): Double {
     for (element in v) {
         sum += element * element
     }
-    return Math.sqrt(sum)
+    return sqrt(sum)
 }
 
 /**
@@ -154,10 +155,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
-    if (a.isNotEmpty())
-        for (i in 0 until a.size) {
-            c += a[i] * b[i]
-        }
+        for (i in 0 until a.size) c += a[i] * b[i]
     return c
 }
 
@@ -172,7 +170,6 @@ fun times(a: List<Double>, b: List<Double>): Double {
 fun polynom(p: List<Double>, x: Double): Double {
     var px = 0.0
     var xx = 1.0
-    if (p.isNotEmpty())
         for (i in 0 until p.size) {
             px += p[i] * xx
             xx *= x
@@ -191,10 +188,7 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isNotEmpty()) {
-        for (i in 1 until list.size)
-            list[i] += list[i - 1]
-    }
+        for (i in 1 until list.size) list[i] += list[i - 1]
     return list
 }
 
@@ -260,11 +254,12 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     if (n == 0) return "0"
+    val alphabet=87
     val a = convert(n, base)
     val convert = StringBuilder ()
     for (i in 0 until a.size)
         if (a[i] < 10) convert.append(a[i]) else
-            convert.append((a[i] + 87).toChar())
+            convert.append((a[i] + alphabet).toChar())
     return convert.toString()
 }
 
@@ -297,9 +292,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     val list = mutableListOf<Int>()
+    val alphabet=87
+    val integer=48
     for (i in 0 until str.length)
-        if (str[i] in '0' .. '9') list.add(str[i].toInt() - 48) else
-            list.add(str[i].toInt() - 87)
+        if (str[i] in '0' .. '9') list.add(str[i].toInt() - integer) else
+            list.add(str[i].toInt() - alphabet)
     return decimal(list, base)
 }
 
@@ -312,20 +309,20 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val res = StringBuilder ()
-    val roman = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val result = StringBuilder ()
+    val integer = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     val roman1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var n1 = n
     var i = 0
-    while (roman[i] > n) i += 1
+    while (integer[i] > n) i += 1
     while (n1 > 0) {
-        while (n1 - roman[i] >= 0) {
-            res.append(roman1[i])
-            n1 -= roman[i]
+        while (n1 - integer[i] >= 0) {
+            result.append(roman1[i])
+            n1 -= integer[i]
         }
         i += 1
     }
-    return res.toString()
+    return result.toString()
 }
 
 /**
