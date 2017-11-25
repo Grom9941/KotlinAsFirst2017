@@ -102,7 +102,7 @@ data class Segment(val begin: Point, val end: Point) {
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
 fun diameter(vararg points: Point): Segment {
-    if (points.size<2) IllegalArgumentException()
+    if (points.size<2) IllegalArgumentException("")
     var dist=0.0
     var segm=Segment(points[0],points[0])
     for (i in 0 until points.size)
@@ -201,7 +201,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
  * Если в списке менее двух окружностей, бросить IllegalArgumentException
  */
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
-    if (circles.size<2) IllegalArgumentException()
+    if (circles.size<2) IllegalArgumentException("")
     var par=Pair(circles[0],circles[1])
     var leng=Circle(circles[0].center,circles[0].radius).distance(Circle(circles[1].center,circles[1].radius))
     for (i in 0 until circles.size)
@@ -244,7 +244,7 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * соединяющий две самые удалённые точки в данном множестве.
  */
 fun minContainingCircle(vararg points: Point): Circle {
-    if (points.isEmpty()) IllegalArgumentException()
+    if (points.isEmpty()) IllegalArgumentException("")
     if (points.size == 1) return Circle(points[0], 0.0)
     if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
     var cicl = circleByThreePoints(points[0], points[1], points[2])
