@@ -262,7 +262,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
 
     try {
-        var max = 0.0
+        var max = -1.0
         var prod = ""
         var str = description.split(';')
         val r = str.joinToString(separator = " ")
