@@ -35,11 +35,12 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    if (notation.length != 2) throw IllegalArgumentException()
-    val column=notation[0]
-    val row=notation[1]
-    if ((column !in 'a' until 'h') or (row !in '1' until '8'))throw IllegalArgumentException()
-    return Square(column.toInt()-96,row.toInt()-48)
+    if (notation.length != 2) throw IllegalArgumentException() else {
+        val column = notation[0]
+        val row = notation[1]
+        if ((column !in 'a' until 'h') or (row !in '1' until '8')) throw IllegalArgumentException() else
+        return Square(column.toInt() - 96, row.toInt() - 48)
+    }
 }
 
 /**
@@ -66,7 +67,7 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException()
+    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
     return if ((start.column==end.column) and (start.row==end.row)) 0 else if ((start.column==end.column) or (start.row==end.row)) 1 else 2
 }
 
@@ -182,7 +183,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException()
+    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
     return if (Math.abs(start.column-end.column)>Math.abs(start.row-end.row)) Math.abs(start.column-end.column) else Math.abs(start.row-end.row)
 }
 
@@ -250,7 +251,7 @@ fun graphh():Graph{
 
 fun knightMoveNumber(start: Square, end: Square): Int {
     val graph= graphh()
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException()
+    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
     return graph.bfs("${start.column}${start.row}", "${end.column}${end.row}")
 }
 /**
