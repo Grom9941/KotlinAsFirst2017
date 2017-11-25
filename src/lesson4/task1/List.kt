@@ -350,7 +350,7 @@ fun double(leng:Int,size:Int,number:List<Int>,str: List<String>,point:Int):List<
         if (point == 1) str1.add("тысяч")
         str1.add(n20[number[leng] + 1])
     } else {
-        if ((str[str.size - 1] == "") and (point == 1)) {
+        if ((str[str.size - 1] == "") && (point == 1)) {
             str1.add("тысяч")
         }
         str1.add(n100[number[leng - 1]])
@@ -388,7 +388,7 @@ fun russian(n: Int): String {
         str = double(leng-3,str.size,number,str,1).toMutableList()
     }
     if (leng + 1 >= 6) {
-        if ((str[str.size - 1] == "") and (str[str.size - 2] == "")) str.add("тысяч")
+        if ((str[str.size - 1] == "") && (str[str.size - 2] == "")) str.add("тысяч")
         str.add(n1000[number[leng - 5]])
     }
     for (i in 0 until str.size)
