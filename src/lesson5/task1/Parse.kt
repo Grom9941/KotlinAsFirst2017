@@ -67,16 +67,16 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val mou = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+    val mounth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
             "октября", "ноября", "декабря")
     return try {
         val s = str.split(" ")
         if (s.size > 2) {
             val day = s[0].toInt()
-            val mo = mou.indexOf(s[1]) + 1
+            val mounth1 = mounth.indexOf(s[1]) + 1
             val year = s[2].toInt()
-            if (mo == 0) "" else
-                String.format("%02d.%02d.%d", day, mo, year)
+            if (mounth1 == 0) "" else
+                String.format("%02d.%02d.%d", day, mounth1, year)
         } else ""
     } catch (e:NumberFormatException) {
         ""
@@ -95,14 +95,12 @@ fun dateDigitToStr(digital: String): String {
             "октября", "ноября", "декабря")
     return try {
         val s = digital.split(".")
-        if (s.size>2) {
-            if ((s.size == 3) and (s[1].toInt() != 0)) {
+            if ((s.size>2) && (s.size == 3) && (s[1].toInt() != 0)) {
                 val day = s[0].toInt()
                 val mo = mou[s[1].toInt() - 1]
                 val year = s[2].toInt()
                 String.format("%d %s %d", day, mo, year)
             } else ""
-        } else ""
     } catch (e: NumberFormatException) {
         ""
     }
@@ -124,19 +122,19 @@ fun flattenPhoneNumber(phone: String): String {
     val rig="0123456789"
     val list= mutableListOf<Char>()
     for (i in 0 until phone.length)
-        if ((phone[i]!=' ') and (phone[i]!='-') and (phone[i]!='(') and (phone[i]!=')'))
-            if ((phone[i] in '0'..'9') or (phone[i]=='+'))
+        if ((phone[i]!=' ') && (phone[i]!='-') && (phone[i]!='(') && (phone[i]!=')'))
+            if ((phone[i] in '0'..'9') || (phone[i]=='+'))
     list.add(phone[i]) else return ""
     var j=0
     return if (list.size>0) {
-        if ((list[0] == '+') or (list[1] in rig)) {
+        if ((list[0] == '+') || (list[0] in rig)) {
             j = 1
-            for (i in 0 until list.size)
+            for (i in 1 until list.size)
                 if (list[i] in rig) {
                     j += 1
                 }
         }
-        if (j >= list.size) list.joinToString(separator = "") else
+        if (j == list.size) list.joinToString(separator = "") else
             ""
     } else ""
 }
@@ -153,21 +151,19 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
    try {
-       var res = ""
-       var max = 0
-       var met=0
+       val result = StringBuilder()
+       var max = -1
        for (i in 0 until jumps.length)
-           if ((jumps[i] != '%') and (jumps[i] != '-'))
-               res += jumps[i]
-       val res1 = res.split(delimiters = ' ')
+           if ((jumps[i] != '%') && (jumps[i] != '-'))
+               result.append(jumps[i])
+       val res1 = result.split(delimiters = ' ')
        for (part in res1) {
            if (part != "") {
                val numb = part.toInt()
-               met=1
                if (numb > max) max = numb
            }
        }
-       return if ((max == 0) and (met == 0))-1 else max
+       return if (max == -1) -1 else max
    }
    catch (e:NumberFormatException){
        return -1
@@ -187,23 +183,23 @@ fun bestLongJump(jumps: String): Int {
  */
 
 fun bestHighJump(jumps: String): Int {
-    var res = ""
+    val res = StringBuilder()
     var max = 0
     var met=0
     for (i in 0 until jumps.length) {
         if (jumps[i] != '%')
-            res += jumps[i]
+            res.append(jumps[i])
     }
     val res1 = res.split(' ')
     for (i in 0 until res1.size - 1) {
-        if ((res[i].toInt()>=0) and (res[i+1]=='%')) met=1
-        if ((res1[i] != "") and (res1[i + 1] == "+")) {
+        if ((res[i].toInt()>=0) && (res[i+1]=='%')) met=1
+        if ((res1[i] != "") && (res1[i + 1] == "+")) {
             met=1
             val numb = res1[i].toInt()
             if (numb > max) max = numb
         }
     }
-    return if ((max == 0) and (met == 0)) -1 else max
+    return if ((max == 0) && (met == 0)) -1 else max
 }
 
 
@@ -242,15 +238,14 @@ fun firstDuplicateIndex(str: String): Int {
     val str1 = str.toLowerCase().split(' ')
     var ri = -1
     var place = 0
-    for (i in 0 until str1.size - 1)
-        if ((ri == -1) and (str1[i] == str1[i + 1])) {
+    for (i in 0 until str1.size - 1) {
+        if ((ri == -1) && (str1[i] == str1[i + 1])) {
             ri = i
         }
-    return if (ri == -1) -1 else {
-        for (i in 0 until ri)
-            place += str1[i].length
-        place + ri
+        if (ri == -1)  place += str1[i].length
     }
+    return if (ri == -1) -1 else place + ri
+
 }
 
 /**
@@ -272,13 +267,13 @@ fun mostExpensive(description: String): String {
         var str = description.split(';')
         val r = str.joinToString(separator = " ")
         str = r.split(' ')
-        if ((str.size == 1) and (str[0] == "")) return "" else
+        if ((str.size == 1) && (str[0] == "")) return "" else
             for (i in 0 until str.size step 3)
                 if (max < str[i + 1].toDouble()) {
                     max = str[i + 1].toDouble()
                     prod = str[i]
                 }
-        if (max==0.0) prod="Any good with price 0.0"
+        if (max == 0.0) prod="Any good with price 0.0"
         return prod
     } catch (e:Exception) {
         return ""
@@ -297,25 +292,25 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    val rim = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val rim1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val intager = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val roman1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     var k = 0
     var sum = 0
     var i = 1000
     var per: Int
     var per1: Int
     while (k < roman.length) {
-        per = rim1.indexOf(roman[k].toString())
-        if (per != -1) per = rim[per] else return -1
+        per = roman1.indexOf(roman[k].toString())
+        if (per != -1) per = intager[per] else return -1
         if (roman.length - k == 1) {
             sum += per
             i = per
             k += 1
         }
         if (roman.length - k >= 2) {
-            per1 = rim1.indexOf(roman[k].toString() + roman[k + 1].toString())
-            if (per1 != -1) per1 = rim[per1]
-            if ((per > per1) and (per <= i)) {
+            per1 = roman1.indexOf(roman[k].toString() + roman[k + 1].toString())
+            if (per1 != -1) per1 = intager[per1]
+            if ((per > per1) && (per <= i)) {
                 i = per
                 sum += per
                 k += 1
@@ -366,46 +361,48 @@ fun fromRoman(roman: String): Int {
  *
  */
 
-fun s1(ki1:Int,kol1:Int,commands:String):Int {
-var ki=ki1
-var kol=kol1
-while ((commands[ki] != ']') or  (kol != 0)) {
-    ki += 1
-    if (commands[ki] == '[') kol += 1
-    if (commands[ki] == ']') kol -= 1
-}
+fun s1(ki1: Int, kol1: Int, commands: String): Int {
+    var ki = ki1
+    var kol = kol1
+    while ((commands[ki] != ']') || (kol != 0)) {
+        ki += 1
+        if (commands[ki] == '[') kol += 1
+        if (commands[ki] == ']') kol -= 1
+    }
     return ki
 }
-fun s2(ki1:Int,kol1:Int,commands:String):Int {
-var ki = ki1
-var kol = kol1
-while ((commands[ki] != '[') or  (kol != 0)) {
-    ki -= 1
-    if (commands[ki] == '[') kol -= 1
-    if (commands[ki] == ']') kol += 1
-}
-    return ki
-}
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    val list= mutableListOf<Int>()
-    for (i in 0 until cells) list.add(0)
-    var ki=-1
-    var limit1=0
-    var point=Math.floor((cells/2).toDouble()).toInt()
 
-while ((ki < commands.length-1) and (limit1 < limit)){
-    ki += 1
-    limit1 +=1
-    if ((point in 0 until cells)) {
-        when {
-            commands[ki] == '+' -> list[point] += 1
-            commands[ki] == '-' -> list[point] -= 1
-            commands[ki] == '>' -> point += 1
-            commands[ki] == '<' -> point -= 1
-            (commands[ki] == '[') and (list[point] == 0) -> ki = s1(ki,1,commands)
-            (commands[ki] == ']') and (list[point] != 0) -> ki = s2(ki,1,commands)
+fun s2(ki1: Int, kol1: Int, commands: String): Int {
+    var ki = ki1
+    var kol = kol1
+    while ((commands[ki] != '[') || (kol != 0)) {
+        ki -= 1
+        if (commands[ki] == '[') kol -= 1
+        if (commands[ki] == ']') kol += 1
+    }
+    return ki
+}
+
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    for (i in 0 until cells) list.add(0)
+    var ki = -1
+    var limit1 = 0
+    var point = Math.floor((cells / 2).toDouble()).toInt()
+
+    while ((ki < commands.length - 1) && (limit1 < limit)) {
+        ki += 1
+        limit1 += 1
+        if ((point in 0 until cells)) {
+            when {
+                commands[ki] == '+' -> list[point] += 1
+                commands[ki] == '-' -> list[point] -= 1
+                commands[ki] == '>' -> point += 1
+                commands[ki] == '<' -> point -= 1
+                (commands[ki] == '[') && (list[point] == 0) -> ki = s1(ki, 1, commands)
+                (commands[ki] == ']') && (list[point] != 0) -> ki = s2(ki, 1, commands)
+            }
         }
     }
-}
-return list
+    return list
 }
