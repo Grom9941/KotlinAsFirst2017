@@ -403,8 +403,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 (commands[ki] == ']') && (list[point] != 0) -> ki = s2(ki, 1, commands)
             }
             if ((commands[ki] != '+') and (commands[ki] != '-') and (commands[ki] != '>') and (commands[ki] != '<') and
-                    (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException()
-        } else throw IllegalStateException()
+                    (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException("")
+        } else throw IllegalStateException("")
     }
     return list
 }
