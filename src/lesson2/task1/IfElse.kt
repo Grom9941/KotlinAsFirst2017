@@ -78,16 +78,16 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var number = 0
-    val danger = (kingX == rookX1)
-    val danger1 = (kingY == rookY1)
-    val danger2 = (kingX == rookX2)
-    val danger3 = (kingY == rookY2)
-    if (danger || danger1) number++
-    if (danger2 || danger3) number++
-    return if (number == 2) 3 else
-        if (number == 0) 0 else
-            if (danger || danger1) 1 else 2
+    var numb = 0
+    val risk = (kingX == rookX1)
+    val risk1 = (kingY == rookY1)
+    val risk2 = (kingX == rookX2)
+    val risk3 = (kingY == rookY2)
+    if (risk || risk1) numb++
+    if (risk2 || risk3) numb++
+    return if (numb == 2) 3 else
+        if (numb == 0) 0 else
+            if (risk || risk) 1 else 2
 }
 
 /**
@@ -120,23 +120,23 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var s = a
-    var s1 = b
-    var s2 = c
+    var a1 = a
+    var b1 = b
+    var c1 = c
     if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
         if (maxOf(a,b,c) ==b) {
-            s = b;
-            s1 = a;
-            s2 = c
+            a1 = b;
+            b1 = a;
+            c1 = c
         }
         if (maxOf(a,b,c)==c) {
-            s = c;
-            s1 = b;
-            s2 = a
+            a1 = c;
+            b1 = b;
+            c1 = a
         }
-        return if (sqr(s) == sqr(s1) + sqr(s2)) 1 else
-            if (sqr(s) < sqr(s1) + sqr(s2)) 0 else 2
+        return if (sqr(a1) == sqr(b1) + sqr(c1)) 1 else
+            if (sqr(a1) < sqr(b1) + sqr(c1)) 0 else 2
     }
 }
 
