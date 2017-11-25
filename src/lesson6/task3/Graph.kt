@@ -1,9 +1,10 @@
 package lesson6.task3
 
+import lesson6.task2.Square
 import java.util.*
 
 class Graph {
-    private data class Vertex(val name: String) {
+    data class Vertex(val name: String) {
         val neighbors = mutableSetOf<Vertex>()
     }
 
@@ -69,3 +70,4 @@ class Graph {
                 if (min == null) null else min + 1
             }
 }
+
