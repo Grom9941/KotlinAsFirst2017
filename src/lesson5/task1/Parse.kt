@@ -119,7 +119,7 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    if ((phone[0] == '+') and (phone.length == 1)) return ""
+    if (phone.length == 1) if (phone[0] == '+') return ""
     val rig="0123456789"
     val list= mutableListOf<Char>()
     for (i in 0 until phone.length)
@@ -127,7 +127,8 @@ fun flattenPhoneNumber(phone: String): String {
             if ((phone[i] in '0'..'9') || (phone[i]=='+'))
     list.add(phone[i]) else return ""
     var j=0
-    return if (list.size>0) {
+    if (list.size == 0) return ""
+    return if (list.size > 0) {
         if ((list[0] == '+') || (list[0] in rig)) {
             j = 1
             for (i in 1 until list.size)
@@ -379,7 +380,6 @@ fun s2(ki1: Int, kol1: Int, commands: String): Int {
     var kol = kol1
     while ((commands[ki] != '[') || (kol != 0)) {
         ki -= 1
-        if (ki < 0) throw IllegalArgumentException()
         if (commands[ki] == '[') kol -= 1
         if (commands[ki] == ']') kol += 1
     }
@@ -391,8 +391,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     for (i in 0 until cells) list.add(0)
     var ki = -1
     var limit1 = 0
+    var kol=0
     var point = Math.floor((cells / 2).toDouble()).toInt()
-
+    for (i in 0 until commands.length){
+        if (commands[i] == '[') kol += 1
+        if (commands[i] == ']') kol -= 1
+        if (kol < 0) throw IllegalArgumentException()
+    }
+    if (kol != 0) throw IllegalArgumentException()
     while ((ki < commands.length - 1) && (limit1 < limit)) {
         ki += 1
         limit1 += 1
