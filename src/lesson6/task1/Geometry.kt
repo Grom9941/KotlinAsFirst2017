@@ -3,7 +3,6 @@
 package lesson6.task1
 
 import lesson1.task1.sqr
-import lesson4.task1.abs
 
 /**
  * Точка на плоскости
@@ -91,7 +90,8 @@ data class Circle(val center: Point, val radius: Double) {
  * Отрезок между двумя точками
  */
 data class Segment(val begin: Point, val end: Point) {
-    override fun equals(other: Any?) = other is Segment && (begin == other.begin && end == other.end || end == other.begin && begin == other.end)
+    override fun equals(other: Any?) = other is Segment &&
+            (begin == other.begin && end == other.end || end == other.begin && begin == other.end)
 
     override fun hashCode() = begin.hashCode() + end.hashCode()
 }
@@ -187,13 +187,8 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line {
-    val dx = a.x - b.x
-    val dy = a.y - b.y
-    return if (dx == 0.0) Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2), 0.0) else
-        Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2), (Math.atan(dy / dx) + Math.PI / 2))
-}
-
+fun bisectorByPoints(a: Point, b: Point): Line = Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2),
+        (Math.atan((a.y - b.y) / (a.x - b.x)) + Math.PI / 2) % Math.PI)
 /**
  * Средняя
  *
@@ -205,7 +200,7 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     var par = Pair(circles[0], circles[1])
     var leng = Circle(circles[0].center, circles[0].radius).distance(Circle(circles[1].center, circles[1].radius))
     for (i in 0 until circles.size) for (j in i + 1 until circles.size) {
-        val dist = Circle(circles[i].center, circles[i].radius).distance(Circle(circles[j].center, circles[j].radius))
+    val dist = Circle(circles[i].center, circles[i].radius).distance(Circle(circles[j].center, circles[j].radius))
         if (leng > dist) {
             par = Pair(circles[i], circles[j])
             leng = dist
