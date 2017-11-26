@@ -1,6 +1,5 @@
 package lesson6.task3
 
-import lesson6.task2.Square
 import java.util.*
 
 class Graph {
@@ -69,5 +68,7 @@ class Graph {
                         .min()
                 if (min == null) null else min + 1
             }
+
 }
+
 
