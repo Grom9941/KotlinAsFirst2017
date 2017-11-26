@@ -413,7 +413,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             }
             if ((commands[ki] != '+') and (commands[ki] != '-') and (commands[ki] != '>') and (commands[ki] != '<') and
                     (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException()
-        } else throw IllegalStateException()
+        }
+        if (point !in 0 until cells) throw IllegalStateException()
     }
     return list
 }
