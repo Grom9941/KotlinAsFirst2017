@@ -156,11 +156,11 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             val sq:Square
             sq = when {
                 (Math.abs(start.column - x11) == Math.abs(start.row - x21)) &&
-                        (Math.abs(x11-end.column) == Math.abs(x21-end.row)) && (Square(x11,x21).inside()) -> Square(x11,x21)
+                    (Math.abs(x11-end.column) == Math.abs(x21-end.row)) && (Square(x11,x21).inside()) -> Square(x11,x21)
                 (Math.abs(start.column - x12) == Math.abs(start.row - x21)) &&
-                        (Math.abs(x12-end.column) == Math.abs(x21-end.row)) && (Square(x12,x21).inside()) -> Square(x12,x21)
+                    (Math.abs(x12-end.column) == Math.abs(x21-end.row)) && (Square(x12,x21).inside()) -> Square(x12,x21)
                 (Math.abs(start.column - x11) == Math.abs(start.row - x22)) &&
-                        (Math.abs(x11-end.column) == Math.abs(x22-end.row)) && (Square(x11,x22).inside()) -> Square(x11,x22)
+                    (Math.abs(x11-end.column) == Math.abs(x22-end.row)) && (Square(x11,x22).inside()) -> Square(x11,x22)
                 else -> Square(x12,x22)
             }
             return listOf(Square(start.column, start.row), sq, Square(end.column, end.row))
