@@ -285,4 +285,60 @@ fun knightMoveNumber(start: Square, end: Square): Int {
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun knightTrajectory(start: Square, end: Square): List<Square> = bfs1(start,end).reversed()
+
+fun bfs1(start: Square, finish: Square): List<Square> {
+    val queue = ArrayDeque<Square>()
+    val list = mutableListOf<Square>()
+    val list1 = mutableListOf<Square>()
+    var distance = 0
+    list.add(start)
+    list1.add(Square(0,0))
+    queue.add(start)
+    val visited = mutableMapOf(start to 0)
+    while (queue.isNotEmpty()) {
+        val next = queue.poll()
+        if (next != finish) {
+            val i = next.column
+            val j = next.row
+            distance += 1
+
+            if ((Square(i + 1, j - 2).inside()) && (Square(i + 1, j - 2) !in visited)) {
+                queue.add(Square(i + 1, j - 2));list.add(Square(i + 1, j - 2));list1.add(Square(i, j));visited.put(Square(i + 1, j - 2), distance)
+            }
+            if ((Square(i + 2, j - 1).inside()) && (Square(i + 2, j - 1) !in visited)) {
+                queue.add(Square(i + 2, j - 1));list.add(Square(i + 2, j - 1));list1.add(Square(i, j));visited.put(Square(i + 2, j - 1), distance)
+            }
+            if ((Square(i + 1, j + 2).inside()) && (Square(i + 1, j + 2) !in visited)) {
+                queue.add(Square(i + 1, j + 2));list.add(Square(i + 1, j + 2));list1.add(Square(i, j));visited.put(Square(i + 1, j + 2), distance)
+            }
+            if ((Square(i + 2, j + 1).inside()) && (Square(i + 2, j + 1) !in visited)) {
+                queue.add(Square(i + 2, j + 1));list.add(Square(i + 2, j + 1));list1.add(Square(i, j));visited.put(Square(i + 2, j + 1), distance)
+            }
+            if ((Square(i - 1, j - 2).inside()) && (Square(i - 1, j - 2) !in visited)) {
+                queue.add(Square(i - 1, j - 2));list.add(Square(i - 1, j - 2));list1.add(Square(i, j));visited.put(Square(i - 1, j - 2), distance)
+            }
+            if ((Square(i - 2, j - 1).inside()) && (Square(i - 2, j - 1) !in visited)) {
+                queue.add(Square(i - 2, j - 1));list.add(Square(i - 2, j - 1));list1.add(Square(i, j));visited.put(Square(i - 2, j - 1), distance)
+            }
+            if ((Square(i - 1, j + 2).inside()) && (Square(i - 1, j + 2) !in visited)) {
+                queue.add(Square(i - 1, j + 2));list.add(Square(i - 1, j + 2));list1.add(Square(i, j));visited.put(Square(i - 1, j + 2), distance)
+            }
+            if ((Square(i - 2, j + 1).inside()) && (Square(i - 2, j + 1) !in visited)) {
+                queue.add(Square(i - 2, j + 1));list.add(Square(i - 2, j + 1));list1.add(Square(i, j));visited.put(Square(i - 2, j + 1), distance)
+            }
+        } else {
+            var parents= list.indexOf(finish)
+            var ancestry= list1[parents]
+            val list3 = mutableListOf<Square>(finish)
+                while (ancestry != Square(0,0)) {
+                list3.add(ancestry)
+                parents = list.indexOf(ancestry)
+                ancestry = list1[parents]
+
+            }
+            return list3
+        }
+    }
+    return mutableListOf<Square>()
+}
