@@ -38,7 +38,7 @@ fun square(notation: String): Square {
     if (notation.length != 2) throw IllegalArgumentException() else {
         val column = notation[0]
         val row = notation[1]
-        if ((column !in 'a' until 'h') or (row !in '1' until '8')) throw IllegalArgumentException() else
+        if ((column !in 'a' .. 'h') || (row !in '1' .. '8')) throw IllegalArgumentException()
         return Square(column.toInt() - 96, row.toInt() - 48)
     }
 }
@@ -67,8 +67,8 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
-    return if ((start.column==end.column) and (start.row==end.row)) 0 else if ((start.column==end.column) or (start.row==end.row)) 1 else 2
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
+    return if ((start.column==end.column) && (start.row==end.row)) 0 else if ((start.column==end.column) || (start.row==end.row)) 1 else 2
 }
 
 /**
@@ -86,8 +86,8 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun rookTrajectory(start: Square, end: Square): List<Square> = when {
-    (start.column==end.column) and (start.row==end.row) -> listOf(Square(start.column,start.row))
-    (start.column==end.column) or (start.row==end.row) -> listOf(Square(start.column,start.row), Square(end.column,end.row))
+    (start.column==end.column) && (start.row==end.row) -> listOf(Square(start.column,start.row))
+    (start.column==end.column) || (start.row==end.row) -> listOf(Square(start.column,start.row), Square(end.column,end.row))
     else -> listOf(Square(start.column,start.row), Square(start.column,end.row), Square(end.column,end.row))
 }
 /**
@@ -114,10 +114,10 @@ fun rookTrajectory(start: Square, end: Square): List<Square> = when {
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
 fun bishopMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
     return when {
         ((start.column + end.column + start.row + end.row) % 2 == 1) -> -1
-        (start.column == end.column) and (start.row == end.row) -> 0
+        (start.column == end.column) && (start.row == end.row) -> 0
         (Math.abs(start.column - end.column) == Math.abs(start.row - end.row)) -> 1
         else -> 2
     }
@@ -143,7 +143,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
 fun bishopTrajectory(start: Square, end: Square): List<Square> {
     when {
         ((start.column + end.column + start.row + end.row) % 2 == 1) -> return listOf()
-        (start.column == end.column) and (start.row == end.row) -> return listOf(Square(start.column, start.row))
+        (start.column == end.column) && (start.row == end.row) -> return listOf(Square(start.column, start.row))
         Math.abs(start.column - end.column) == Math.abs(start.row - end.row) -> return listOf(Square(start.column, start.row), Square(end.column, end.row))
         else -> {
             val x11 = (end.row + start.column + end.column - start.row) / 2
@@ -152,9 +152,9 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             val x22 = (start.row + end.column + end.row - start.column) / 2
             val sq:Square
             sq = when {
-                (Math.abs(start.column - x11) == Math.abs(start.row - x21)) and (Math.abs(x11-end.column) == Math.abs(x21-end.row)) and (Square(x11,x21).inside()) -> Square(x11,x21)
-                (Math.abs(start.column - x12) == Math.abs(start.row - x21)) and (Math.abs(x12-end.column) == Math.abs(x21-end.row)) and (Square(x12,x21).inside()) -> Square(x12,x21)
-                (Math.abs(start.column - x11) == Math.abs(start.row - x22)) and (Math.abs(x11-end.column) == Math.abs(x22-end.row)) and (Square(x11,x22).inside()) -> Square(x11,x22)
+                (Math.abs(start.column - x11) == Math.abs(start.row - x21)) && (Math.abs(x11-end.column) == Math.abs(x21-end.row)) && (Square(x11,x21).inside()) -> Square(x11,x21)
+                (Math.abs(start.column - x12) == Math.abs(start.row - x21)) && (Math.abs(x12-end.column) == Math.abs(x21-end.row)) && (Square(x12,x21).inside()) -> Square(x12,x21)
+                (Math.abs(start.column - x11) == Math.abs(start.row - x22)) && (Math.abs(x11-end.column) == Math.abs(x22-end.row)) && (Square(x11,x22).inside()) -> Square(x11,x22)
                 else -> Square(x12,x22)
             }
             return listOf(Square(start.column, start.row), sq, Square(end.column, end.row))
@@ -183,7 +183,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
     return if (Math.abs(start.column-end.column)>Math.abs(start.row-end.row)) Math.abs(start.column-end.column) else Math.abs(start.row-end.row)
 }
 
@@ -251,7 +251,7 @@ fun graphh():Graph{
 
 fun knightMoveNumber(start: Square, end: Square): Int {
     val graph= graphh()
-    if ((!start.inside()) or (!end.inside())) throw IllegalArgumentException() else
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
     return graph.bfs("${start.column}${start.row}", "${end.column}${end.row}")
 }
 /**
