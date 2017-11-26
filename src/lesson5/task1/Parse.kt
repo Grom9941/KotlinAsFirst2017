@@ -273,7 +273,6 @@ fun mostExpensive(description: String): String {
                     max = str[i + 1].toDouble()
                     prod = str[i]
                 }
-        if (max == 0.0) prod="Any good with price 0.0"
         return prod
     } catch (e:Exception) {
         return ""
@@ -403,8 +402,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 (commands[ki] == ']') && (list[point] != 0) -> ki = s2(ki, 1, commands)
             }
             if ((commands[ki] != '+') and (commands[ki] != '-') and (commands[ki] != '>') and (commands[ki] != '<') and
-                    (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException("")
-        } else throw IllegalStateException("")
+                    (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException()
+        } else throw IllegalStateException()
     }
     return list
 }
