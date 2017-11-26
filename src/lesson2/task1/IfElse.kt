@@ -87,7 +87,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
     if (risk2 || risk3) numb++
     return if (numb == 2) 3 else
         if (numb == 0) 0 else
-            if (risk || risk) 1 else 2
+            if (risk || risk1) 1 else 2
 }
 
 /**
@@ -126,13 +126,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     if ((a > b + c) || (b > a + c) || (c > b + a)) return -1 else {
 
         if (maxOf(a,b,c) ==b) {
-            a1 = b;
-            b1 = a;
+            a1 = b
+            b1 = a
             c1 = c
         }
         if (maxOf(a,b,c)==c) {
-            a1 = c;
-            b1 = b;
+            a1 = c
+            b1 = b
             c1 = a
         }
         return if (sqr(a1) == sqr(b1) + sqr(c1)) 1 else
