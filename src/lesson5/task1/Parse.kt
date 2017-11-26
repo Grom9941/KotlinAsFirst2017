@@ -119,6 +119,7 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
+    if ((phone[0] == '+') and (phone.length == 1)) return ""
     val rig="0123456789"
     val list= mutableListOf<Char>()
     for (i in 0 until phone.length)
@@ -215,6 +216,8 @@ fun bestHighJump(jumps: String): Int {
 fun plusMinus(expression: String): Int {
    try {
        var sum = 0
+       for (i in 0 until expression.length-1)
+           if ((expression[i] !in '0' .. '9') and (expression[i] != '+') and (expression[i] != '-') and (expression[i] != ' ')) throw IllegalArgumentException()
        val res1 = expression.split(' ')
        sum += res1[0].toInt()
        for (i in 1 until res1.size - 1 step 2)
@@ -222,7 +225,7 @@ fun plusMinus(expression: String): Int {
                sum -= res1[i + 1].toInt()
        return sum
    } catch (e:NumberFormatException) {
-       throw IllegalArgumentException("For input string: $expression")
+       throw IllegalArgumentException()
    }
 }
 /**
@@ -367,7 +370,7 @@ fun s1(ki1: Int, kol1: Int, commands: String): Int {
         ki += 1
         if (commands[ki] == '[') kol += 1
         if (commands[ki] == ']') kol -= 1
-    }
+      }
     return ki
 }
 
@@ -376,6 +379,7 @@ fun s2(ki1: Int, kol1: Int, commands: String): Int {
     var kol = kol1
     while ((commands[ki] != '[') || (kol != 0)) {
         ki -= 1
+        if (ki < 0) throw IllegalArgumentException()
         if (commands[ki] == '[') kol -= 1
         if (commands[ki] == ']') kol += 1
     }
