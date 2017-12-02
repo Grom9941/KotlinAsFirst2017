@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
 
 /**
@@ -48,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -67,18 +66,16 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val mounth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
-            "октября", "ноября", "декабря")
+    val mounth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     return try {
         val s = str.split(" ")
         if (s.size > 2) {
             val day = s[0].toInt()
             val mounth1 = mounth.indexOf(s[1]) + 1
             val year = s[2].toInt()
-            if (mounth1 == 0) "" else
-                String.format("%02d.%02d.%d", day, mounth1, year)
+            if (mounth1 == 0) "" else String.format("%02d.%02d.%d", day, mounth1, year)
         } else ""
-    } catch (e:NumberFormatException) {
+    } catch (e: NumberFormatException) {
         ""
     }
 }
@@ -91,16 +88,15 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val mou = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
-            "октября", "ноября", "декабря")
+    val mou = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     return try {
         val s = digital.split(".")
-            if ((s.size>2) && (s.size == 3) && (s[1].toInt() != 0)) {
-                val day = s[0].toInt()
-                val mo = mou[s[1].toInt() - 1]
-                val year = s[2].toInt()
-                String.format("%d %s %d", day, mo, year)
-            } else ""
+        if ((s.size > 2) && (s.size == 3) && (s[1].toInt() != 0)) {
+            val day = s[0].toInt()
+            val mo = mou[s[1].toInt() - 1]
+            val year = s[2].toInt()
+            String.format("%d %s %d", day, mo, year)
+        } else ""
     } catch (e: NumberFormatException) {
         ""
     }
@@ -120,24 +116,19 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     if (phone.length == 1) if (phone[0] == '+') return ""
-    val rig="0123456789"
-    val list= mutableListOf<Char>()
-    for (i in 0 until phone.length)
-        if ((phone[i]!=' ') && (phone[i]!='-') && (phone[i]!='(') && (phone[i]!=')'))
-            if ((phone[i] in '0'..'9') || (phone[i]=='+'))
-    list.add(phone[i]) else return ""
-    var j=0
+    val rig = "0123456789"
+    val list = mutableListOf<Char>()
+    for (i in 0 until phone.length) if ((phone[i] != ' ') && (phone[i] != '-') && (phone[i] != '(') && (phone[i] != ')')) if ((phone[i] in '0'..'9') || (phone[i] == '+')) list.add(phone[i]) else return ""
+    var j = 0
     if (list.size == 0) return ""
     return if (list.size > 0) {
         if ((list[0] == '+') || (list[0] in rig)) {
             j = 1
-            for (i in 1 until list.size)
-                if (list[i] in rig) {
-                    j += 1
-                }
+            for (i in 1 until list.size) if (list[i] in rig) {
+                j += 1
+            }
         }
-        if (j == list.size) list.joinToString(separator = "") else
-            ""
+        if (j == list.size) list.joinToString(separator = "") else ""
     } else ""
 }
 
@@ -152,24 +143,21 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-   try {
-       val result = StringBuilder()
-       var max = -1
-       for (i in 0 until jumps.length)
-           if ((jumps[i] != '%') && (jumps[i] != '-'))
-               result.append(jumps[i])
-       val res1 = result.split(delimiters = ' ')
-       for (part in res1) {
-           if (part != "") {
-               val numb = part.toInt()
-               if (numb > max) max = numb
-           }
-       }
-       return if (max == -1) -1 else max
-   }
-   catch (e:NumberFormatException){
-       return -1
-   }
+    return try {
+        val result = StringBuilder()
+        var max = -1
+        for (i in 0 until jumps.length) if ((jumps[i] != '%') && (jumps[i] != '-')) result.append(jumps[i])
+        val res1 = result.split(delimiters = ' ')
+        for (part in res1) {
+            if (part != "") {
+                val numb = part.toInt()
+                if (numb > max) max = numb
+            }
+        }
+        if (max == -1) -1 else max
+    } catch (e: NumberFormatException) {
+        -1
+    }
 }
 
 
@@ -187,16 +175,15 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val res = StringBuilder()
     var max = 0
-    var met=0
+    var met = 0
     for (i in 0 until jumps.length) {
-        if (jumps[i] != '%')
-            res.append(jumps[i])
+        if (jumps[i] != '%') res.append(jumps[i])
     }
     val res1 = res.split(' ')
     for (i in 0 until res1.size - 1) {
-        if ((res[i].toInt()>=0) && (res[i+1]=='%')) met=1
+        if ((res[i].toInt() >= 0) && (res[i + 1] == '%')) met = 1
         if ((res1[i] != "") && (res1[i + 1] == "+")) {
-            met=1
+            met = 1
             val numb = res1[i].toInt()
             if (numb > max) max = numb
         }
@@ -215,20 +202,18 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-   try {
-       var sum = 0
-       for (i in 0 until expression.length-1)
-           if ((expression[i] !in '0' .. '9') and (expression[i] != '+') and (expression[i] != '-') and (expression[i] != ' ')) throw IllegalArgumentException()
-       val res1 = expression.split(' ')
-       sum += res1[0].toInt()
-       for (i in 1 until res1.size - 1 step 2)
-           if (res1[i] == "+") sum += res1[i + 1].toInt() else
-               sum -= res1[i + 1].toInt()
-       return sum
-   } catch (e:NumberFormatException) {
-       throw IllegalArgumentException()
-   }
+    try {
+        var sum = 0
+        for (i in 0 until expression.length - 1) if ((expression[i] !in '0'..'9') and (expression[i] != '+') and (expression[i] != '-') and (expression[i] != ' ')) throw IllegalArgumentException()
+        val res1 = expression.split(' ')
+        sum += res1[0].toInt()
+        for (i in 1 until res1.size - 1 step 2) if (res1[i] == "+") sum += res1[i + 1].toInt() else sum -= res1[i + 1].toInt()
+        return sum
+    } catch (e: NumberFormatException) {
+        throw IllegalArgumentException()
+    }
 }
+
 /**
  * Сложная
  *
@@ -240,16 +225,14 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     val str1 = str.toLowerCase().split(' ')
-    var ri = -1
     var place = 0
     for (i in 0 until str1.size - 1) {
-        if ((ri == -1) && (str1[i] == str1[i + 1])) {
-            ri = i
+        if ((str1[i] == str1[i + 1])) {
+            return place + i
         }
-        if (ri == -1)  place += str1[i].length
+        place += str1[i].length
     }
-    return if (ri == -1) -1 else place + ri
-
+    return -1
 }
 
 /**
@@ -271,14 +254,12 @@ fun mostExpensive(description: String): String {
         var str = description.split(';')
         val r = str.joinToString(separator = " ")
         str = r.split(' ')
-        if ((str.size == 1) && (str[0] == "")) return "" else
-            for (i in 0 until str.size step 3)
-                if (max < str[i + 1].toDouble()) {
-                    max = str[i + 1].toDouble()
-                    prod = str[i]
-                }
+        if ((str.size == 1) && (str[0] == "")) return "" else for (i in 0 until str.size step 3) if (max < str[i + 1].toDouble()) {
+            max = str[i + 1].toDouble()
+            prod = str[i]
+        }
         return prod
-    } catch (e:Exception) {
+    } catch (e: Exception) {
         return ""
     }
 }
@@ -324,7 +305,7 @@ fun fromRoman(roman: String): Int {
             }
         }
     }
-    return if (sum==0) -1 else sum
+    return if (sum == 0) -1 else sum
 }
 
 /**
@@ -371,7 +352,7 @@ fun s1(ki1: Int, kol1: Int, commands: String): Int {
         ki += 1
         if (commands[ki] == '[') kol += 1
         if (commands[ki] == ']') kol -= 1
-      }
+    }
     return ki
 }
 
@@ -391,9 +372,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     for (i in 0 until cells) list.add(0)
     var ki = -1
     var limit1 = 0
-    var kol=0
+    var kol = 0
     var point = Math.floor((cells / 2).toDouble()).toInt()
-    for (i in 0 until commands.length){
+    for (i in 0 until commands.length) {
         if (commands[i] == '[') kol += 1
         if (commands[i] == ']') kol -= 1
         if (kol < 0) throw IllegalArgumentException()
@@ -411,8 +392,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 (commands[ki] == '[') && (list[point] == 0) -> ki = s1(ki, 1, commands)
                 (commands[ki] == ']') && (list[point] != 0) -> ki = s2(ki, 1, commands)
             }
-            if ((commands[ki] != '+') and (commands[ki] != '-') and (commands[ki] != '>') and (commands[ki] != '<') and
-                    (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException()
+            if ((commands[ki] != '+') and (commands[ki] != '-') and (commands[ki] != '>') and (commands[ki] != '<') and (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException()
         }
         if (point !in 0 until cells) throw IllegalStateException()
     }
