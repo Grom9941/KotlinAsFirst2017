@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
+
 package lesson7.task1
 
 import lesson7.task2.canOpenLock
@@ -23,6 +24,7 @@ interface Matrix<E> {
      * Методы могут бросить исключение, если ячейка не существует или пуста
      */
     operator fun get(row: Int, column: Int): E
+
     operator fun get(cell: Cell): E
 
     /**
@@ -30,6 +32,7 @@ interface Matrix<E> {
      * Методы могут бросить исключение, если ячейка не существует
      */
     operator fun set(row: Int, column: Int, value: E)
+
     operator fun set(cell: Cell, value: E)
 }
 
@@ -43,8 +46,7 @@ interface Matrix<E> {
 fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> {
     if ((height <= 0) || (width <= 0)) throw IllegalArgumentException()
     val result = MatrixImpl(height, width, e)
-    for (i in 0 until height)
-        for (j in 0 until width) result[i,j] = e
+    for (i in 0 until height) for (j in 0 until width) result[i, j] = e
     return result
 }
 
@@ -53,31 +55,29 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> {
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E>( override val height: Int,override val width: Int,e: E) : Matrix<E> {
+class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : Matrix<E> {
     private val list = mutableListOf<E>()
 
     init {
-        if (height*width == 1) list.add(e) else
-        for (i in 0 until height*width) {
+        if (height * width == 1) list.add(e) else for (i in 0 until height * width) {
             list.add(e)
         }
     }
 
-    override fun get(row: Int, column: Int): E  = list[row*width+column]
+    override fun get(row: Int, column: Int): E = list[row * width + column]
 
-    override fun get(cell: Cell): E  = get(cell.row, cell.column)
+    override fun get(cell: Cell): E = get(cell.row, cell.column)
 
     override fun set(row: Int, column: Int, value: E) {
-        list.add(row*width+column, value)
-        list.removeAt(row*width+column+1)
+        list.add(row * width + column, value)
+        list.removeAt(row * width + column + 1)
     }
 
     override fun set(cell: Cell, value: E) {
-        set(cell.row,cell.column, value)
+        set(cell.row, cell.column, value)
     }
 
-    override fun equals(other: Any?) = other is MatrixImpl<*> && height == other.height && width == other.width &&
-            list == other.list
+    override fun equals(other: Any?) = other is MatrixImpl<*> && height == other.height && width == other.width && list == other.list
 
     override fun hashCode(): Int {
         var result = 5
@@ -93,10 +93,10 @@ class MatrixImpl<E>( override val height: Int,override val width: Int,e: E) : Ma
             sb.append("[")
             for (column in 0 until width) {
                 sb.append(this[row, column])
-                if (column != width-1) sb.append(", ")
+                if (column != width - 1) sb.append(", ")
             }
             sb.append("]")
-            if (row != height-1) sb.append(", ")
+            if (row != height - 1) sb.append(", ")
         }
         sb.append("]")
         return "$sb" // or, sb.toString()
