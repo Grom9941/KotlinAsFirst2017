@@ -222,9 +222,11 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) return false
     if ((matrix.height == 1) && (matrix.width == 1)) return matrix[0, 0] == 1
 
-    for (h in 0 until matrix.height) for (i in 0 until matrix.height) for (j in i + 1 until matrix.height) {
-        if ((matrix[h, i] == matrix[h, j]) || (matrix[h, i] !in 1..matrix.height) || (matrix[h, j] !in 1..matrix.height)) return false
-        if ((matrix[i, h] == matrix[j, h]) || (matrix[i, h] !in 1..matrix.height) || (matrix[j, h] !in 1..matrix.height)) return false
+    for (h in 0 until matrix.height) for (i in 0 until matrix.height) for (j in i + 1 until matrix.height){
+        if ((matrix[h, i] == matrix[h, j]) || (matrix[h, i] !in 1..matrix.height) ||
+                (matrix[h, j] !in 1..matrix.height)) return false
+        if ((matrix[i, h] == matrix[j, h]) || (matrix[i, h] !in 1..matrix.height) ||
+                (matrix[j, h] !in 1..matrix.height)) return false
     }
     return true
 
@@ -352,10 +354,12 @@ fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
  * Если наложение невозможно, то первый элемент тройки "нет" и сдвиги могут быть любыми.
  */
 fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> {
-    for (i in 0 until key.height) for (j in 0 until key.width) if (key[i, j] == 1) key[i, j] = 0 else key[i, j] = 1
+    for (i in 0 until key.height) for (j in 0 until key.width) if (key[i, j] == 1) key[i, j] = 0
+    else key[i, j] = 1
     var sum = 0
     for (i in 0..lock.height - key.height) for (j in 0..lock.width - key.width) {
-        for (i1 in 0 until key.height) for (j1 in 0 until key.width) if (key[i1, j1] == lock[i + i1, j + j1]) sum += 1
+        for (i1 in 0 until key.height) for (j1 in 0 until key.width)
+            if (key[i1, j1] == lock[i + i1, j + j1]) sum += 1
         if (sum == key.width * key.height) return Triple(true, i, j) else sum = 0
     }
     return Triple(false, 0, 0)
@@ -383,7 +387,8 @@ operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
 operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
     if (this.width != other.height) throw IllegalArgumentException()
     val result = createMatrix(this.height, other.width, 0)
-    for (i in 0 until this.height) for (j in 0 until other.width) for (z in 0 until other.height) result[i, j] += this[i, z] * other[z, j]
+    for (i in 0 until this.height) for (j in 0 until other.width) for (z in 0 until other.height)
+        result[i, j] += this[i, z] * other[z, j]
     return result
 }
 
