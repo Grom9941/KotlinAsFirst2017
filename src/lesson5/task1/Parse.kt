@@ -172,10 +172,10 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     var max = 0
     val res1 = jumps.split(' ')
-    for (i in 0 until res1.size - 1 step 2) {
+    for (i in 0 until res1.size-1 step 2) {
         if (i+1>res1.size-1) break
         if (res1[i + 1].isEmpty()) return -1
-        if ((res1[i + 1][0] == '+') && (res1[i].toInt() > max)) max=res1[i].toInt()
+        if (('+' in res1[i + 1]) && (res1[i].toInt() > max)) max=res1[i].toInt()
     }
     return if (max == 0) -1 else max
 }
@@ -386,8 +386,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 (commands[place] == '[') && (list[point] == 0) -> place = point(place, 1, commands)
                 (commands[place] == ']') && (list[point] != 0) -> place = point(place, 1, commands)
             }
+            if (point !in 0 until cells) throw IllegalStateException()
             if (commands[place] !in "+-><[] ") throw  IllegalArgumentException()
-        } else throw IllegalStateException()
+        }
     }
     return list
 }
