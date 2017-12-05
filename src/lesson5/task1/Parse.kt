@@ -171,13 +171,17 @@ fun bestLongJump(jumps: String): Int {
 
 fun bestHighJump(jumps: String): Int {
     var max = 0
+    var point=0
     val res1 = jumps.split(' ')
     for (i in 0 until res1.size-1 step 2) {
         if (i+1>res1.size-1) break
         if (res1[i + 1].isEmpty()) return -1
-        if (('+' in res1[i + 1]) && (res1[i].toInt() > max)) max=res1[i].toInt()
+        if (('+' in res1[i + 1]) && (res1[i].toInt() >= max)) {
+            max=res1[i].toInt()
+            point=1
+        }
     }
-    return if (max == 0) -1 else max
+    return if ((max == 0) and (point == 0)) -1 else max
 }
 
 
