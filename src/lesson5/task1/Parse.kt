@@ -66,11 +66,13 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val mounth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val mounth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
     return try {
         val s = str.split(" ")
         if (s.size > 2) {
-            val day = s[0].toInt()
+            val day: Int
+            if (s[0].toInt() in 1..31) day = s[0].toInt() else return ""
             val mounth1 = mounth.indexOf(s[1]) + 1
             val year = s[2].toInt()
             if (mounth1 == 0) "" else String.format("%02d.%02d.%d", day, mounth1, year)
@@ -88,14 +90,17 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val mou = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val mounth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
     return try {
         val s = digital.split(".")
         if ((s.size > 2) && (s.size == 3) && (s[1].toInt() != 0)) {
-            val day = s[0].toInt()
-            val mo = mou[s[1].toInt() - 1]
+            val day : Int
+            if (s[0].toInt() in 1..31) day = s[0].toInt() else return ""
+            val mounth1 : String
+            if ((s[1].toInt() - 1) < 12) mounth1 = mounth[s[1].toInt() - 1] else return ""
             val year = s[2].toInt()
-            String.format("%d %s %d", day, mo, year)
+            String.format("%d %s %d", day, mounth1, year)
         } else ""
     } catch (e: NumberFormatException) {
         ""
@@ -116,20 +121,12 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     if (phone.length == 1) if (phone[0] == '+') return ""
-    val rig = "0123456789"
     val list = mutableListOf<Char>()
-    for (i in 0 until phone.length) if ((phone[i] != ' ') && (phone[i] != '-') && (phone[i] != '(') && (phone[i] != ')')) if ((phone[i] in '0'..'9') || (phone[i] == '+')) list.add(phone[i]) else return ""
-    var j = 0
-    if (list.size == 0) return ""
-    return if (list.size > 0) {
-        if ((list[0] == '+') || (list[0] in rig)) {
-            j = 1
-            for (i in 1 until list.size) if (list[i] in rig) {
-                j += 1
-            }
-        }
-        if (j == list.size) list.joinToString(separator = "") else ""
-    } else ""
+    for (i in 0 until phone.length)
+        if (phone[i] !in " -()")
+            if ((phone[i] in '0'..'9') || ((phone[i] == '+') && (i == 0))) list.add(phone[i]) else return ""
+
+    return list.joinToString(separator = "")
 }
 
 /**
@@ -154,7 +151,7 @@ fun bestLongJump(jumps: String): Int {
                 if (numb > max) max = numb
             }
         }
-        if (max == -1) -1 else max
+        return max
     } catch (e: NumberFormatException) {
         -1
     }
@@ -173,22 +170,14 @@ fun bestLongJump(jumps: String): Int {
  */
 
 fun bestHighJump(jumps: String): Int {
-    val res = StringBuilder()
     var max = 0
-    var met = 0
-    for (i in 0 until jumps.length) {
-        if (jumps[i] != '%') res.append(jumps[i])
+    val res1 = jumps.split(' ')
+    for (i in 0 until res1.size - 1 step 2) {
+        if (i+1>res1.size-1) break
+        if (res1[i + 1].isEmpty()) return -1
+        if ((res1[i + 1][0] == '+') && (res1[i].toInt() > max)) max=res1[i].toInt()
     }
-    val res1 = res.split(' ')
-    for (i in 0 until res1.size - 1) {
-        if ((res[i].toInt() >= 0) && (res[i + 1] == '%')) met = 1
-        if ((res1[i] != "") && (res1[i + 1] == "+")) {
-            met = 1
-            val numb = res1[i].toInt()
-            if (numb > max) max = numb
-        }
-    }
-    return if ((max == 0) && (met == 0)) -1 else max
+    return if (max == 0) -1 else max
 }
 
 
@@ -204,10 +193,14 @@ fun bestHighJump(jumps: String): Int {
 fun plusMinus(expression: String): Int {
     try {
         var sum = 0
-        for (i in 0 until expression.length - 1) if ((expression[i] !in '0'..'9') and (expression[i] != '+') and (expression[i] != '-') and (expression[i] != ' ')) throw IllegalArgumentException()
+        for (i in 0 until expression.length - 1) if (expression[i] !in "0123456789+- ") throw IllegalArgumentException()
         val res1 = expression.split(' ')
         sum += res1[0].toInt()
-        for (i in 1 until res1.size - 1 step 2) if (res1[i] == "+") sum += res1[i + 1].toInt() else sum -= res1[i + 1].toInt()
+        for (i in 1 until res1.size - 1 step 2) when {
+            res1[i] == "+" -> sum += res1[i + 1].toInt()
+            res1[i] == "-" -> sum -= res1[i + 1].toInt()
+            else -> throw IllegalArgumentException()
+        }
         return sum
     } catch (e: NumberFormatException) {
         throw IllegalArgumentException()
@@ -254,7 +247,8 @@ fun mostExpensive(description: String): String {
         var str = description.split(';')
         val r = str.joinToString(separator = " ")
         str = r.split(' ')
-        if ((str.size == 1) && (str[0] == "")) return "" else for (i in 0 until str.size step 3) if (max < str[i + 1].toDouble()) {
+        if ((str.size == 1) && (str[0] == "")) return "" else
+            for (i in 0 until str.size step 3) if (max < str[i + 1].toDouble()) {
             max = str[i + 1].toDouble()
             prod = str[i]
         }
@@ -276,33 +270,37 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    val intager = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val roman1 = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    var k = 0
+    val map= mutableMapOf("M" to 1000 ,"CM" to 900,"D" to 500,"CD" to 400,
+            "C" to 100,"XC" to 90,"L" to 50,"XL" to 40,"X" to 10,"IX" to 9,"V" to 5,"IV" to 4,"I" to 1)
+    var point = 0
     var sum = 0
-    var i = 1000
-    var per: Int
-    var per1: Int
-    while (k < roman.length) {
-        per = roman1.indexOf(roman[k].toString())
-        if (per != -1) per = intager[per] else return -1
-        if (roman.length - k == 1) {
-            sum += per
-            i = per
-            k += 1
+    var max = 1000
+    var assist: Int?
+    var assist1: Int?
+    while (point < roman.length) {
+        assist=0;assist1=0
+        val key1= roman[point]
+        if ("$key1" in map.keys)
+        assist= map["$key1"]
+
+        var key3=""
+        if (point+1 < roman.length) { val key2=roman[point+1]
+            key3="$key1$key2"}
+        if (key3 in map.keys)
+            assist1=map[key3]
+
+        if ((assist == 0) && (assist1 == 0)) return -1 else
+            if (assist1 != null)
+                if (assist != null)
+        if ((assist > assist1) && (assist <= max)) {
+            sum+=assist
+            max=assist
+            point+=1
         }
-        if (roman.length - k >= 2) {
-            per1 = roman1.indexOf(roman[k].toString() + roman[k + 1].toString())
-            if (per1 != -1) per1 = intager[per1]
-            if ((per > per1) && (per <= i)) {
-                i = per
-                sum += per
-                k += 1
-            } else {
-                i = per1
-                sum += per1
-                k += 2
-            }
+        else {
+            sum+=assist1
+            max=assist1
+            point+=2
         }
     }
     return if (sum == 0) -1 else sum
@@ -345,56 +343,51 @@ fun fromRoman(roman: String): Int {
  *
  */
 
-fun s1(ki1: Int, kol1: Int, commands: String): Int {
-    var ki = ki1
+fun point(place1: Int, kol1: Int, commands: String): Int {
+    var place = place1
     var kol = kol1
-    while ((commands[ki] != ']') || (kol != 0)) {
-        ki += 1
-        if (commands[ki] == '[') kol += 1
-        if (commands[ki] == ']') kol -= 1
+    if (commands[place1]=='[')
+    while ((commands[place] != ']') || (kol != 0)) {
+        place += 1
+        if (commands[place] == '[') kol += 1
+        if (commands[place] == ']') kol -= 1
+    } else
+    while ((commands[place] != '[') || (kol != 0)) {
+        place -= 1
+        if (commands[place] == '[') kol -= 1
+        if (commands[place] == ']') kol += 1
     }
-    return ki
-}
-
-fun s2(ki1: Int, kol1: Int, commands: String): Int {
-    var ki = ki1
-    var kol = kol1
-    while ((commands[ki] != '[') || (kol != 0)) {
-        ki -= 1
-        if (commands[ki] == '[') kol -= 1
-        if (commands[ki] == ']') kol += 1
-    }
-    return ki
+    return place
 }
 
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var limit1 = 0
     val list = mutableListOf<Int>()
     for (i in 0 until cells) list.add(0)
-    var ki = -1
-    var limit1 = 0
-    var kol = 0
-    var point = Math.floor((cells / 2).toDouble()).toInt()
+    var place = -1
+
+    var number = 0
+    var point = cells / 2
     for (i in 0 until commands.length) {
-        if (commands[i] == '[') kol += 1
-        if (commands[i] == ']') kol -= 1
-        if (kol < 0) throw IllegalArgumentException()
+        if (commands[i] == '[') number += 1
+        if (commands[i] == ']') number -= 1
+        if (number < 0) throw IllegalArgumentException()
     }
-    if (kol != 0) throw IllegalArgumentException()
-    while ((ki < commands.length - 1) && (limit1 < limit)) {
-        ki += 1
+    if (number != 0) throw IllegalArgumentException()
+    while ((place < commands.length - 1) && (limit1 < limit)) {
+        place += 1
         limit1 += 1
-        if ((point in 0 until cells)) {
+        if (point in 0 until cells) {
             when {
-                commands[ki] == '+' -> list[point] += 1
-                commands[ki] == '-' -> list[point] -= 1
-                commands[ki] == '>' -> point += 1
-                commands[ki] == '<' -> point -= 1
-                (commands[ki] == '[') && (list[point] == 0) -> ki = s1(ki, 1, commands)
-                (commands[ki] == ']') && (list[point] != 0) -> ki = s2(ki, 1, commands)
+                commands[place] == '+' -> list[point] += 1
+                commands[place] == '-' -> list[point] -= 1
+                commands[place] == '>' -> point += 1
+                commands[place] == '<' -> point -= 1
+                (commands[place] == '[') && (list[point] == 0) -> place = point(place, 1, commands)
+                (commands[place] == ']') && (list[point] != 0) -> place = point(place, 1, commands)
             }
-            if ((commands[ki] != '+') and (commands[ki] != '-') and (commands[ki] != '>') and (commands[ki] != '<') and (commands[ki] != '[') and (commands[ki] != ']') and (commands[ki] != ' ')) throw IllegalArgumentException()
-        }
-        if (point !in 0 until cells) throw IllegalStateException()
+            if (commands[place] !in "+-><[] ") throw  IllegalArgumentException()
+        } else throw IllegalStateException()
     }
     return list
 }
