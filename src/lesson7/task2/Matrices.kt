@@ -225,6 +225,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     for (h in 0 until matrix.height) for (i in 0 until matrix.height) for (j in i + 1 until matrix.height){
         if ((matrix[h, i] == matrix[h, j]) || (matrix[h, i] !in 1..matrix.height) ||
                 (matrix[h, j] !in 1..matrix.height)) return false
+
         if ((matrix[i, h] == matrix[j, h]) || (matrix[i, h] !in 1..matrix.height) ||
                 (matrix[j, h] !in 1..matrix.height)) return false
     }
@@ -419,8 +420,28 @@ operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
  * 0  4 13  6
  * 3 10 11  8
  */
-fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> = TODO()
-
+fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
+    var i1=-1
+    var j1=-1
+    var k:Int
+  for (i in 0..3)
+      for (j in 0..3) {
+          if (matrix[i, j] !in 0..15) throw IllegalStateException()
+          if (matrix[i, j] == 0) {
+              i1 = i;j1 = j
+          }
+          if (i1!=-1) break
+      }
+    if (i1==-1) throw IllegalStateException()
+    for (i in 0 until moves.size) {
+        if (i1-1 in 0..3) if (matrix[i1-1,j1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1-1,j1];matrix[i1-1,j1]=k;i1-=1;continue}
+            if (i1+1 in 0..3) if (matrix[i1+1,j1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1+1,j1];matrix[i1+1,j1]=k;i1+=1;continue}
+                if (j1-1 in 0..3) if (matrix[i1,j1-1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1,j1-1];matrix[i1,j1-1]=k;j1-=1;continue}
+                    if (j1+1 in 0..3) if (matrix[i1,j1+1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1,j1+1];matrix[i1,j1+1]=k;j1+=1;continue}
+                        throw IllegalStateException()
+    }
+return matrix
+}
 /**
  * Очень сложная
  *
