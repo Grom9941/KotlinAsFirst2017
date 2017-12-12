@@ -174,7 +174,7 @@ fun lineBySegment(s: Segment): Line {
     val dx = s.begin.x - s.end.x
     val dy = s.begin.y - s.end.y
     return if (dx == 0.0) Line(Point(s.begin.x, s.begin.y), PI / 2) else
-        Line(Point(s.begin.x, s.begin.y), (atan(dy / dx) + PI) % PI)
+        Line(s.begin, (atan(dy / dx) + PI) % PI)
 }
 
 /**
@@ -200,7 +200,7 @@ fun bisectorByPoints(a: Point, b: Point): Line = Line(Point((a.x + b.x) / 2, (a.
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     if (circles.size < 2) IllegalArgumentException("")
     var par = Pair(circles[0], circles[1])
-    var leng = Circle(circles[0].center, circles[0].radius).distance(Circle(circles[1].center, circles[1].radius))
+    var leng = circles[0].distance(circles[1])
     for (i in 0 until circles.size)
         for (j in i + 1 until circles.size) {
     val distance = Circle(circles[i].center, circles[i].radius).distance(Circle(circles[j].center, circles[j].radius))
