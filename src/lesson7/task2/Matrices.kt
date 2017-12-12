@@ -481,4 +481,31 @@ return matrix
  *
  * Перед решением этой задачи НЕОБХОДИМО решить предыдущую
  */
-fun fifteenGameSolution(matrix: Matrix<Int>): List<Int> = TODO()
+fun fifteenGameSolution(matrix: Matrix<Int>): List<Int> =TODO()
+/**{
+    //нахожу 0
+    var i1=-1
+    var j1=-1
+    for (i in 0..3)
+        for (j in 0..3) {
+            if (matrix[i, j] == 0) {i1 = i;j1 = j}
+            if (i1!=-1) break
+        }
+    //
+    for (num in 1..15) {
+        //находим место следующей ячейки
+        var pointI = -1
+        var pointJ = -1
+        for (i in 0..3) for (j in 0..3) {
+            if (matrix[i, j] == num) {
+                pointI = i;pointJ = j
+            }
+            if (pointI != -1) break
+        }
+        if
+        if (pointI== (num-1)/4) and (pointJ==(num % 4)-1)
+        //
+    }
+
+
+}*/
