@@ -94,10 +94,10 @@ fun dateDigitToStr(digital: String): String {
             "августа", "сентября", "октября", "ноября", "декабря")
     return try {
         val s = digital.split(".")
-        if ((s.size > 2) && (s.size == 3) && (s[1].toInt() != 0)) {
-            val day : Int
+        if ((s.size == 3) && (s[1].toInt() != 0)) {
+            val day: Int
             if (s[0].toInt() in 1..31) day = s[0].toInt() else return ""
-            val mounth1 : String
+            val mounth1: String
             if ((s[1].toInt() - 1) < 12) mounth1 = mounth[s[1].toInt() - 1] else return ""
             val year = s[2].toInt()
             String.format("%d %s %d", day, mounth1, year)
@@ -122,9 +122,10 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     if (phone.length == 1) if (phone[0] == '+') return ""
     val list = mutableListOf<Char>()
-    for (i in 0 until phone.length)
-        if (phone[i] !in " -()")
-            if ((phone[i] in '0'..'9') || ((phone[i] == '+') && (i == 0))) list.add(phone[i]) else return ""
+    if (phone.length > 0) if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0])
+    for (i in 1 until phone.length) if (phone[i] !in " -()") if (phone[i] in '0'..'9')
+        list.add(phone[i])
+    else return ""
 
     return list.joinToString(separator = "")
 }
@@ -143,7 +144,8 @@ fun bestLongJump(jumps: String): Int {
     return try {
         val result = StringBuilder()
         var max = -1
-        for (i in 0 until jumps.length) if ((jumps[i] != '%') && (jumps[i] != '-')) result.append(jumps[i])
+        for (i in 0 until jumps.length) if ((jumps[i] != '%') && (jumps[i] != '-'))
+            result.append(jumps[i])
         val res1 = result.split(delimiters = ' ')
         for (part in res1) {
             if (part != "") {
@@ -171,14 +173,25 @@ fun bestLongJump(jumps: String): Int {
 
 fun bestHighJump(jumps: String): Int {
     var max = 0
+    var plus = true
     var point = true
     val res1 = jumps.split(' ')
-    for (i in 0 until res1.size-1 step 2) {
-        if (i+1>res1.size-1) break
+    for (i in 0 until res1.size - 1 step 2) {
         if (res1[i + 1].isEmpty()) return -1
-        if (('+' in res1[i + 1]) && (res1[i].toInt() >= max)) {
-            max=res1[i].toInt()
-            point=false
+        plus = true
+        for (j in 0 until res1[i + 1].length) {
+            if (res1[i + 1][j] == '+') {
+                plus = true;break
+            }
+            if (res1[i + 1][j] == '%') plus = false
+            if (res1[i + 1][j] == '-') {
+                plus = false;break
+            }
+        }
+
+        if (plus && (res1[i].toInt() >= max)) {
+            max = res1[i].toInt()
+            point = false
         }
     }
     return if ((max == 0) and (point)) -1 else max
@@ -197,7 +210,8 @@ fun bestHighJump(jumps: String): Int {
 fun plusMinus(expression: String): Int {
     try {
         var sum = 0
-        for (i in 0 until expression.length - 1) if (expression[i] !in "0123456789+- ") throw IllegalArgumentException()
+        for (i in 0 until expression.length - 1) if (expression[i] !in "0123456789+- ")
+            throw IllegalArgumentException()
         val res1 = expression.split(' ')
         sum += res1[0].toInt()
         for (i in 1 until res1.size - 1 step 2) when {
@@ -251,8 +265,7 @@ fun mostExpensive(description: String): String {
         var str = description.split(';')
         val r = str.joinToString(separator = " ")
         str = r.split(' ')
-        if ((str.size == 1) && (str[0] == "")) return "" else
-            for (i in 0 until str.size step 3) if (max < str[i + 1].toDouble()) {
+        if (description == "") return "" else for (i in 0 until str.size step 3) if (max < str[i + 1].toDouble()) {
             max = str[i + 1].toDouble()
             prod = str[i]
         }
@@ -274,38 +287,37 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    val map= mutableMapOf("M" to 1000 ,"CM" to 900,"D" to 500,"CD" to 400,
-            "C" to 100,"XC" to 90,"L" to 50,"XL" to 40,"X" to 10,"IX" to 9,"V" to 5,"IV" to 4,"I" to 1)
+    val map = mutableMapOf("M" to 1000, "CM" to 900, "D" to 500, "CD" to 400, "C" to 100,
+            "XC" to 90, "L" to 50, "XL" to 40, "X" to 10, "IX" to 9, "V" to 5, "IV" to 4, "I" to 1)
     var point = 0
     var sum = 0
     var max = 1000
     var assist: Int?
     var assist1: Int?
     while (point < roman.length) {
-        assist=0;assist1=0
-        val key1= roman[point]
-        if ("$key1" in map.keys)
-        assist= map["$key1"]
+        assist = 0
+        assist1 = 0
+        val key1 = roman[point]
+        if ("$key1" in map.keys) assist = map["$key1"]
 
-        var key3=""
-        if (point+1 < roman.length) { val key2=roman[point+1]
-            key3="$key1$key2"}
-        if (key3 in map.keys)
-            assist1=map[key3]
+        var key3 = ""
+        if (point + 1 < roman.length) {
+            val key2 = roman[point + 1]
+            key3 = "$key1$key2"
+        }
+        if (key3 in map.keys) assist1 = map[key3]
 
-        if ((assist == 0) && (assist1 == 0)) return -1 else
-            if (assist1 != null)
-                if (assist != null)
-        if ((assist > assist1) && (assist <= max)) {
-            sum+=assist
-            max=assist
-            point+=1
-        }
-        else {
-            sum+=assist1
-            max=assist1
-            point+=2
-        }
+        if (assist1 != null) if (assist != null)
+            if ((assist > assist1) && (assist <= max)) {
+                sum += assist
+                max = assist
+                point += 1
+            } else
+            if ((assist < assist1) && (assist1 <= max)) {
+                sum += assist1
+                max = assist1
+                point += 2
+            } else return -1
     }
     return if (sum == 0) -1 else sum
 }
@@ -350,13 +362,11 @@ fun fromRoman(roman: String): Int {
 fun point(place1: Int, kol1: Int, commands: String): Int {
     var place = place1
     var kol = kol1
-    if (commands[place1]=='[')
-    while ((commands[place] != ']') || (kol != 0)) {
+    if (commands[place1] == '[') while ((commands[place] != ']') || (kol != 0)) {
         place += 1
         if (commands[place] == '[') kol += 1
         if (commands[place] == ']') kol -= 1
-    } else
-    while ((commands[place] != '[') || (kol != 0)) {
+    } else while ((commands[place] != '[') || (kol != 0)) {
         place -= 1
         if (commands[place] == '[') kol -= 1
         if (commands[place] == ']') kol += 1
@@ -366,10 +376,8 @@ fun point(place1: Int, kol1: Int, commands: String): Int {
 
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var limit1 = 0
-    val list = mutableListOf<Int>()
-    for (i in 0 until cells) list.add(0)
+    val list = MutableList(cells){0}
     var place = -1
-
     var number = 0
     var point = cells / 2
     for (i in 0 until commands.length) {
