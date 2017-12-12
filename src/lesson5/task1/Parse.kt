@@ -173,7 +173,7 @@ fun bestLongJump(jumps: String): Int {
 
 fun bestHighJump(jumps: String): Int {
     var max = 0
-    var plus = true
+    var plus:Boolean
     var point = true
     val res1 = jumps.split(' ')
     for (i in 0 until res1.size - 1 step 2) {
@@ -312,8 +312,7 @@ fun fromRoman(roman: String): Int {
                 sum += assist
                 max = assist
                 point += 1
-            } else
-            if ((assist < assist1) && (assist1 <= max)) {
+            } else if ((assist < assist1) && (assist1 <= max)) {
                 sum += assist1
                 max = assist1
                 point += 2
