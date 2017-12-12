@@ -59,7 +59,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
     private val list = mutableListOf<E>()
 
     init {
-        if (height * width == 1) list.add(e) else for (i in 0 until height * width) {
+        for (i in 0 until height * width) {
             list.add(e)
         }
     }
