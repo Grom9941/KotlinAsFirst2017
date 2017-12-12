@@ -148,6 +148,7 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point {
+        if (other.angle == angle) throw IllegalArgumentException()
         val x0 = (b * cos(other.angle) - other.b * cos(angle)) / sin(other.angle - angle)
         val y0 = (x0 * sin(other.angle) + other.b) / cos(other.angle)
         return Point(x0, y0)
@@ -202,10 +203,10 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     var leng = Circle(circles[0].center, circles[0].radius).distance(Circle(circles[1].center, circles[1].radius))
     for (i in 0 until circles.size)
         for (j in i + 1 until circles.size) {
-    val dist = Circle(circles[i].center, circles[i].radius).distance(Circle(circles[j].center, circles[j].radius))
-        if (leng > dist) {
+    val distance = Circle(circles[i].center, circles[i].radius).distance(Circle(circles[j].center, circles[j].radius))
+        if (leng > distance) {
             par = Pair(circles[i], circles[j])
-            leng = dist
+            leng = distance
         }
     }
     return par
@@ -245,7 +246,9 @@ fun minContainingCircle(vararg points: Point): Circle {
     var cicl = circleByThreePoints(points[0], points[1], points[2])
     var radius = Double.MAX_VALUE
     var have :Boolean
-    for (i in 0 until points.size) for (j in i + 1 until points.size) for (k in j + 1 until points.size) {
+    for (i in 0 until points.size)
+        for (j in i + 1 until points.size)
+            for (k in j + 1 until points.size) {
         have = true
         val cicl2 = circleByThreePoints(points[i], points[j], points[k])
         for (i1 in i+1 until points.size)
