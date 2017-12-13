@@ -2,6 +2,7 @@
 package lesson8.task1
 
 import java.io.File
+import java.lang.Math.ceil
 
 /**
  * Пример
@@ -53,7 +54,22 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val map= mutableMapOf<String,Int>()
+    val inputName1=File(inputName).readText().toLowerCase()
+    var index:Int
+    var sum:Int
+    for (i in 0 until substrings.size) {
+        index=inputName1.indexOf(substrings[i].toLowerCase(),0)
+        sum=0
+        while (index!=-1) {
+            index=inputName1.indexOf(substrings[i].toLowerCase(),index+1)
+            sum+=1
+        }
+        map.put(substrings[i],sum)
+    }
+    return map
+}
 
 
 /**
@@ -70,7 +86,21 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val output=File(outputName).bufferedWriter()
+    val map= mutableMapOf("ы" to "и","Ы" to "И","я" to "а","Я" to "А","ю" to "у","Ю" to "У")
+    var k=0
+    val inputName1=File(inputName).readText()
+    while(k<inputName1.length-1) {
+        output.write(inputName1[k].toString())
+              if ((inputName1[k + 1] in "ыяюЫЯЮ") and (inputName1[k] in "жчшщЖЧШЩ")) {
+                  output.write(map[inputName1[k + 1].toString()])
+                  k += 1
+              }
+        k +=1
+
+    }
+    if ((inputName1[k] !in "ыяюЫЯЮ") or (inputName1[k-1] !in "жчшщЖЧШЩ")) output.write(inputName1[k].toString())
+    output.close()
 }
 
 /**
@@ -91,7 +121,20 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    var space:Int
+    val output=File(outputName).bufferedWriter()
+    var max=-1
+    for (line in File(inputName).readLines())
+        if (line.trim().length>max) max=line.trim().length
+    max/=2
+    for (line in File(inputName).readLines()) {
+            space=max-line.trim().length/2
+            if (space+line.trim().length>255) space=255-line.trim().length
+            for (i in 0 until space) output.write(" ")
+        output.write(line.trim())
+        output.newLine()
+    }
+    output.close()
 }
 
 /**
@@ -121,8 +164,33 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
-fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+fun alignFileByWidth(inputName: String, outputName: String)
+{
+    var sum:Int
+    val output=File(outputName).bufferedWriter()
+    var max=-1
+    for (line in File(inputName).readLines()) if (line.trim().length>max) max=line.trim().length
+    for (line in File(inputName).readLines())
+        if (line.trim().length==max) { output.write(line.trim());output.newLine()} else {
+            sum=0
+            val line1= line.trim().split(' ') as MutableList<String>
+            for (i in 0 until line1.size) if (line1[i]==" ") line1.removeAt(i)
+            for (i in 0 until line1.size) sum+=line1[i].length
+
+            if (line1.size==1) output.write(line1[0]) else {
+                val space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()
+                val space1 = line1.size-(space*(line1.size-1)-(max - sum))-1
+                for (i in 0 until line1.size) if (i < space1) {
+                    output.write(line1[i])
+                    if (i != line1.size - 1) for (j in 0 until space) output.write(" ")
+                } else {
+                    output.write(line1[i])
+                    if (i != line1.size - 1) for (j in 0 until space-1) output.write(" ")
+                }
+            }
+            output.newLine()
+        }
+    output.close()
 }
 
 /**
@@ -139,7 +207,26 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val map= mutableMapOf<String,Int>()
+    val inputName1=File(inputName).readText().toLowerCase()
+    var sum:Int
+
+    val string = Regex("""[а-яa-zё]+""").findAll(inputName1)
+    val word= mutableListOf<String>()
+            for (str in string) word.add(str.value)
+    for (i in 0 until word.size)
+        if (word[i] !in map) {
+            sum=0
+            for(j in 0 until word.size){
+                if (word[i]==word[j]) sum+=1
+            }
+            map.put(word[i],sum)
+        }
+    //return map.toSortedMap(Comparator<Value>() )
+    val list = map.toList().sortedByDescending { it.second }
+    return if (list.size<=20) list.toMap() else list.take(20).toMap()
+}
 
 /**
  * Средняя
@@ -168,7 +255,24 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    val output=File(outputName).bufferedWriter()
+    val inputName1 =File(inputName).readText()
+    val dictionary1 = mutableMapOf<Char,String>()
+    val key=dictionary.keys.toList()
+    val value =dictionary.values.toList()
+    for (i in 0 until dictionary.size)
+    dictionary1.put(key[i].toLowerCase(),value[i].toLowerCase())
+    val input=File(inputName).readText().toLowerCase()
+
+    for (i in 0 until input.length)
+        if (input[i] in dictionary1)  {
+            if (input[i]==inputName1[i])
+                output.write(dictionary1[input[i]])
+            else {
+                output.write(dictionary1[input[i]].toString().toUpperCase()[0].toString())
+                for (j in 1 until dictionary1[input[i]].toString().length) output.write(dictionary1[input[i]].toString()[j].toString())
+    } } else output.write(input[i].toString())
+    output.close()
 }
 
 /**
