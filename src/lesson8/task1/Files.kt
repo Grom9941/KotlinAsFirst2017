@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson8.task1
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import java.io.File
 import java.lang.Math.ceil
 
@@ -258,20 +259,19 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     val output=File(outputName).bufferedWriter()
     val inputName1 =File(inputName).readText()
     val dictionary1 = mutableMapOf<Char,String>()
-    val key=dictionary.keys.toList()
-    val value =dictionary.values.toList()
-    for (i in 0 until dictionary.size)
-    dictionary1.put(key[i].toLowerCase(),value[i].toLowerCase())
-    val input=File(inputName).readText().toLowerCase()
 
-    for (i in 0 until input.length)
-        if (input[i] in dictionary1)  {
-            if (input[i]==inputName1[i])
-                output.write(dictionary1[input[i]])
-            else {
-                output.write(dictionary1[input[i]].toString().toUpperCase()[0].toString())
-                for (j in 1 until dictionary1[input[i]].toString().length) output.write(dictionary1[input[i]].toString()[j].toString())
-    } } else output.write(input[i].toString())
+    for (i in 0 until dictionary.size) //перевожу map в нижний регистер
+    dictionary1.put(dictionary.keys.toList()[i].toLowerCase(),dictionary.values.toList()[i].toLowerCase())
+
+    for (i in 0 until inputName1.toLowerCase().length)
+        if (inputName1.toLowerCase()[i] in dictionary1) {
+            if (inputName1.toLowerCase()[i] == inputName1[i]) output.write(dictionary1[inputName1.toLowerCase()[i]])
+            else { //если буква большая
+                output.write(dictionary1[inputName1.toLowerCase()[i]].toString().toUpperCase()[0].toString())
+                for (j in 1 until dictionary1[inputName1.toLowerCase()[i]].toString().length)
+                    output.write(dictionary1[inputName1.toLowerCase()[i]].toString()[j].toString())
+            }
+        } else output.write(inputName1.toLowerCase()[i].toString())
     output.close()
 }
 
@@ -300,7 +300,34 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val output=File(outputName).bufferedWriter()
+    val raznay= mutableListOf<Boolean>()
+    var point:Boolean
+    var max=-1
+
+    for (line in File(inputName).readLines()) {
+        val line1=line.toLowerCase()
+        point=true
+        for (i in 0 until line1.length) {
+            for (j in i + 1 until line1.length) if (line1[i] == line1[j]) point = false
+            if (!point) break
+        }
+        if ((point) and (max<line1.length)) max=line1.length
+        raznay.add(point)
+    }
+    point=true
+    var j=0
+    for (line in File(inputName).readLines()) {
+        if ((max==line.length) and (raznay[j])) if (point) {
+            output.write(line)
+            point = false
+        } else {
+            output.write(", ")
+            output.write(line)
+        }
+        j+=1
+    }
+    output.close()
 }
 
 /**
