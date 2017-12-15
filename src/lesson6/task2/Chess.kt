@@ -89,7 +89,8 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  */
 fun rookTrajectory(start: Square, end: Square): List<Square> = when {
     (start.column == end.column) && (start.row == end.row) -> listOf(Square(start.column, start.row))
-    (start.column == end.column) || (start.row == end.row) -> listOf(Square(start.column, start.row), Square(end.column, end.row))
+    (start.column == end.column) || (start.row == end.row) ->
+        listOf(Square(start.column, start.row), Square(end.column, end.row))
     else -> listOf(Square(start.column, start.row), Square(start.column, end.row), Square(end.column, end.row))
 }
 
@@ -157,11 +158,14 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             val sq: Square
             sq = when {
                 (Math.abs(start.column - x11) == Math.abs(start.row - x21)) &&
-                  (Math.abs(x11 - end.column) == Math.abs(x21 - end.row)) && (Square(x11, x21).inside()) -> Square(x11, x21)
+                  (Math.abs(x11 - end.column) == Math.abs(x21 - end.row)) && (Square(x11, x21).inside()) ->
+                    Square(x11, x21)
                 (Math.abs(start.column - x12) == Math.abs(start.row - x21)) &&
-                  (Math.abs(x12 - end.column) == Math.abs(x21 - end.row)) && (Square(x12, x21).inside()) -> Square(x12, x21)
+                  (Math.abs(x12 - end.column) == Math.abs(x21 - end.row)) && (Square(x12, x21).inside()) ->
+                    Square(x12, x21)
                 (Math.abs(start.column - x11) == Math.abs(start.row - x22)) &&
-                  (Math.abs(x11 - end.column) == Math.abs(x22 - end.row)) && (Square(x11, x22).inside()) -> Square(x11, x22)
+                  (Math.abs(x11 - end.column) == Math.abs(x22 - end.row)) && (Square(x11, x22).inside()) ->
+                    Square(x11, x22)
                 else -> Square(x12, x22)
             }
             return listOf(Square(start.column, start.row), sq, Square(end.column, end.row))
@@ -191,8 +195,8 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
     if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
-        return if (Math.abs(start.column - end.column) > Math.abs(start.row - end.row)) Math.abs(start.column - end.column) else
-            Math.abs(start.row - end.row)
+        return if (Math.abs(start.column - end.column) > Math.abs(start.row - end.row))
+            Math.abs(start.column - end.column) else Math.abs(start.row - end.row)
 }
 
 /**
@@ -313,28 +317,36 @@ fun bfs1(start: Square, finish: Square): List<Square> {
             distance += 1
 
             if ((Square(i + 1, j - 2).inside()) && (Square(i + 1, j - 2) !in visited)) {
-                queue.add(Square(i + 1, j - 2));list.add(Square(i + 1, j - 2));list1.add(Square(i, j));visited.put(Square(i + 1, j - 2), distance)
+                queue.add(Square(i + 1, j - 2));list.add(Square(i + 1, j - 2))
+                list1.add(Square(i, j));visited.put(Square(i + 1, j - 2), distance)
             }
             if ((Square(i + 2, j - 1).inside()) && (Square(i + 2, j - 1) !in visited)) {
-                queue.add(Square(i + 2, j - 1));list.add(Square(i + 2, j - 1));list1.add(Square(i, j));visited.put(Square(i + 2, j - 1), distance)
+                queue.add(Square(i + 2, j - 1));list.add(Square(i + 2, j - 1))
+                list1.add(Square(i, j));visited.put(Square(i + 2, j - 1), distance)
             }
             if ((Square(i + 1, j + 2).inside()) && (Square(i + 1, j + 2) !in visited)) {
-                queue.add(Square(i + 1, j + 2));list.add(Square(i + 1, j + 2));list1.add(Square(i, j));visited.put(Square(i + 1, j + 2), distance)
+                queue.add(Square(i + 1, j + 2));list.add(Square(i + 1, j + 2))
+                list1.add(Square(i, j));visited.put(Square(i + 1, j + 2), distance)
             }
             if ((Square(i + 2, j + 1).inside()) && (Square(i + 2, j + 1) !in visited)) {
-                queue.add(Square(i + 2, j + 1));list.add(Square(i + 2, j + 1));list1.add(Square(i, j));visited.put(Square(i + 2, j + 1), distance)
+                queue.add(Square(i + 2, j + 1));list.add(Square(i + 2, j + 1))
+                list1.add(Square(i, j));visited.put(Square(i + 2, j + 1), distance)
             }
             if ((Square(i - 1, j - 2).inside()) && (Square(i - 1, j - 2) !in visited)) {
-                queue.add(Square(i - 1, j - 2));list.add(Square(i - 1, j - 2));list1.add(Square(i, j));visited.put(Square(i - 1, j - 2), distance)
+                queue.add(Square(i - 1, j - 2));list.add(Square(i - 1, j - 2))
+                list1.add(Square(i, j));visited.put(Square(i - 1, j - 2), distance)
             }
             if ((Square(i - 2, j - 1).inside()) && (Square(i - 2, j - 1) !in visited)) {
-                queue.add(Square(i - 2, j - 1));list.add(Square(i - 2, j - 1));list1.add(Square(i, j));visited.put(Square(i - 2, j - 1), distance)
+                queue.add(Square(i - 2, j - 1));list.add(Square(i - 2, j - 1))
+                list1.add(Square(i, j));visited.put(Square(i - 2, j - 1), distance)
             }
             if ((Square(i - 1, j + 2).inside()) && (Square(i - 1, j + 2) !in visited)) {
-                queue.add(Square(i - 1, j + 2));list.add(Square(i - 1, j + 2));list1.add(Square(i, j));visited.put(Square(i - 1, j + 2), distance)
+                queue.add(Square(i - 1, j + 2));list.add(Square(i - 1, j + 2))
+                list1.add(Square(i, j));visited.put(Square(i - 1, j + 2), distance)
             }
             if ((Square(i - 2, j + 1).inside()) && (Square(i - 2, j + 1) !in visited)) {
-                queue.add(Square(i - 2, j + 1));list.add(Square(i - 2, j + 1));list1.add(Square(i, j));visited.put(Square(i - 2, j + 1), distance)
+                queue.add(Square(i - 2, j + 1));list.add(Square(i - 2, j + 1))
+                list1.add(Square(i, j));visited.put(Square(i - 2, j + 1), distance)
             }
         } else {
             var parents = list.indexOf(finish)
