@@ -124,7 +124,7 @@ fun flattenPhoneNumber(phone: String): String {
         if (phone[0] == '+') return ""
     val list = mutableListOf<Char>()
     if (phone.isNotEmpty())
-        if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0]) else IllegalArgumentException()
+        if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0]) else return ""
     for (i in 1 until phone.length)
         if (phone[i] !in " -()")
             if (phone[i] in '0'..'9') list.add(phone[i])
@@ -187,13 +187,13 @@ fun bestHighJump(jumps: String): Int {
                 plus = true;break
             } else
             if (res1[i + 1][j] == '%') plus = false else
-            if (res1[i + 1][j] == '-') plus = false else IllegalArgumentException()
+            if (res1[i + 1][j] == '-') plus = false else return -1
         }
 
         if (plus && (res1[i].toInt() >= max)) {
             max = res1[i].toInt()
             point = false
-        } else IllegalArgumentException()
+        } else return -1
     }
     return if ((max == 0) and (point)) -1 else max
 }
@@ -307,7 +307,6 @@ fun fromRoman(roman: String): Int {
             key3 = "$key1$key2"
         }
         if (key3 in map.keys) assist1 = map[key3]
-
         if (assist1 != null) if (assist != null)
             if ((assist > assist1) && (assist <= max)) {
                 sum += assist
