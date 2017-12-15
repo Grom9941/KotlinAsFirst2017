@@ -351,7 +351,7 @@ fun bfs1(start: Square, finish: Square): List<Square> {
         } else {
             var parents = list.indexOf(finish)
             var ancestry = list1[parents]
-            val list3 = mutableListOf<Square>(finish)
+            val list3 = mutableListOf(finish)
             while (ancestry != Square(0, 0)) {
                 list3.add(ancestry)
                 parents = list.indexOf(ancestry)
@@ -361,5 +361,5 @@ fun bfs1(start: Square, finish: Square): List<Square> {
             return list3
         }
     }
-    return mutableListOf<Square>()
+    return mutableListOf()
 }
