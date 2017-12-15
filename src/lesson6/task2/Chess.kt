@@ -40,7 +40,7 @@ fun square(notation: String): Square {
         val column = notation[0]
         val row = notation[1]
         if ((column !in 'a'..'h') || (row !in '1'..'8')) throw IllegalArgumentException()
-        return Square(column.toInt() - 96, row.toInt() - 48)
+        return Square(column - 'a' + 1, row - '0')
     }
 }
 
@@ -68,9 +68,7 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
-        return if ((start.column == end.column) && (start.row == end.row)) 0 else
-            if ((start.column == end.column) || (start.row == end.row)) 1 else 2
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else return if ((start.column == end.column) && (start.row == end.row)) 0 else if ((start.column == end.column) || (start.row == end.row)) 1 else 2
 }
 
 /**
@@ -89,8 +87,7 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  */
 fun rookTrajectory(start: Square, end: Square): List<Square> = when {
     (start.column == end.column) && (start.row == end.row) -> listOf(Square(start.column, start.row))
-    (start.column == end.column) || (start.row == end.row) ->
-        listOf(Square(start.column, start.row), Square(end.column, end.row))
+    (start.column == end.column) || (start.row == end.row) -> listOf(Square(start.column, start.row), Square(end.column, end.row))
     else -> listOf(Square(start.column, start.row), Square(start.column, end.row), Square(end.column, end.row))
 }
 
@@ -148,8 +145,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
     when {
         ((start.column + end.column + start.row + end.row) % 2 == 1) -> return listOf()
         (start.column == end.column) && (start.row == end.row) -> return listOf(Square(start.column, start.row))
-        Math.abs(start.column - end.column) == Math.abs(start.row - end.row) ->
-            return listOf(Square(start.column, start.row), Square(end.column, end.row))
+        Math.abs(start.column - end.column) == Math.abs(start.row - end.row) -> return listOf(Square(start.column, start.row), Square(end.column, end.row))
         else -> {
             val x11 = (end.row + start.column + end.column - start.row) / 2
             val x12 = (start.row + start.column + end.column - end.row) / 2
@@ -157,15 +153,9 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             val x22 = (start.row + end.column + end.row - start.column) / 2
             val sq: Square
             sq = when {
-                (Math.abs(start.column - x11) == Math.abs(start.row - x21)) &&
-                  (Math.abs(x11 - end.column) == Math.abs(x21 - end.row)) && (Square(x11, x21).inside()) ->
-                    Square(x11, x21)
-                (Math.abs(start.column - x12) == Math.abs(start.row - x21)) &&
-                  (Math.abs(x12 - end.column) == Math.abs(x21 - end.row)) && (Square(x12, x21).inside()) ->
-                    Square(x12, x21)
-                (Math.abs(start.column - x11) == Math.abs(start.row - x22)) &&
-                  (Math.abs(x11 - end.column) == Math.abs(x22 - end.row)) && (Square(x11, x22).inside()) ->
-                    Square(x11, x22)
+                (Math.abs(start.column - x11) == Math.abs(start.row - x21)) && (Math.abs(x11 - end.column) == Math.abs(x21 - end.row)) && (Square(x11, x21).inside()) -> Square(x11, x21)
+                (Math.abs(start.column - x12) == Math.abs(start.row - x21)) && (Math.abs(x12 - end.column) == Math.abs(x21 - end.row)) && (Square(x12, x21).inside()) -> Square(x12, x21)
+                (Math.abs(start.column - x11) == Math.abs(start.row - x22)) && (Math.abs(x11 - end.column) == Math.abs(x22 - end.row)) && (Square(x11, x22).inside()) -> Square(x11, x22)
                 else -> Square(x12, x22)
             }
             return listOf(Square(start.column, start.row), sq, Square(end.column, end.row))
@@ -194,9 +184,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
-    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
-        return if (Math.abs(start.column - end.column) > Math.abs(start.row - end.row))
-            Math.abs(start.column - end.column) else Math.abs(start.row - end.row)
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else return if (Math.abs(start.column - end.column) > Math.abs(start.row - end.row)) Math.abs(start.column - end.column) else Math.abs(start.row - end.row)
 }
 
 /**
@@ -255,27 +243,30 @@ fun graph(): Graph {
         if (Square(i + 1, j - 2).inside()) {
             val i1 = i + 1
             val j1 = j - 2
-            graph.connect("$i$j", "$i1$j1"); }
+            graph.connect("$i$j", "$i1$j1")
+        }
         if (Square(i + 2, j - 1).inside()) {
             val i1 = i + 2
             val j1 = j - 1
-            graph.connect("$i$j", "$i1$j1"); }
+            graph.connect("$i$j", "$i1$j1")
+        }
         if (Square(i + 1, j + 2).inside()) {
             val i1 = i + 1
             val j1 = j + 2
-            graph.connect("$i$j", "$i1$j1"); }
+            graph.connect("$i$j", "$i1$j1")
+        }
         if (Square(i + 2, j + 1).inside()) {
             val i1 = i + 2
             val j1 = j + 1
-            graph.connect("$i$j", "$i1$j1"); }
+            graph.connect("$i$j", "$i1$j1")
+        }
     }
     return graph
 }
 
 fun knightMoveNumber(start: Square, end: Square): Int {
     val graph = graph()
-    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
-        return graph.bfs("${start.column}${start.row}", "${end.column}${end.row}")
+    if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else return graph.bfs("${start.column}${start.row}", "${end.column}${end.row}")
 }
 
 /**
@@ -317,36 +308,52 @@ fun bfs1(start: Square, finish: Square): List<Square> {
             distance += 1
 
             if ((Square(i + 1, j - 2).inside()) && (Square(i + 1, j - 2) !in visited)) {
-                queue.add(Square(i + 1, j - 2));list.add(Square(i + 1, j - 2))
-                list1.add(Square(i, j));visited.put(Square(i + 1, j - 2), distance)
+                queue.add(Square(i + 1, j - 2))
+                list.add(Square(i + 1, j - 2))
+                list1.add(Square(i, j))
+                visited.put(Square(i + 1, j - 2), distance)
             }
             if ((Square(i + 2, j - 1).inside()) && (Square(i + 2, j - 1) !in visited)) {
-                queue.add(Square(i + 2, j - 1));list.add(Square(i + 2, j - 1))
-                list1.add(Square(i, j));visited.put(Square(i + 2, j - 1), distance)
+                queue.add(Square(i + 2, j - 1))
+                list.add(Square(i + 2, j - 1))
+                list1.add(Square(i, j))
+                visited.put(Square(i + 2, j - 1), distance)
             }
             if ((Square(i + 1, j + 2).inside()) && (Square(i + 1, j + 2) !in visited)) {
-                queue.add(Square(i + 1, j + 2));list.add(Square(i + 1, j + 2))
-                list1.add(Square(i, j));visited.put(Square(i + 1, j + 2), distance)
+                queue.add(Square(i + 1, j + 2))
+                list.add(Square(i + 1, j + 2))
+                list1.add(Square(i, j))
+                visited.put(Square(i + 1, j + 2), distance)
             }
             if ((Square(i + 2, j + 1).inside()) && (Square(i + 2, j + 1) !in visited)) {
-                queue.add(Square(i + 2, j + 1));list.add(Square(i + 2, j + 1))
-                list1.add(Square(i, j));visited.put(Square(i + 2, j + 1), distance)
+                queue.add(Square(i + 2, j + 1))
+                list.add(Square(i + 2, j + 1))
+                list1.add(Square(i, j))
+                visited.put(Square(i + 2, j + 1), distance)
             }
             if ((Square(i - 1, j - 2).inside()) && (Square(i - 1, j - 2) !in visited)) {
-                queue.add(Square(i - 1, j - 2));list.add(Square(i - 1, j - 2))
-                list1.add(Square(i, j));visited.put(Square(i - 1, j - 2), distance)
+                queue.add(Square(i - 1, j - 2))
+                list.add(Square(i - 1, j - 2))
+                list1.add(Square(i, j))
+                visited.put(Square(i - 1, j - 2), distance)
             }
             if ((Square(i - 2, j - 1).inside()) && (Square(i - 2, j - 1) !in visited)) {
-                queue.add(Square(i - 2, j - 1));list.add(Square(i - 2, j - 1))
-                list1.add(Square(i, j));visited.put(Square(i - 2, j - 1), distance)
+                queue.add(Square(i - 2, j - 1))
+                list.add(Square(i - 2, j - 1))
+                list1.add(Square(i, j))
+                visited.put(Square(i - 2, j - 1), distance)
             }
             if ((Square(i - 1, j + 2).inside()) && (Square(i - 1, j + 2) !in visited)) {
-                queue.add(Square(i - 1, j + 2));list.add(Square(i - 1, j + 2))
-                list1.add(Square(i, j));visited.put(Square(i - 1, j + 2), distance)
+                queue.add(Square(i - 1, j + 2))
+                list.add(Square(i - 1, j + 2))
+                list1.add(Square(i, j))
+                visited.put(Square(i - 1, j + 2), distance)
             }
             if ((Square(i - 2, j + 1).inside()) && (Square(i - 2, j + 1) !in visited)) {
-                queue.add(Square(i - 2, j + 1));list.add(Square(i - 2, j + 1))
-                list1.add(Square(i, j));visited.put(Square(i - 2, j + 1), distance)
+                queue.add(Square(i - 2, j + 1))
+                list.add(Square(i - 2, j + 1))
+                list1.add(Square(i, j))
+                visited.put(Square(i - 2, j + 1), distance)
             }
         } else {
             var parents = list.indexOf(finish)
