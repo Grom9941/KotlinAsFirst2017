@@ -89,18 +89,21 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 fun sibilants(inputName: String, outputName: String) {
     val output=File(outputName).bufferedWriter()
     val map= mutableMapOf("ы" to "и","Ы" to "И","я" to "а","Я" to "А","ю" to "у","Ю" to "У")
-    var k=0
+    var k=-1
     val inputName1=File(inputName).readText()
-    while(k<inputName1.length-1) {
-        output.write(inputName1[k].toString())
-              if ((inputName1[k + 1] in "ыяюЫЯЮ") and (inputName1[k] in "жчшщЖЧШЩ")) {
-                  output.write(map[inputName1[k + 1].toString()])
-                  k += 1
-              }
-        k +=1
+    if (inputName1=="") output.write("") else {
+        k+=1
+        while (k < inputName1.length - 1) {
+            output.write(inputName1[k].toString())
+            if ((inputName1[k + 1] in "ыяюЫЯЮ") and (inputName1[k] in "жчшщЖЧШЩ")) {
+                output.write(map[inputName1[k + 1].toString()])
+                k += 1
+            }
+            k += 1
 
+        }
     }
-    if ((inputName1[k] !in "ыяюЫЯЮ") or (inputName1[k-1] !in "жчшщЖЧШЩ")) output.write(inputName1[k].toString())
+    if (k!=-1) if ((inputName1[k] !in "ыяюЫЯЮ") or (inputName1[k-1] !in "жчшщЖЧШЩ")) output.write(inputName1[k].toString())
     output.close()
 }
 
@@ -271,7 +274,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 for (j in 1 until dictionary1[inputName1.toLowerCase()[i]].toString().length)
                     output.write(dictionary1[inputName1.toLowerCase()[i]].toString()[j].toString())
             }
-        } else output.write(inputName1.toLowerCase()[i].toString())
+        } else output.write(inputName1[i].toString())
     output.close()
 }
 
@@ -586,11 +589,13 @@ fun markdownToHtml(inputName: String, outputName: String) {
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val output=File(outputName).bufferedWriter()
-    val space=lhv.toString().length+rhv.toString().length
+    var space=lhv.toString().length+rhv.toString().length
     val list= mutableListOf<Int>()
     var rhv1=rhv
     while (rhv1>0) {list.add(rhv1%10);rhv1/=10}
+    val max=(list[list.size-1]*lhv).toString().length
 
+    if (space<max+rhv.toString().length) space=max+rhv.toString().length
     for (i in 0 until space-lhv.toString().length) output.write(" ")
     output.write(lhv.toString())
     output.newLine()
