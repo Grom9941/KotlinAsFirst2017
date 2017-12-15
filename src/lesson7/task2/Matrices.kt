@@ -61,26 +61,24 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  *  9  8  7  6
  */
 fun generateSpiral(height: Int, width: Int): Matrix<Int> {
-    var kol = 0
+    var number = 0
     var i = 0
     var j = 0
     val result = createMatrix(height, width, 0)
-    while (height * width > kol) {
-        while ((height * width > kol) && (result[j, i] == 0)) {
-            kol += 1
-            result[j, i] = kol
+    while (height * width > number) {
+        while ((height * width > number) && (result[j, i] == 0)) {
+            number += 1
+            result[j, i] = number
             i += 1
-            if (i == width) {
-                break
-            }
+            if (i == width) break
         }
         i -= 1
         j += 1
         if (j !in 0 until height) break
 
-        while ((result[j, i] == 0) && (height * width > kol)) {
-            kol += 1
-            result[j, i] = kol
+        while ((result[j, i] == 0) && (height * width > number)) {
+            number += 1
+            result[j, i] = number
             j += 1
             if (j == height) break
         }
@@ -88,9 +86,9 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
         i -= 1
         if (i !in 0 until width) break
 
-        while (((i >= 0) && (result[j, i] == 0)) && (height * width > kol)) {
-            kol += 1
-            result[j, i] = kol
+        while (((i >= 0) && (result[j, i] == 0)) && (height * width > number)) {
+            number += 1
+            result[j, i] = number
             i -= 1
             if (i == -1) break
         }
@@ -98,16 +96,15 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
         j -= 1
         if (j !in 0 until height) break
 
-        while (((j >= 0) && (result[j, i] == 0)) && (height * width > kol)) {
-            kol += 1
-            result[j, i] = kol
+        while (((j >= 0) && (result[j, i] == 0)) && (height * width > number)) {
+            number += 1
+            result[j, i] = number
             j -= 1
             if (j == -1) break
         }
         j += 1
         i += 1
         if (i !in 0 until width) break
-
     }
     return result
 }
@@ -127,22 +124,22 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
  *  1  1  1  1  1  1
  */
 fun generateRectangles(height: Int, width: Int): Matrix<Int> {
-    var h = height - 1
-    var w = width - 1
-    var h1 = 0
-    var w1 = 0
+    var height0 = height - 1
+    var width0 = width - 1
+    var height1 = 0
+    var width1 = 0
     var kol = 1
     val result = createMatrix(height, width, 0)
-    while ((w >= w1) && (h >= h1)) {
-        for (i in w1..w) {
-            result[h1, i] = kol
-            result[h, i] = kol
+    while ((height0 >= width1) && (height0 >= height1)) {
+        for (i in width1..width0) {
+            result[height1, i] = kol
+            result[height0, i] = kol
         }
-        for (i in h1..h) {
-            result[i, w] = kol
-            result[i, w1] = kol
+        for (i in height1..height0) {
+            result[i, width0] = kol
+            result[i, width1] = kol
         }
-        h -= 1;w -= 1;h1 += 1;w1 += 1;kol += 1
+        height0 -= 1;width0 -= 1;height1 += 1;width1 += 1;kol += 1
     }
     return result
 }
@@ -162,24 +159,32 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> {
  */
 fun generateSnake(height: Int, width: Int): Matrix<Int> {
     val result = createMatrix(height, width, 0)
-    var w = 0 ;var h = 0 ;var kol = 1 ;var w1 = 0 ;var h1: Int
-    while (w <= width - 1) {
-        result[h, w] = kol
+    var width0 = 0
+    var height0 = 0
+    var kol = 1
+    var width1 = 0
+    var height1: Int
+    while (width0 <= width - 1) {
+        result[height0, width0] = kol
         kol += 1
-        h += 1
-        w -= 1
-        if ((w !in 0 until width) || (h !in 0 until height)) {
-            h = 0;w = w1 + 1;w1 += 1
+        height0 += 1
+        width0 -= 1
+        if ((width0 !in 0 until width) || (height0 !in 0 until height)) {
+            height0 = 0
+            width0 = width1 + 1
+            width1 += 1
         }
     }
-    h = 1;w = width - 1;h1 = h
-    while (h <= height - 1) {
-        result[h, w] = kol
+    height0 = 1;width0 = width - 1;height1 = height0
+    while (height0 <= height - 1) {
+        result[height0, width0] = kol
         kol += 1
-        h += 1
-        w -= 1
-        if ((w !in 0 until width) || (h !in 0 until height)) {
-            w = width - 1;h = h1 + 1;h1 += 1
+        height0 += 1
+        width0 -= 1
+        if ((width0 !in 0 until width) || (height0 !in 0 until height)) {
+            width0 = width - 1
+            height0 = height1 + 1
+            height1 += 1
         }
     }
     return result
@@ -199,9 +204,10 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
 fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
     if (matrix.height != matrix.width) throw IllegalArgumentException()
     val result = createMatrix(matrix.height, matrix.width, matrix[0, 0])
-    for (i in 0 until matrix.width) for (j in 0 until matrix.height) {
-        result[j, matrix.height - i - 1] = matrix[i, j]
-    }
+    for (i in 0 until matrix.width)
+        for (j in 0 until matrix.height) {
+            result[j, matrix.height - i - 1] = matrix[i, j]
+        }
     return result
 }
 
@@ -222,15 +228,14 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) return false
     if ((matrix.height == 1) && (matrix.width == 1)) return matrix[0, 0] == 1
 
-    for (h in 0 until matrix.height) for (i in 0 until matrix.height) for (j in i + 1 until matrix.height){
-        if ((matrix[h, i] == matrix[h, j]) || (matrix[h, i] !in 1..matrix.height) ||
-                (matrix[h, j] !in 1..matrix.height)) return false
+    for (h in 0 until matrix.height)
+        for (i in 0 until matrix.height)
+            for (j in i + 1 until matrix.height) {
+                if ((matrix[h, i] == matrix[h, j]) || (matrix[h, i] !in 1..matrix.height) || (matrix[h, j] !in 1..matrix.height)) return false
 
-        if ((matrix[i, h] == matrix[j, h]) || (matrix[i, h] !in 1..matrix.height) ||
-                (matrix[j, h] !in 1..matrix.height)) return false
-    }
+                if ((matrix[i, h] == matrix[j, h]) || (matrix[i, h] !in 1..matrix.height) || (matrix[j, h] !in 1..matrix.height)) return false
+            }
     return true
-
 }
 
 /**
@@ -285,21 +290,21 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
 fun findHoles(matrix: Matrix<Int>): Holes {
     val row = mutableListOf<Int>()
     val column = mutableListOf<Int>()
-    var w = 0
-    var h = 0
+    var width1= 0
+    var height1 = 0
     for (i in 0 until matrix.height) {
         for (j in 0 until matrix.width) {
-            if (matrix[i, j] == 0) w += 1
+            if (matrix[i, j] == 0) width1 += 1
         }
-        if (w == matrix.width) row.add(i)
-        w = 0
+        if (width1 == matrix.width) row.add(i)
+        width1 = 0
     }
     for (j in 0 until matrix.width) {
         for (i in 0 until matrix.height) {
-            if (matrix[i, j] == 0) h += 1
+            if (matrix[i, j] == 0) height1 += 1
         }
-        if (h == matrix.height) column.add(j)
-        h = 0
+        if (height1 == matrix.height) column.add(j)
+        height1 = 0
     }
     return Holes(rows = row, columns = column)
 }
@@ -326,11 +331,12 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
 fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
     val result = createMatrix(matrix.height, matrix.width, 0)
     var sum = 0
-    for (i in 0 until matrix.height) for (j in 0 until matrix.width) {
-        for (k in 0..i) for (l in 0..j) sum += matrix[k, l]
-        result[i, j] = sum
-        sum = 0
-    }
+    for (i in 0 until matrix.height)
+        for (j in 0 until matrix.width) {
+            for (k in 0..i) for (l in 0..j) sum += matrix[k, l]
+            result[i, j] = sum
+            sum = 0
+        }
     return result
 }
 
@@ -355,14 +361,17 @@ fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
  * Если наложение невозможно, то первый элемент тройки "нет" и сдвиги могут быть любыми.
  */
 fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> {
-    for (i in 0 until key.height) for (j in 0 until key.width) if (key[i, j] == 1) key[i, j] = 0
-    else key[i, j] = 1
+    for (i in 0 until key.height)
+        for (j in 0 until key.width)
+            if (key[i, j] == 1) key[i, j] = 0 else key[i, j] = 1
     var sum = 0
-    for (i in 0..lock.height - key.height) for (j in 0..lock.width - key.width) {
-        for (i1 in 0 until key.height) for (j1 in 0 until key.width)
-            if (key[i1, j1] == lock[i + i1, j + j1]) sum += 1
-        if (sum == key.width * key.height) return Triple(true, i, j) else sum = 0
-    }
+    for (i in 0..lock.height - key.height)
+        for (j in 0..lock.width - key.width) {
+            for (i1 in 0 until key.height)
+                for (j1 in 0 until key.width)
+                    if (key[i1, j1] == lock[i + i1, j + j1]) sum += 1
+            if (sum == key.width * key.height) return Triple(true, i, j) else sum = 0
+        }
     return Triple(false, 0, 0)
 }
 
@@ -373,7 +382,8 @@ fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> 
  * При инвертировании знак каждого элемента матрицы следует заменить на обратный
  */
 operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
-    for (i in 0 until this.height) for (j in 0 until this.width) this[i, j] = -this[i, j]
+    for (i in 0 until this.height)
+        for (j in 0 until this.width) this[i, j] = -this[i, j]
     return this
 }
 
@@ -388,8 +398,10 @@ operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
 operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
     if (this.width != other.height) throw IllegalArgumentException()
     val result = createMatrix(this.height, other.width, 0)
-    for (i in 0 until this.height) for (j in 0 until other.width) for (z in 0 until other.height)
-        result[i, j] += this[i, z] * other[z, j]
+    for (i in 0 until this.height)
+        for (j in 0 until other.width)
+            for (z in 0 until other.height)
+                result[i, j] += this[i, z] * other[z, j]
     return result
 }
 
@@ -423,22 +435,47 @@ operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
 fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
     var i1=-1
     var j1=-1
-    var k:Int
-  for (i in 0..3)
-      for (j in 0..3) {
-          if (matrix[i, j] !in 0..15) throw IllegalStateException()
-          if (matrix[i, j] == 0) {
-              i1 = i;j1 = j
-          }
-          if (i1!=-1) break
-      }
+    var number:Int
+    for (i in 0..3)
+        for (j in 0..3) {
+            if (matrix[i, j] !in 0..15) throw IllegalStateException()
+            if (matrix[i, j] == 0) {
+                i1 = i
+                j1 = j
+            }
+            if (i1 != -1) break
+        }
     if (i1==-1) throw IllegalStateException()
     for (i in 0 until moves.size) {
-        if (i1-1 in 0..3) if (matrix[i1-1,j1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1-1,j1];matrix[i1-1,j1]=k;i1-=1;continue}
-            if (i1+1 in 0..3) if (matrix[i1+1,j1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1+1,j1];matrix[i1+1,j1]=k;i1+=1;continue}
-                if (j1-1 in 0..3) if (matrix[i1,j1-1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1,j1-1];matrix[i1,j1-1]=k;j1-=1;continue}
-                    if (j1+1 in 0..3) if (matrix[i1,j1+1]==moves[i]) {k=matrix[i1,j1];matrix[i1,j1]=matrix[i1,j1+1];matrix[i1,j1+1]=k;j1+=1;continue}
-                        throw IllegalStateException()
+        if (i1 - 1 in 0..3) if (matrix[i1 - 1, j1] == moves[i]) {
+            number = matrix[i1, j1]
+            matrix[i1, j1] = matrix[i1 - 1, j1]
+            matrix[i1 - 1, j1] = number
+            i1 -= 1
+            continue
+        }
+        if (i1 + 1 in 0..3) if (matrix[i1 + 1, j1] == moves[i]) {
+            number = matrix[i1, j1]
+            matrix[i1, j1] = matrix[i1 + 1, j1]
+            matrix[i1 + 1, j1] = number
+            i1 += 1
+            continue
+        }
+        if (j1 - 1 in 0..3) if (matrix[i1, j1 - 1] == moves[i]) {
+            number = matrix[i1, j1]
+            matrix[i1, j1] = matrix[i1, j1 - 1]
+            matrix[i1, j1 - 1] = number
+            j1 -= 1
+            continue
+        }
+        if (j1 + 1 in 0..3) if (matrix[i1, j1 + 1] == moves[i]) {
+            number = matrix[i1, j1]
+            matrix[i1, j1] = matrix[i1, j1 + 1]
+            matrix[i1, j1 + 1] = number
+            j1 += 1
+            continue
+        }
+        throw IllegalStateException()
     }
 return matrix
 }
