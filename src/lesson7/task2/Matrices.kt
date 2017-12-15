@@ -329,16 +329,11 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
  * К примеру, центральный элемент 12 = 1 + 2 + 4 + 5, элемент в левом нижнем углу 12 = 1 + 4 + 7 и так далее.
  */
 fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
-    val result = createMatrix(matrix.height, matrix.width, 0)
-    var sum = 0
     for (i in 0 until matrix.height)
-        for (j in 0 until matrix.width) {
-            for (k in 0..i)
-                for (l in 0..j) sum += matrix[k, l]
-            result[i, j] = sum
-            sum = 0
-        }
-    return result
+        for (j in 1 until matrix.width) matrix[i, j]+=matrix[i,j-1]
+    for (i in 1 until matrix.height)
+        for (j in 0 until matrix.width) matrix[i, j]+=matrix[i-1,j]
+    return matrix
 }
 
 /**
