@@ -120,11 +120,14 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    if (phone.length == 1) if (phone[0] == '+') return ""
+    if (phone.length == 1)
+        if (phone[0] == '+') return ""
     val list = mutableListOf<Char>()
-    if (phone.isNotEmpty()) if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0])
-    for (i in 1 until phone.length) if (phone[i] !in " -()") if (phone[i] in '0'..'9')
-        list.add(phone[i])
+    if (phone.isNotEmpty())
+        if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0]) else IllegalArgumentException()
+    for (i in 1 until phone.length)
+        if (phone[i] !in " -()")
+            if (phone[i] in '0'..'9') list.add(phone[i])
     else return ""
 
     return list.joinToString(separator = "")
@@ -182,17 +185,15 @@ fun bestHighJump(jumps: String): Int {
         for (j in 0 until res1[i + 1].length) {
             if (res1[i + 1][j] == '+') {
                 plus = true;break
-            }
-            if (res1[i + 1][j] == '%') plus = false
-            if (res1[i + 1][j] == '-') {
-                plus = false;break
-            }
+            } else
+            if (res1[i + 1][j] == '%') plus = false else
+            if (res1[i + 1][j] == '-') plus = false else IllegalArgumentException()
         }
 
         if (plus && (res1[i].toInt() >= max)) {
             max = res1[i].toInt()
             point = false
-        }
+        } else IllegalArgumentException()
     }
     return if ((max == 0) and (point)) -1 else max
 }
