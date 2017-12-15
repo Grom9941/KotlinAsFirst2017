@@ -76,9 +76,18 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
         set(cell.row, cell.column, value)
     }
 
-    override fun equals(other: Any?) = other is MatrixImpl<*> && height == other.height &&
-            width == other.width && list == other.list
+    override fun equals(other: Any?):Boolean {
+        var point1=0
+        if (other !is MatrixImpl<*>) return false
+        if ((height != other.height) or (width != other.width)) return false
 
+        for (i in 0 until this.height)
+            for (j in 0 until this.width)
+                if (this[i, j] == other[i, j])
+                    point1+=1
+
+        return (point1==this.width*this.height)
+    }
 
     override fun hashCode(): Int {
         var result = 5
@@ -89,17 +98,11 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
 
     override fun toString(): String {
         val sb = StringBuilder()
-        sb.append("[")
         for (row in 0 until height) {
-            sb.append("[")
             for (column in 0 until width) {
                 sb.append(this[row, column])
-                if (column != width - 1) sb.append(", ")
             }
-            sb.append("]")
-            if (row != height - 1) sb.append(", ")
         }
-        sb.append("]")
         return "$sb" // or, sb.toString()
     }
 }
