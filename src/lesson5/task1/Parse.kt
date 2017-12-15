@@ -265,9 +265,11 @@ fun mostExpensive(description: String): String {
         var prod = ""
         val str = description.split("; ")
         if (description == "") return "" else for (part in str) {
-            if (max < part.split(' ')[1].toDouble()) {
-                max = part.split(' ')[1].toDouble()
-                prod = part.split(' ')[0]
+            val parts=part.split(' ')
+            if (parts.size!=2) return "" else
+            if (max < parts[1].toDouble()) {
+                max = parts[1].toDouble()
+                prod = parts[0]
             }
         }
         return prod
