@@ -374,7 +374,59 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    var k:Int
+    val output=File(outputName).bufferedWriter()
+    var pointi=0 ;var pointb=0 ;var points=0 ;var space=12;var str1:String;var str2:String;var str3:String
+    output.write("<html>")
+    output.newLine()
+    output.write("    ")
+    output.write("<body>")
+    output.newLine()
+    output.write("        ")
+    output.write("<p>")
+    output.newLine()
+    space+=12
+
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) {
+            output.write("        ")
+            output.write("</p>")
+            output.newLine()
+            output.write("        ")
+            output.write("<p>")
+            output.newLine()
+        } else {
+            for (i in 0 until space) output.write(" ")
+            k=0
+
+            for (i in k until line.length)
+                if ((line[i] != '*') and (line[i] != '~')) { output.write(line[i].toString());k+=1} else {
+                    str2="";str3=""
+                    if (k+2<line.length) str3=""+line[k]+line[k+1]+line[k+2]
+                    if (k+1<line.length) str2=""+line[k]+line[k+1]
+                    str1=line[k].toString()
+                    when {
+                        (str3=="***") and (pointb==0) -> { output.write("<b><i>");pointb=1;pointi=1;k+=3}
+                        (str3=="***") and (pointb==1) -> { output.write("</b></i>");pointb=0;pointi=0;k+=3}
+                        (str2=="~~") and (points==0) -> { output.write("<s>");points=1;k+=2}
+                        (str2=="~~") and (points==1) -> { output.write("</s>");points=0;k+=2}
+                        (str2=="**") and (pointb==0) -> { output.write("<b>");pointb=1;k+=2}
+                        (str2=="**") and (pointb==1) -> { output.write("</b>");pointb=0;k+=2}
+                        (str1=="*") and (pointi==0) -> { output.write("<i>");pointi=1;k+=1}
+                        (str1=="*") and (pointi==1) -> { output.write("</i>");pointi=0;k+=1}
+                    }
+                }
+            output.newLine()
+        }
+    }
+    output.write("        ")
+    output.write("</p>")
+    output.newLine()
+    output.write("    ")
+    output.write("</body>")
+    output.newLine()
+    output.write("</html>")
+    output.close()
 }
 
 /**
@@ -386,7 +438,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  * Списки бывают двух типов: нумерованные и ненумерованные.
  *
  * Каждый элемент ненумерованного списка начинается с новой строки и символа '*', каждый элемент нумерованного списка --
- * с новой строки, числа и точки. Каждый элемент вложенного списка начинается с отступа из пробелов, на 4 пробела большего,
+ * с новой ст``роки, числа и точки. Каждый элемент вложенного списка начинается с отступа из пробелов, на 4 пробела большего,
  * чем список-родитель. Максимально глубина вложенности списков может достигать 6. "Верхние" списки файла начинются
  * прямо с начала строки.
  *
@@ -473,6 +525,27 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 fun markdownToHtmlLists(inputName: String, outputName: String) {
     TODO()
 }
+  /**  var pointul=0;var pointol=0
+    val output=File(outputName).bufferedWriter()
+    output.write("<html>")
+    output.newLine()
+    output.write("    ")
+    output.write("<body>")
+    output.newLine()
+    var space=4
+
+    for (line in File(inputName).readLines()) {
+        if ((line.trim()[0]=='*') and (pointul==0)) {
+            for (i in 0 until space) output.write(" ")
+            output.write("<ul>");pointul = 1;space += 2
+        } else
+            if ((line.trim()[0]=='*') and (pointul==1)) {
+                for (i in 0 until space) output.write(" ")
+                output.write("</ul>");pointul = 0;space -= 2
+            }
+    }
+
+}*/
 
 /**
  * Очень сложная
@@ -512,7 +585,41 @@ fun markdownToHtml(inputName: String, outputName: String) {
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val output=File(outputName).bufferedWriter()
+    val space=lhv.toString().length+rhv.toString().length
+    val list= mutableListOf<Int>()
+    var rhv1=rhv
+    while (rhv1>0) {list.add(rhv1%10);rhv1/=10}
+
+    for (i in 0 until space-lhv.toString().length) output.write(" ")
+    output.write(lhv.toString())
+    output.newLine()
+    output.write("*")
+    for (i in 0 until space-rhv.toString().length-1) output.write(" ")
+    output.write(rhv.toString())
+    output.newLine()
+
+    for (i in 0 until space) output.write("-")
+    output.newLine()
+    for (j in 0 until rhv.toString().length) {
+        val number=list[j]*lhv
+        if (j==0) {
+            for (i in 0 until space-number.toString().length) output.write(" ")
+            output.write(number.toString())
+            output.newLine()
+        } else {
+            output.write("+")
+            for (i in 0 until space-number.toString().length-1-j) output.write(" ")
+            output.write(number.toString())
+            output.newLine()
+        }
+    }
+    for (i in 0 until space) output.write("-")
+    output.newLine()
+    val numb=lhv*rhv
+    for (i in 0 until space-numb.toString().length) output.write(" ")
+    output.write(numb.toString())
+    output.close()
 }
 
 
