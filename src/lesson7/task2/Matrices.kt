@@ -3,6 +3,7 @@
 package lesson7.task2
 
 import lesson7.task1.Matrix
+import lesson7.task1.MatrixImpl
 import lesson7.task1.createMatrix
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
@@ -130,7 +131,7 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> {
     var width1 = 0
     var kol = 1
     val result = createMatrix(height, width, 0)
-    while ((height0 >= width1) && (height0 >= height1)) {
+    while ((width0 >= width1) && (height0 >= height1)) {
         for (i in width1..width0) {
             result[height1, i] = kol
             result[height0, i] = kol
@@ -306,7 +307,7 @@ fun findHoles(matrix: Matrix<Int>): Holes {
         if (height1 == matrix.height) column.add(j)
         height1 = 0
     }
-    return Holes(rows = row, columns = column)
+    return Holes(row, column)
 }
 
 /**
@@ -333,7 +334,8 @@ fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
     var sum = 0
     for (i in 0 until matrix.height)
         for (j in 0 until matrix.width) {
-            for (k in 0..i) for (l in 0..j) sum += matrix[k, l]
+            for (k in 0..i)
+                for (l in 0..j) sum += matrix[k, l]
             result[i, j] = sum
             sum = 0
         }
@@ -433,46 +435,48 @@ operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
  * 3 10 11  8
  */
 fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
-    var i1=-1
-    var j1=-1
+    var NullI=-1
+    var NullJ=-1
+    val list= MutableList(16) {0}
     var number:Int
     for (i in 0..3)
         for (j in 0..3) {
             if (matrix[i, j] !in 0..15) throw IllegalStateException()
+            list[matrix[i,j]]+=1
+            if (list[matrix[i,j]]>1) throw IllegalStateException()
             if (matrix[i, j] == 0) {
-                i1 = i
-                j1 = j
+                NullI = i
+                NullJ = j
             }
-            if (i1 != -1) break
         }
-    if (i1==-1) throw IllegalStateException()
+    if (NullI==-1) throw IllegalStateException()
     for (i in 0 until moves.size) {
-        if (i1 - 1 in 0..3) if (matrix[i1 - 1, j1] == moves[i]) {
-            number = matrix[i1, j1]
-            matrix[i1, j1] = matrix[i1 - 1, j1]
-            matrix[i1 - 1, j1] = number
-            i1 -= 1
+        if (NullI - 1 in 0..3) if (matrix[NullI - 1, NullJ] == moves[i]) {
+            number = matrix[NullI, NullJ]
+            matrix[NullI, NullJ] = matrix[NullI - 1, NullJ]
+            matrix[NullI - 1, NullJ] = number
+            NullI -= 1
             continue
         }
-        if (i1 + 1 in 0..3) if (matrix[i1 + 1, j1] == moves[i]) {
-            number = matrix[i1, j1]
-            matrix[i1, j1] = matrix[i1 + 1, j1]
-            matrix[i1 + 1, j1] = number
-            i1 += 1
+        if (NullI + 1 in 0..3) if (matrix[NullI + 1, NullJ] == moves[i]) {
+            number = matrix[NullI, NullJ]
+            matrix[NullI, NullJ] = matrix[NullI + 1, NullJ]
+            matrix[NullI + 1, NullJ] = number
+            NullI += 1
             continue
         }
-        if (j1 - 1 in 0..3) if (matrix[i1, j1 - 1] == moves[i]) {
-            number = matrix[i1, j1]
-            matrix[i1, j1] = matrix[i1, j1 - 1]
-            matrix[i1, j1 - 1] = number
-            j1 -= 1
+        if (NullJ - 1 in 0..3) if (matrix[NullI, NullJ - 1] == moves[i]) {
+            number = matrix[NullI, NullJ]
+            matrix[NullI, NullJ] = matrix[NullI, NullJ - 1]
+            matrix[NullI, NullJ - 1] = number
+            NullJ -= 1
             continue
         }
-        if (j1 + 1 in 0..3) if (matrix[i1, j1 + 1] == moves[i]) {
-            number = matrix[i1, j1]
-            matrix[i1, j1] = matrix[i1, j1 + 1]
-            matrix[i1, j1 + 1] = number
-            j1 += 1
+        if (NullJ + 1 in 0..3) if (matrix[NullI, NullJ + 1] == moves[i]) {
+            number = matrix[NullI, NullJ]
+            matrix[NullI, NullJ] = matrix[NullI, NullJ + 1]
+            matrix[NullI, NullJ + 1] = number
+            NullJ += 1
             continue
         }
         throw IllegalStateException()
