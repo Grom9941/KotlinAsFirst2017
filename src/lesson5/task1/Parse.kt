@@ -122,7 +122,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     if (phone.length == 1) if (phone[0] == '+') return ""
     val list = mutableListOf<Char>()
-    if (phone.length > 0) if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0])
+    if (phone.isNotEmpty()) if ((phone[0] == '+') || (phone[0] in '0'..'9')) list.add(phone[0])
     for (i in 1 until phone.length) if (phone[i] !in " -()") if (phone[i] in '0'..'9')
         list.add(phone[i])
     else return ""
@@ -262,12 +262,12 @@ fun mostExpensive(description: String): String {
     try {
         var max = -1.0
         var prod = ""
-        var str = description.split(';')
-        val r = str.joinToString(separator = " ")
-        str = r.split(' ')
-        if (description == "") return "" else for (i in 0 until str.size step 3) if (max < str[i + 1].toDouble()) {
-            max = str[i + 1].toDouble()
-            prod = str[i]
+        val str = description.split("; ")
+        if (description == "") return "" else for (part in str) {
+            if (max < part.split(' ')[1].toDouble()) {
+                max = part.split(' ')[1].toDouble()
+                prod = part.split(' ')[0]
+            }
         }
         return prod
     } catch (e: Exception) {
