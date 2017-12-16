@@ -273,7 +273,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         if (inputName1.toLowerCase()[i] in dictionary1) {
             if (inputName1.toLowerCase()[i] == inputName1[i]) output.write(dictionary1[inputName1.toLowerCase()[i]])
             else { //если буква большая
-                if (dictionary1[inputName1.toLowerCase()[i]].toString().length>0)
+                if (dictionary1[inputName1.toLowerCase()[i]].toString().isNotEmpty())
                 output.write(dictionary1[inputName1.toLowerCase()[i]].toString().toUpperCase()[0].toString())
                 else output.write("")
                 for (j in 1 until dictionary1[inputName1.toLowerCase()[i]].toString().length)
