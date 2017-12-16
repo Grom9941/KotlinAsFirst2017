@@ -538,7 +538,7 @@ fun fifteenGameSolution(matrix: Matrix<Int>): List<Int> =TODO()
             if (pointI != -1) break
         }
         if
-        if (pointI== (num-1)/4) and (pointJ==(num % 4)-1)
+        if (pointI== (num-1)/4) && (pointJ==(num % 4)-1)
         //
     }
 
