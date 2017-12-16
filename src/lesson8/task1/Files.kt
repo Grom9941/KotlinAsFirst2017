@@ -188,18 +188,14 @@ fun alignFileByWidth(inputName: String, outputName: String)
             for (i in 0 until line1.size) sum+=line1[i].length
 
             if (line1.size==1) output.write(line1[0]) else {
-                val space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()    //количество пробелов
+                var space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()    //количество пробелов
                 val space1 = line1.size-(space*(line1.size-1)-(max - sum))-1
-                for (i in 0 until line1.size)
-                    if (i < space1) {
-                    output.write(line1[i])
-                    if (i != line1.size - 1)
-                        for (j in 0 until space) output.write(" ")
-                } else {
-                    output.write(line1[i])
-                    if (i != line1.size - 1)
-                        for (j in 0 until space-1) output.write(" ")
-                }
+                for (i in 0 until line1.size) {
+                    if (i == space1) space-=1
+                        output.write(line1[i])
+                        if (i != line1.size - 1)
+                            for (j in 0 until space) output.write(" ")
+                    }
             }
             output.newLine()
         }
@@ -235,7 +231,7 @@ fun top20Words(inputName: String): Map<String, Int> {
                 if (word[i]==word[j]) sum+=1
             map.put(word[i],sum)
         }
-    //return map.toSortedMap(Comparator<Value>() )
+    //return map.toSortedMap(Comparator<Value>()   )
     val list = map.toList().sortedByDescending { it.second }
     return if (list.size<=20) list.toMap() else list.take(20).toMap()
 }
@@ -391,83 +387,78 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var k:Int
     val output=File(outputName).bufferedWriter()
+    var pointi = true                            //true-для открытия тега(<i>); false-для закрытия(</i>)
+    var pointb = true
+    var points = true
+    output.write("""<html><body><p>""".trimMargin()) //вывод начала
 
-        var pointi = 0
-        var pointb = 0
-        var points = 0
-        var space = 12
-        var str1: String
-        var str2: String
-        var str3: String
-        output.write("""<html><body><p>""".trimMargin()) //вывод начала
-        space += 12
-
-        for (line in File(inputName).readLines()) {
-            if (line.isEmpty()) {
-                output.write("</p>")
-                output.write("<p>")
-            } else {
-                k = 0
-                for (i in k until line.length) if ((line[i] != '*') && (line[i] != '~')) {
-                    output.write(line[i].toString());k += 1
-                } else {
-                    str2 = "";str3 = ""
-                    if (k + 2 < line.length) str3 = "" + line[k] + line[k + 1] + line[k + 2]
-                    if (k + 1 < line.length) str2 = "" + line[k] + line[k + 1]
-                    str1 = line[k].toString()
-                    when {
-                        (str3 == "***") && (pointb == 0) -> {
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) {
+            output.write("</p>")
+            output.write("<p>")
+        } else {
+            k = 0
+            for (i in k until line.length) if ((line[i] != '*') && (line[i] != '~')) {
+                output.write(line[i].toString())
+                k += 1
+            } else { //проверяем все возможные варианты тегов
+                var str2 = ""
+                var str3 = ""
+                if (k + 2 < line.length) str3 = "" + line[k] + line[k + 1] + line[k + 2]
+                if (k + 1 < line.length) str2 = "" + line[k] + line[k + 1]
+                val str1 = line[k].toString()
+                when {
+                    str3 == "***" -> {
+                        if (pointb) {
                             output.write("<b><i>")
-                            pointb = 1
-                            pointi = 1
-                            k += 3
-                        }
-                        (str3 == "***") && (pointb == 1) -> {
+                            pointb = false
+                            pointi = false
+                        } else {
                             output.write("</b></i>")
-                            pointb = 0
-                            pointi = 0
-                            k += 3
-                        }
-                        (str2 == "~~") && (points == 0) -> {
-                            output.write("<s>")
-                            points = 1
-                            k += 2
-                        }
-                        (str2 == "~~") && (points == 1) -> {
-                            output.write("</s>")
-                            points = 0
-                            k += 2
-                        }
-                        (str2 == "**") && (pointb == 0) -> {
-                            output.write("<b>")
-                            pointb = 1
-                            k += 2
-                        }
-                        (str2 == "**") && (pointb == 1) -> {
-                            output.write("</b>")
-                            pointb = 0
-                            k += 2
-                        }
-                        (str1 == "*") && (pointi == 0) -> {
-                            output.write("<i>")
-                            pointi = 1
-                            k += 1
-                        }
-                        (str1 == "*") && (pointi == 1) -> {
-                            output.write("</i>")
-                            pointi = 0
-                            k += 1
-                        }
-                        (str1 == "~") -> output.write(str1)
-                    }
+                            pointb = true
+                            pointi = true
 
+                        }
+                        k += 3
+                    }
+                    str2 == "~~" -> {
+                        points = if (points) {
+                            output.write("<s>")
+                            false
+                        } else {
+                            output.write("</s>")
+                            true
+                        }
+                        k += 2
+                    }
+                    str2 == "**" -> {
+                        pointb = if (pointb) {
+                            output.write("<b>")
+                            false
+                        } else {
+                            output.write("</b>")
+                            true
+                        }
+                        k += 2
+                    }
+                    str1 == "*" -> {
+                        pointi = if (pointi) {
+                            output.write("<i>")
+                            false
+                        } else {
+                            output.write("</i>")
+                            true
+                        }
+                        k += 1
+                    }
+                    str1 == "~" -> output.write(str1)
                 }
-                output.newLine()
             }
+            output.newLine()
+        }
         }//вывод конца
         output.write("""</p></body></html>""".trimMargin())
         output.close()
- //   }
 }
 
 /**
@@ -645,17 +636,11 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     output.newLine()
             //выше был вывод до первых черточек
     for (j in 0 until rhv.toString().length) {
-        val number=list[j]*lhv
-        if (j==0) {
-            for (i in 0 until space-number.toString().length) output.write(" ")
-            output.write(number.toString())
-            output.newLine()
-        } else {
-            output.write("+")
-            for (i in 0 until space-number.toString().length-1-j) output.write(" ")
-            output.write(number.toString())
-            output.newLine()
-        }
+        val number = list[j] * lhv
+        if (j == 0) output.write("+")
+        for (i in 0 until space - number.toString().length) output.write(" ")
+        output.write(number.toString())
+        output.newLine()
     } //выше вывод до вторых черточек
     for (i in 0 until space) output.write("-")
     output.newLine()
