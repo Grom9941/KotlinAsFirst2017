@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson8.task1
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import java.io.File
 import java.lang.Math.ceil
 
@@ -130,7 +129,7 @@ fun centerFile(inputName: String, outputName: String) {
     var max=-1
     for (line in File(inputName).readLines())
         if (line.trim().length>max) max=line.trim().length
-    max/=2
+    max=(max-1)/2
     for (line in File(inputName).readLines()) {
             space=max-line.trim().length/2
             if (space+line.trim().length>255) space=255-line.trim().length
@@ -178,7 +177,10 @@ fun alignFileByWidth(inputName: String, outputName: String)
         if (line.trim().length==max) { output.write(line.trim());output.newLine()} else {
             sum=0
             val line1= line.trim().split(' ') as MutableList<String>
-            for (i in 0 until line1.size) if (line1[i]==" ") line1.removeAt(i)
+            for (i in 0 until line1.size-1)
+                if (line1[i].isEmpty()) {
+                    line1.removeAt(i)
+                }
             for (i in 0 until line1.size) sum+=line1[i].length
 
             if (line1.size==1) output.write(line1[0]) else {
@@ -189,7 +191,8 @@ fun alignFileByWidth(inputName: String, outputName: String)
                     if (i != line1.size - 1) for (j in 0 until space) output.write(" ")
                 } else {
                     output.write(line1[i])
-                    if (i != line1.size - 1) for (j in 0 until space-1) output.write(" ")
+                    if (i != line1.size - 1)
+                        for (j in 0 until space-1) output.write(" ")
                 }
             }
             output.newLine()
