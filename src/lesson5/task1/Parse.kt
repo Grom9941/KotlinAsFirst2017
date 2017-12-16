@@ -215,6 +215,7 @@ fun plusMinus(expression: String): Int {
             throw IllegalArgumentException()
         val res1 = expression.split(' ')
         sum += res1[0].toInt()
+        if (res1[res1.size-1] == "") throw IllegalArgumentException()
         for (i in 1 until res1.size - 1 step 2) when {
             res1[i] == "+" -> sum += res1[i + 1].toInt()
             res1[i] == "-" -> sum -= res1[i + 1].toInt()
