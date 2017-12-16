@@ -625,12 +625,14 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     for (i in 0 until space) output.write("-")
     output.newLine()
     //выше был вывод до первых черточек
+    var k=1      //для добавления пробела когда первое число под черточкой выводится без '+'
     for (j in 0 until rhv.toString().length) {
         val number = list[j] * lhv
-        if (j == 0) output.write("+")
-        for (i in 0 until space - number.toString().length) output.write(" ")
+        if (j != 0) output.write("+")
+        for (i in 0 until space - number.toString().length - 1 - j + k) output.write(" ")
         output.write(number.toString())
         output.newLine()
+        k = 0
     } //выше вывод до вторых черточек
     for (i in 0 until space) output.write("-")
     output.newLine()
