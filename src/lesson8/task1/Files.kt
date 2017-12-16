@@ -391,10 +391,10 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var k:Int
     val output=File(outputName).bufferedWriter()
-    if (File(inputName).readText().isEmpty()) {//это я исправлял очень странный random test
-        output.write("<html><body><p></p></body></html>")
-        output.close()
-    } else {
+    //if (File(inputName).readText().isEmpty()) {//это я исправлял очень странный random test
+    //    output.write("<html><body><p></p></body></html>")
+    //    output.close()
+   // } else {
         var pointi = 0
         var pointb = 0
         var points = 0
@@ -403,23 +403,19 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         var str2: String
         var str3: String
         //вывод начала
-        output.write("""<html>
-                <body>
-                        <p>
-
-        """.trimMargin())
+        output.write("""<html><body><p>""".trimMargin())
         space += 12
 
         for (line in File(inputName).readLines()) {
             if (line.isEmpty()) {
-                output.write("        ")
+                //output.write("        ")
                 output.write("</p>")
-                output.newLine()
-                output.write("        ")
+               // output.newLine()
+                //output.write("        ")
                 output.write("<p>")
-                output.newLine()
+                //output.newLine()
             } else {
-                for (i in 0 until space) output.write(" ")
+                //for (i in 0 until space) output.write(" ")
                 k = 0
 
                 for (i in k until line.length) if ((line[i] != '*') && (line[i] != '~')) {
@@ -477,12 +473,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 output.newLine()
             }
         }//вывод конца
-        output.write("""        </p>
-                </body>
-                </html>
-        """.trimMargin())
+        output.write("""</p></body></html>""".trimMargin())
         output.close()
-    }
+ //   }
 }
 
 /**
