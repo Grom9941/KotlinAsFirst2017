@@ -150,7 +150,8 @@ class Line private constructor(val b: Double, val angle: Double) {
     fun crossPoint(other: Line): Point {
         if (other.angle == angle) throw IllegalArgumentException()
         val x0 = (b * cos(other.angle) - other.b * cos(angle)) / sin(other.angle - angle)
-        val y0 = (x0 * sin(other.angle) + other.b) / cos(other.angle)
+        val y0:Double
+        y0 = if (cos(other.angle) == 0.0) x0 * sin(other.angle) + other.b else (x0 * sin(other.angle) + other.b) / cos(other.angle)
         return Point(x0, y0)
     }
 
