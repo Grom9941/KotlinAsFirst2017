@@ -88,21 +88,21 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 fun sibilants(inputName: String, outputName: String) {
     val output=File(outputName).bufferedWriter()
     val map= mutableMapOf("ы" to "и","Ы" to "И","я" to "а","Я" to "А","ю" to "у","Ю" to "У")
-    var k=-1
+    var i=-1
     val inputName1=File(inputName).readText()
     if (inputName1.isEmpty()) output.write("") else {
-        k+=1
-        while (k < inputName1.length - 1) {
-            output.write(inputName1[k].toString())
-            if ((inputName1[k + 1] in "ыяюЫЯЮ") and (inputName1[k] in "жчшщЖЧШЩ")) {
-                output.write(map[inputName1[k + 1].toString()])
-                k += 1
+        i+=1
+        while (i < inputName1.length - 1) {
+            output.write(inputName1[i].toString())
+            if ((inputName1[i + 1] in "ыяюЫЯЮ") and (inputName1[i] in "жчшщЖЧШЩ")) {
+                output.write(map[inputName1[i + 1].toString()])
+                i += 1
             }
-            k += 1
-
+            i += 1
         }
     }
-    if (k!=-1) if ((inputName1[k] !in "ыяюЫЯЮ") or (inputName1[k-1] !in "жчшщЖЧШЩ")) output.write(inputName1[k].toString())
+    if (i!=-1)
+        if ((inputName1[i] !in "ыяюЫЯЮ") or (inputName1[i-1] !in "жчшщЖЧШЩ")) output.write(inputName1[i].toString())
     output.close()
 }
 
@@ -129,7 +129,7 @@ fun centerFile(inputName: String, outputName: String) {
     var max=-1
     for (line in File(inputName).readLines())
         if (line.trim().length>max) max=line.trim().length
-    max=(max-1)/2
+    max/=2
     for (line in File(inputName).readLines()) {
             space=max-line.trim().length/2
             if (space+line.trim().length>255) space=255-line.trim().length
@@ -172,23 +172,29 @@ fun alignFileByWidth(inputName: String, outputName: String)
     var sum:Int
     val output=File(outputName).bufferedWriter()
     var max=-1
-    for (line in File(inputName).readLines()) if (line.trim().length>max) max=line.trim().length
     for (line in File(inputName).readLines())
-        if (line.trim().length==max) { output.write(line.trim());output.newLine()} else {
+        if (line.trim().length>max) max=line.trim().length
+    for (line in File(inputName).readLines())
+        if (line.trim().length==max) {
+            output.write(line.trim())
+            output.newLine()
+        }else {
             sum=0
             val line1= line.trim().split(' ') as MutableList<String>
-            for (i in 0 until line1.size-1)
-                if (line1[i].isEmpty()) {
-                    line1.removeAt(i)
-                }
+            for (i in 0 until line1.size)
+                if (line1.size>i)
+                    if (line1[i].isEmpty()) line1.removeAt(i)
+
             for (i in 0 until line1.size) sum+=line1[i].length
 
             if (line1.size==1) output.write(line1[0]) else {
-                val space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()
+                val space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()    //количество пробелов
                 val space1 = line1.size-(space*(line1.size-1)-(max - sum))-1
-                for (i in 0 until line1.size) if (i < space1) {
+                for (i in 0 until line1.size)
+                    if (i < space1) {
                     output.write(line1[i])
-                    if (i != line1.size - 1) for (j in 0 until space) output.write(" ")
+                    if (i != line1.size - 1)
+                        for (j in 0 until space) output.write(" ")
                 } else {
                     output.write(line1[i])
                     if (i != line1.size - 1)
@@ -219,15 +225,14 @@ fun top20Words(inputName: String): Map<String, Int> {
     val inputName1=File(inputName).readText().toLowerCase()
     var sum:Int
 
-    val string = Regex("""[а-яa-zё]+""").findAll(inputName1)
+    val string = Regex("""[а-яa-zё]+""").findAll(inputName1) //нахожу все слова
     val word= mutableListOf<String>()
-            for (str in string) word.add(str.value)
+    for (str in string) word.add(str.value)
     for (i in 0 until word.size)
         if (word[i] !in map) {
             sum=0
-            for(j in 0 until word.size){
+            for(j in 0 until word.size)
                 if (word[i]==word[j]) sum+=1
-            }
             map.put(word[i],sum)
         }
     //return map.toSortedMap(Comparator<Value>() )
@@ -272,7 +277,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for (i in 0 until inputName1.toLowerCase().length)
         if (inputName1.toLowerCase()[i] in dictionary1) {
             if (inputName1.toLowerCase()[i] == inputName1[i]) output.write(dictionary1[inputName1.toLowerCase()[i]])
-            else { //если буква большая
+            else { //ниже (если во входном файле буква большая то после ствалю тоже большую букву)
                 if (dictionary1[inputName1.toLowerCase()[i]].toString().isNotEmpty())
                 output.write(dictionary1[inputName1.toLowerCase()[i]].toString().toUpperCase()[0].toString())
                 else output.write("")
@@ -309,7 +314,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val output=File(outputName).bufferedWriter()
-    val raznay= mutableListOf<Boolean>()
+    val different= mutableListOf<Boolean>()
     var point:Boolean
     var max=-1
 
@@ -317,16 +322,18 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
         val line1=line.toLowerCase()
         point=true
         for (i in 0 until line1.length) {
-            for (j in i + 1 until line1.length) if (line1[i] == line1[j]) point = false
-            if (!point) break
+            for (j in i + 1 until line1.length) {
+                if (line1[i] == line1[j]) point = false
+                if (!point) break
+            }
         }
         if ((point) and (max<line1.length)) max=line1.length
-        raznay.add(point)
+        different.add(point)                         //на позиции слова(его номере в строке) стоит true-если все буквы в слове различны
     }
     point=true
     var j=0
     for (line in File(inputName).readLines()) {
-        if ((max==line.length) and (raznay[j])) if (point) {
+        if ((max==line.length) and (different[j])) if (point) {
             output.write(line)
             point = false
         } else {
@@ -384,7 +391,7 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var k:Int
     val output=File(outputName).bufferedWriter()
-    if (File(inputName).readText().isEmpty()) {
+    if (File(inputName).readText().isEmpty()) {//это я исправлял очень странный random test
         output.write("<html><body><p></p></body></html>")
         output.close()
     } else {
@@ -395,14 +402,12 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         var str1: String
         var str2: String
         var str3: String
-        output.write("<html>")
-        output.newLine()
-        output.write("    ")
-        output.write("<body>")
-        output.newLine()
-        output.write("        ")
-        output.write("<p>")
-        output.newLine()
+        //вывод начала
+        output.write("""<html>
+                <body>
+                        <p>
+
+        """.trimMargin())
         space += 12
 
         for (line in File(inputName).readLines()) {
@@ -471,14 +476,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 }
                 output.newLine()
             }
-        }
-        output.write("        ")
-        output.write("</p>")
-        output.newLine()
-        output.write("    ")
-        output.write("</body>")
-        output.newLine()
-        output.write("</html>")
+        }//вывод конца
+        output.write("""        </p>
+                </body>
+                </html>
+        """.trimMargin())
         output.close()
     }
 }
@@ -654,9 +656,9 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     for (i in 0 until space-rhv.toString().length-1) output.write(" ")
     output.write(rhv.toString())
     output.newLine()
-
     for (i in 0 until space) output.write("-")
     output.newLine()
+            //выше был вывод до первых черточек
     for (j in 0 until rhv.toString().length) {
         val number=list[j]*lhv
         if (j==0) {
@@ -669,7 +671,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
             output.write(number.toString())
             output.newLine()
         }
-    }
+    } //выше вывод до вторых черточек
     for (i in 0 until space) output.write("-")
     output.newLine()
     val numb=lhv*rhv
