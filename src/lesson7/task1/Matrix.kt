@@ -79,7 +79,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
     override fun equals(other: Any?):Boolean {
         var point1=0
         if (other !is MatrixImpl<*>) return false
-        if ((height != other.height) or (width != other.width)) return false
+        if ((height != other.height) || (width != other.width)) return false
 
         for (i in 0 until this.height)
             for (j in 0 until this.width)
