@@ -189,11 +189,11 @@ fun bestHighJump(jumps: String): Int {
             if (res1[i + 1][j] == '%') plus = false else
             if (res1[i + 1][j] == '-') plus = false else return -1
         }
-
-        if (plus && (res1[i].toInt() >= max)) {
+        val check=Regex("[0-9]").findAll(res1[i]).toList()  //проверка на наличие цифр
+        if (res1[i].length==check.size && plus && res1[i].toInt() >= max) {
             max = res1[i].toInt()
             point = false
-        } else return -1
+        }
     }
     return if ((max == 0) and (point)) -1 else max
 }
