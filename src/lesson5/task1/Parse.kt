@@ -189,8 +189,8 @@ fun bestHighJump(jumps: String): Int {
             if (res1[i + 1][j] == '%') plus = false else
             if (res1[i + 1][j] == '-') plus = false else return -1
         }
-        val check=Regex("[0-9]").findAll(res1[i]).toList()  //проверка на наличие цифр
-        if (res1[i].length==check.size && plus && res1[i].toInt() >= max) {
+        //Regex-проверка на наличие тольо цифр
+        if (res1[i].length==Regex("[0-9]").findAll(res1[i]).toList().size && plus && res1[i].toInt() >= max) {
             max = res1[i].toInt()
             point = false
         }
@@ -266,7 +266,8 @@ fun mostExpensive(description: String): String {
         val str = description.split("; ")
         if (description == "") return "" else for (part in str) {
             val parts=part.split(' ')
-            if (parts.size!=2) return "" else
+            //Regex-проверка на наличи только одной точки и остальных цифр
+            if (parts.size!=2 || Regex("[0-9.]").findAll(parts[1]).toList().size!=parts[1].length || Regex("[.]").findAll(parts[1]).toList().size!=1) return ""
             if (max < parts[1].toDouble()) {
                 max = parts[1].toDouble()
                 prod = parts[0]
