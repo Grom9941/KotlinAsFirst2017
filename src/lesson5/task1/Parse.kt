@@ -195,7 +195,7 @@ fun bestHighJump(jumps: String): Int {
             point = false
         }
     }
-    return if ((max == 0) and (point)) -1 else max
+    return if ((max == 0) && (point)) -1 else max
 }
 
 
