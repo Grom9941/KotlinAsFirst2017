@@ -199,17 +199,17 @@ fun bisectorByPoints(a: Point, b: Point): Line = Line(Point((a.x + b.x) / 2, (a.
  */
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     if (circles.size < 2) IllegalArgumentException("")
-    var par = Pair(circles[0], circles[1])
+    var pair = Pair(circles[0], circles[1])
     var leng = circles[0].distance(circles[1])
     for (i in 0 until circles.size)
         for (j in i + 1 until circles.size) {
-            val distance = Circle(circles[i].center, circles[i].radius).distance(Circle(circles[j].center, circles[j].radius))
+            val distance = circles[i].distance(circles[j])
             if (leng > distance) {
-                par = Pair(circles[i], circles[j])
+                pair = Pair(circles[i], circles[j])
                 leng = distance
             }
         }
-    return par
+    return pair
 }
 
 /**
@@ -251,7 +251,8 @@ fun minContainingCircle(vararg points: Point): Circle {
             for (k in j + 1 until points.size) {
                 have = true
                 val cicl2 = circleByThreePoints(points[i], points[j], points[k])
-                for (i1 in i + 1 until points.size) if ((i1 != j) and (i1 != k) and (!cicl2.contains(points[i1]))) have = false
+                for (i1 in i + 1 until points.size) if ((i1 != j) and (i1 != k) and (!cicl2.contains(points[i1])))
+                    have = false
                 if ((radius > cicl2.radius) && have) {
                     radius = cicl2.radius
                     cicl = cicl2
