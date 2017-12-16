@@ -94,7 +94,7 @@ fun sibilants(inputName: String, outputName: String) {
         i+=1
         while (i < inputName1.length - 1) {
             output.write(inputName1[i].toString())
-            if ((inputName1[i + 1] in "ыяюЫЯЮ") and (inputName1[i] in "жчшщЖЧШЩ")) {
+            if ((inputName1[i + 1] in "ыяюЫЯЮ") && (inputName1[i] in "жчшщЖЧШЩ")) {
                 output.write(map[inputName1[i + 1].toString()])
                 i += 1
             }
@@ -102,7 +102,7 @@ fun sibilants(inputName: String, outputName: String) {
         }
     }
     if (i!=-1)
-        if ((inputName1[i] !in "ыяюЫЯЮ") or (inputName1[i-1] !in "жчшщЖЧШЩ")) output.write(inputName1[i].toString())
+        if ((inputName1[i] !in "ыяюЫЯЮ") || (inputName1[i-1] !in "жчшщЖЧШЩ")) output.write(inputName1[i].toString())
     output.close()
 }
 
@@ -327,13 +327,13 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                 if (!point) break
             }
         }
-        if ((point) and (max<line1.length)) max=line1.length
+        if ((point) && (max<line1.length)) max=line1.length
         different.add(point)                         //на позиции слова(его номере в строке) стоит true-если все буквы в слове различны
     }
     point=true
     var j=0
     for (line in File(inputName).readLines()) {
-        if ((max==line.length) and (different[j])) if (point) {
+        if ((max==line.length) && (different[j])) if (point) {
             output.write(line)
             point = false
         } else {
@@ -422,7 +422,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 for (i in 0 until space) output.write(" ")
                 k = 0
 
-                for (i in k until line.length) if ((line[i] != '*') and (line[i] != '~')) {
+                for (i in k until line.length) if ((line[i] != '*') && (line[i] != '~')) {
                     output.write(line[i].toString());k += 1
                 } else {
                     str2 = "";str3 = ""
@@ -430,44 +430,44 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     if (k + 1 < line.length) str2 = "" + line[k] + line[k + 1]
                     str1 = line[k].toString()
                     when {
-                        (str3 == "***") and (pointb == 0) -> {
+                        (str3 == "***") && (pointb == 0) -> {
                             output.write("<b><i>")
                             pointb = 1
                             pointi = 1
                             k += 3
                         }
-                        (str3 == "***") and (pointb == 1) -> {
+                        (str3 == "***") && (pointb == 1) -> {
                             output.write("</b></i>")
                             pointb = 0
                             pointi = 0
                             k += 3
                         }
-                        (str2 == "~~") and (points == 0) -> {
+                        (str2 == "~~") && (points == 0) -> {
                             output.write("<s>")
                             points = 1
                             k += 2
                         }
-                        (str2 == "~~") and (points == 1) -> {
+                        (str2 == "~~") && (points == 1) -> {
                             output.write("</s>")
                             points = 0
                             k += 2
                         }
-                        (str2 == "**") and (pointb == 0) -> {
+                        (str2 == "**") && (pointb == 0) -> {
                             output.write("<b>")
                             pointb = 1
                             k += 2
                         }
-                        (str2 == "**") and (pointb == 1) -> {
+                        (str2 == "**") && (pointb == 1) -> {
                             output.write("</b>")
                             pointb = 0
                             k += 2
                         }
-                        (str1 == "*") and (pointi == 0) -> {
+                        (str1 == "*") && (pointi == 0) -> {
                             output.write("<i>")
                             pointi = 1
                             k += 1
                         }
-                        (str1 == "*") and (pointi == 1) -> {
+                        (str1 == "*") && (pointi == 1) -> {
                             output.write("</i>")
                             pointi = 0
                             k += 1
@@ -591,11 +591,11 @@ fun markdownToHtmlLists(inputName: String, outputName: String) {
     var space=4
 
     for (line in File(inputName).readLines()) {
-        if ((line.trim()[0]=='*') and (pointul==0)) {
+        if ((line.trim()[0]=='*') && (pointul==0)) {
             for (i in 0 until space) output.write(" ")
             output.write("<ul>");pointul = 1;space += 2
         } else
-            if ((line.trim()[0]=='*') and (pointul==1)) {
+            if ((line.trim()[0]=='*') && (pointul==1)) {
                 for (i in 0 until space) output.write(" ")
                 output.write("</ul>");pointul = 0;space -= 2
             }
