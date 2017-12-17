@@ -130,7 +130,7 @@ fun centerFile(inputName: String, outputName: String) {
     max /= 2
     for (line in File(inputName).readLines()) {
         space = max - line.trim().length / 2
-        //if (line.trim().length % 2 == 1) space-=1 вот эта строчка мне нужна но она не дает проити начальному тесту
+        if (line.trim().length % 2 == 1) space-=1
         for (i in 0 until space) output.write(" ")
         output.write(line.trim())
         output.newLine()
