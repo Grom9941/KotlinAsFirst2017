@@ -130,7 +130,7 @@ fun centerFile(inputName: String, outputName: String) {
     max /= 2
     for (line in File(inputName).readLines()) {
         space = max - line.trim().length / 2
-        if (space + line.trim().length > 255) space = 255 - line.trim().length
+        //if (line.trim().length % 2 == 1) space-=1 вот эта строчка мне нужна но она не дает проити начальному тесту
         for (i in 0 until space) output.write(" ")
         output.write(line.trim())
         output.newLine()
@@ -165,32 +165,43 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
+fun max(inputName: String):Int {
+    var max=-1
+    for (line in File(inputName).readLines())
+        if (line.trim().length > max)
+            max = line.trim().length
+    return max
+}
+
 fun alignFileByWidth(inputName: String, outputName: String) {
     var sum: Int
     val output = File(outputName).bufferedWriter()
-    var max = -1
-    for (line in File(inputName).readLines()) if (line.trim().length > max) max = line.trim().length
-    for (line in File(inputName).readLines()) if (line.trim().length == max) {
-        output.write(line.trim())
-        output.newLine()
-    } else {
-        sum = 0
-        val line1 = line.trim().split(' ') as MutableList<String>
-        for (i in 0 until line1.size) if (line1.size > i) if (line1[i].isEmpty()) line1.removeAt(i)
+    val max = max(inputName)
+   for (line in File(inputName).readLines())
+        if (line.trim().length == max) {
+            output.write(line.trim())
+            output.newLine()
+        } else {
+            sum = 0
+            val line1 = line.trim().split(' ') as MutableList<String>
+            for (i in 0 until line1.size)
+                if (line1.size > i)
+                    if (line1[i].isEmpty()) line1.removeAt(i)
 
-        for (i in 0 until line1.size) sum += line1[i].length
+            for (i in 0 until line1.size) sum += line1[i].length
 
-        if (line1.size == 1) output.write(line1[0]) else {
-            var space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()    //количество пробелов
-            val space1 = line1.size - (space * (line1.size - 1) - (max - sum)) - 1
-            for (i in 0 until line1.size) {
-                if (i == space1) space -= 1
-                output.write(line1[i])
-                if (i != line1.size - 1) for (j in 0 until space) output.write(" ")
+            if (line1.size == 1) output.write(line1[0]) else {
+                var space = ceil((max - sum) / (line1.size - 1).toDouble()).toInt()    //количество пробелов
+                val space1 = line1.size - (space * (line1.size - 1) - (max - sum)) - 1
+                for (i in 0 until line1.size) {
+                    if (i == space1) space -= 1
+                    output.write(line1[i])
+                    if (i != line1.size - 1)
+                        for (j in 0 until space) output.write(" ")
+                }
             }
+            output.newLine()
         }
-        output.newLine()
-    }
     output.close()
 }
 
