@@ -189,11 +189,13 @@ fun bestHighJump(jumps: String): Int {
             if (res1[i + 1][j] == '%') plus = false else
             if (res1[i + 1][j] == '-') plus = false else return -1
         }
-        //Regex-проверка на наличие тольо цифр
-        if (res1[i].length==Regex("[0-9]").findAll(res1[i]).toList().size && plus && res1[i].toInt() >= max) {
-            max = res1[i].toInt()
-            point = false
-        }
+        //Regex-проверка на наличие тольо цифр и на наличие толико +%-
+        if (res1[i].length==Regex("[0-9]").findAll(res1[i]).toList().size && res1[i+1].length==Regex("[+%-]").findAll(res1[i+1]).toList().size) {
+            if (plus && res1[i].toInt() >= max) {
+                max = res1[i].toInt()
+                point = false
+            }
+        } else return  -1
     }
     return if ((max == 0) && (point)) -1 else max
 }
