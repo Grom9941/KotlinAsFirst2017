@@ -127,10 +127,11 @@ fun centerFile(inputName: String, outputName: String) {
     val output = File(outputName).bufferedWriter()
     var max = -1
     for (line in File(inputName).readLines()) if (line.trim().length > max) max = line.trim().length
+    //max -=1
     max /= 2
     for (line in File(inputName).readLines()) {
         space = max - line.trim().length / 2
-        if (line.trim().length % 2 == 1) space-=1
+       // if (line.trim().length % 2 == 1) space-=1
         for (i in 0 until space) output.write(" ")
         output.write(line.trim())
         output.newLine()
@@ -185,7 +186,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             sum = 0
             val line1 = line.trim().split(' ') as MutableList<String>
             for (i in 0 until line1.size)
-                if (line1.size > i)
                     if (line1[i].isEmpty()) line1.removeAt(i)
 
             for (i in 0 until line1.size) sum += line1[i].length
@@ -227,12 +227,11 @@ fun top20Words(inputName: String): Map<String, Int> {
     val string = Regex("""[а-яa-zё]+""").findAll(inputName1) //нахожу все слова
     val word = mutableListOf<String>()
     for (str in string) word.add(str.value)
-    for (i in 0 until word.size) if (word[i] !in map) {
-        sum = 0
-        for (j in 0 until word.size) if (word[i] == word[j]) sum += 1
-        map.put(word[i], sum)
+    for (i in 0 until word.size) {
+        sum = if (word[i] !in map) 0 else map[word[i]]!!
+        map.remove(word[i], 1)
+        map.put(word[i], sum + 1)
     }
-    //return map.toSortedMap(Comparator<Value>()   )
     val list = map.toList().sortedByDescending { it.second }
     return if (list.size <= 20) list.toMap() else list.take(20).toMap()
 }
@@ -268,17 +267,20 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     val inputName1 = File(inputName).readText()
     val dictionary1 = mutableMapOf<Char, String>()
 
-    for (i in 0 until dictionary.size) //перевожу map в нижний регистер
+    for (i in 0 until dictionary.size)
         dictionary1.put(dictionary.keys.toList()[i].toLowerCase(), dictionary.values.toList()[i].toLowerCase())
 
-    for (i in 0 until inputName1.toLowerCase().length) if (inputName1.toLowerCase()[i] in dictionary1) {
-        if (inputName1.toLowerCase()[i] == inputName1[i]) output.write(dictionary1[inputName1.toLowerCase()[i]])
-        else { //ниже (если во входном файле буква большая то после преобразования ствалю тоже большую букву)
-            if (dictionary1[inputName1.toLowerCase()[i]].toString().isNotEmpty()) output.write(dictionary1[inputName1.toLowerCase()[i]].toString().toUpperCase()[0].toString())
-            else output.write("")
-            for (j in 1 until dictionary1[inputName1.toLowerCase()[i]].toString().length) output.write(dictionary1[inputName1.toLowerCase()[i]].toString()[j].toString())
-        }
-    } else output.write(inputName1[i].toString())
+    for (i in 0 until inputName1.toLowerCase().length)
+        if (inputName1.toLowerCase()[i] in dictionary1) {
+
+            if (inputName1.toLowerCase()[i] == inputName1[i]) output.write(dictionary1[inputName1.toLowerCase()[i]]) else
+            {
+                output.write(dictionary1[inputName1.toLowerCase()[i]].toString().toUpperCase()[0].toString())
+                for (j in 1 until dictionary1[inputName1.toLowerCase()[i]].toString().length)
+                    output.write(dictionary1[inputName1.toLowerCase()[i]].toString()[j].toString())
+            }
+
+        } else output.write(inputName1[i].toString())
     output.close()
 }
 
@@ -308,11 +310,13 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val output = File(outputName).bufferedWriter()
-    val different = mutableListOf<Boolean>()
+    val different = mutableListOf<Int>()
     var point: Boolean
+    var NumberStr=-1
     var max = -1
 
     for (line in File(inputName).readLines()) {
+        NumberStr+=1
         val line1 = line.toLowerCase()
         point = true
         for (i in 0 until line1.length) {
@@ -322,17 +326,15 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
             }
         }
         if ((point) && (max < line1.length)) max = line1.length
-        different.add(point)                         //на позиции слова(его номере в строке) стоит true-если все буквы в слове различны
+        if (point) different.add(NumberStr)                         //на позиции слова(его номере в строке) стоит true-если все буквы в слове различны
     }
-    point = true
     var j = 0
-    for (line in File(inputName).readLines()) {
-        if ((max == line.length) && (different[j])) if (point) {
-            output.write(line)
-            point = false
-        } else {
-            output.write(", ")
-            output.write(line)
+
+    for ((index, value) in File(inputName).readLines().withIndex()) {
+
+        if (max == value.length && index in different) {
+            if (j!=0) output.write(", ")
+            output.write(value)
         }
         j += 1
     }
@@ -616,40 +618,47 @@ fun markdownToHtml(inputName: String, outputName: String) {
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val output = File(outputName).bufferedWriter()
-    var space = lhv.toString().length + rhv.toString().length
     val list = mutableListOf<Int>()
+    val space=(lhv * rhv).toString().length+1
     var rhv1 = rhv
+
     while (rhv1 > 0) {
         list.add(rhv1 % 10)
         rhv1 /= 10
     }
-    val max = (list[list.size - 1] * lhv).toString().length
 
-    if (space < max + rhv.toString().length) space = max + rhv.toString().length
-    for (i in 0 until space - lhv.toString().length) output.write(" ")
+    for (i in 0 until space - lhv.toString().length)
+        output.write(" ")
     output.write(lhv.toString())
     output.newLine()
     output.write("*")
-    for (i in 0 until space - rhv.toString().length - 1) output.write(" ")
+
+    for (i in 0 until space - rhv.toString().length - 1)
+        output.write(" ")
     output.write(rhv.toString())
     output.newLine()
+
     for (i in 0 until space) output.write("-")
     output.newLine()
-    //выше был вывод до первых черточек
+
     var k=1      //для добавления пробела когда первое число под черточкой выводится без '+'
     for (j in 0 until rhv.toString().length) {
         val number = list[j] * lhv
         if (j != 0) output.write("+")
-        for (i in 0 until space - number.toString().length - 1 - j + k) output.write(" ")
+
+        for (i in 0 until space - number.toString().length - 1 - j + k)
+            output.write(" ")
         output.write(number.toString())
         output.newLine()
         k = 0
-    } //выше вывод до вторых черточек
-    for (i in 0 until space) output.write("-")
+    }
+
+    for (i in 0 until space)
+        output.write("-")
     output.newLine()
-    val numb = lhv * rhv
-    for (i in 0 until space - numb.toString().length) output.write(" ")
-    output.write(numb.toString())
+    val numb = (lhv * rhv).toString()
+    for (i in 0 until space - numb.length) output.write(" ")
+    output.write(numb)
     output.close()
 }
 
