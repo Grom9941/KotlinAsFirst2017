@@ -436,7 +436,6 @@ fun swap(matrix: Matrix<Int>, INull: Int, JNull: Int, INull1: Int, JNull1: Int) 
     matrix[INull1, JNull1] = number
     return  matrix
 }
-
 fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
     var matrix1=matrix
     var INull=-1
