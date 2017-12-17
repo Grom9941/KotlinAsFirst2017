@@ -3,6 +3,7 @@
 package lesson6.task2
 
 import lesson6.task3.Graph
+import java.lang.Math.abs
 import java.util.*
 
 /**
@@ -121,7 +122,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
     if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else return when {
         ((start.column + end.column + start.row + end.row) % 2 == 1) -> -1
         (start.column == end.column) && (start.row == end.row) -> 0
-        (Math.abs(start.column - end.column) == Math.abs(start.row - end.row)) -> 1
+        (abs(start.column - end.column) == abs(start.row - end.row)) -> 1
         else -> 2
     }
 }
@@ -148,7 +149,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
     when {
         ((start.column + end.column + start.row + end.row) % 2 == 1) -> return listOf()
         (start.column == end.column) && (start.row == end.row) -> return listOf(Square(start.column, start.row))
-        Math.abs(start.column - end.column) == Math.abs(start.row - end.row) ->
+        abs(start.column - end.column) == abs(start.row - end.row) ->
             return listOf(Square(start.column, start.row), Square(end.column, end.row))
         else -> {
             val x11 = (end.row + start.column + end.column - start.row) / 2
@@ -157,12 +158,12 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             val x22 = (start.row + end.column + end.row - start.column) / 2
             val sq: Square
             sq = when {
-                (Math.abs(start.column - x11) == Math.abs(start.row - x21)) && (Math.abs(x11 - end.column) ==
-                        Math.abs(x21 - end.row)) && (Square(x11, x21).inside()) -> Square(x11, x21)
-                (Math.abs(start.column - x12) == Math.abs(start.row - x21)) && (Math.abs(x12 - end.column) ==
-                        Math.abs(x21 - end.row)) && (Square(x12, x21).inside()) -> Square(x12, x21)
-                (Math.abs(start.column - x11) == Math.abs(start.row - x22)) && (Math.abs(x11 - end.column) ==
-                        Math.abs(x22 - end.row)) && (Square(x11, x22).inside()) -> Square(x11, x22)
+                (abs(start.column - x11) == abs(start.row - x21)) && (abs(x11 - end.column) ==
+                        abs(x21 - end.row)) && (Square(x11, x21).inside()) -> Square(x11, x21)
+                (abs(start.column - x12) == abs(start.row - x21)) && (abs(x12 - end.column) ==
+                        abs(x21 - end.row)) && (Square(x12, x21).inside()) -> Square(x12, x21)
+                (abs(start.column - x11) == abs(start.row - x22)) && (abs(x11 - end.column) ==
+                        abs(x22 - end.row)) && (Square(x11, x22).inside()) -> Square(x11, x22)
                 else -> Square(x12, x22)
             }
             return listOf(Square(start.column, start.row), sq, Square(end.column, end.row))
@@ -192,8 +193,8 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
     if ((!start.inside()) || (!end.inside())) throw IllegalArgumentException() else
-        return if (Math.abs(start.column - end.column) > Math.abs(start.row - end.row))
-            Math.abs(start.column - end.column) else Math.abs(start.row - end.row)
+        return if (abs(start.column - end.column) > abs(start.row - end.row))
+            abs(start.column - end.column) else abs(start.row - end.row)
 }
 
 /**
