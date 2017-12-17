@@ -186,6 +186,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             sum = 0
             val line1 = line.trim().split(' ') as MutableList<String>
             for (i in 0 until line1.size)
+                if (i<line1.size)
                     if (line1[i].isEmpty()) line1.removeAt(i)
 
             for (i in 0 until line1.size) sum += line1[i].length
@@ -230,10 +231,10 @@ fun top20Words(inputName: String): Map<String, Int> {
     for (i in 0 until word.size) {
         sum = if (word[i] !in map) 0 else map[word[i]]!!
         map.remove(word[i], 1)
-        map.put(word[i], sum + 1)
+        map[word[i]]=sum+1
     }
-    var list = map.toList().sortedByDescending { it.first }
-    list = list.sortedByDescending { it.second }
+
+    val list = map.toList().sortedByDescending { it.second }
     return if (list.size <= 20) list.toMap() else list.take(20).toMap()
 }
 
@@ -243,6 +244,7 @@ fun top20Words(inputName: String): Map<String, Int> {
  * Реализовать транслитерацию текста из входного файла в выходной файл посредством динамически задаваемых правил.
 
  * Во входном файле с именем inputName содержится некоторый текст (в том числе, и на русском языке).
+ *
  *
  * В ассоциативном массиве dictionary содержится словарь, в котором некоторым символам
  * ставится в соответствие строчка из символов, например
