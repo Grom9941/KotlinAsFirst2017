@@ -185,9 +185,10 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         } else {
             sum = 0
             val line1 = line.trim().split(' ') as MutableList<String>
-            for (i in 0 until line1.size)
-                if (i<line1.size)
-                    if (line1[i].isEmpty()) line1.removeAt(i)
+            var j=0
+                while (j < line1.size) {
+                    if (line1[j].isEmpty()) line1.removeAt(j) else j += 1
+                }
 
             for (i in 0 until line1.size) sum += line1[i].length
 
@@ -198,7 +199,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                     if (i == space1) space -= 1
                     output.write(line1[i])
                     if (i != line1.size - 1)
-                        for (j in 0 until space) output.write(" ")
+                        for (k in 0 until space) output.write(" ")
                 }
             }
             output.newLine()
@@ -315,11 +316,11 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val output = File(outputName).bufferedWriter()
     val different = mutableListOf<Int>()
     var point: Boolean
-    var NumberStr=-1
+    var Str=-1
     var max = -1
 
     for (line in File(inputName).readLines()) {
-        NumberStr+=1
+        Str+=1
         val line1 = line.toLowerCase()
         point = true
         for (i in 0 until line1.length) {
@@ -329,7 +330,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
             }
         }
         if ((point) && (max < line1.length)) max = line1.length
-        if (point) different.add(NumberStr)                         //на позиции слова(его номере в строке) стоит true-если все буквы в слове различны
+        if (point) different.add(Str)                         //на позиции слова(его номере в строке) стоит true-если все буквы в слове различны
     }
     var j = 0
 
