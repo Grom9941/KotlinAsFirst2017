@@ -2,8 +2,10 @@
 
 package lesson7.task2
 
+import java.util.Collections.swap
 import lesson7.task1.Matrix
 import lesson7.task1.createMatrix
+import java.lang.Math.abs
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
@@ -428,54 +430,53 @@ operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
  * 0  4 13  6
  * 3 10 11  8
  */
+fun swap(matrix: Matrix<Int>, INull: Int, JNull: Int, INull1: Int, JNull1: Int) :Matrix<Int> {
+    val number = matrix[INull, JNull]
+    matrix[INull, JNull] = matrix[INull1, JNull1]
+    matrix[INull1, JNull1] = number
+    return  matrix
+}
+
 fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
-    var NullI=-1
-    var NullJ=-1
+    var matrix1=matrix
+    var INull=-1
+    var JNull=-1
     val list= MutableList(16) {0}
-    var number:Int
     for (i in 0..3)
         for (j in 0..3) {
             if (matrix[i, j] !in 0..15) throw IllegalStateException()
             list[matrix[i,j]]+=1
             if (list[matrix[i,j]]>1) throw IllegalStateException()
             if (matrix[i, j] == 0) {
-                NullI = i
-                NullJ = j
+                INull = i
+                JNull = j
             }
         }
-    if (NullI==-1) throw IllegalStateException()
+    if (INull==-1) throw IllegalStateException()
     for (i in 0 until moves.size) {
-        if (NullI - 1 in 0..3) if (matrix[NullI - 1, NullJ] == moves[i]) {
-            number = matrix[NullI, NullJ]
-            matrix[NullI, NullJ] = matrix[NullI - 1, NullJ]
-            matrix[NullI - 1, NullJ] = number
-            NullI -= 1
+        if (INull - 1 in 0..3) if (matrix1[INull - 1, JNull] == moves[i]) {
+            matrix1 = swap(matrix1, INull, JNull, INull - 1, JNull)
+            INull -= 1
             continue
         }
-        if (NullI + 1 in 0..3) if (matrix[NullI + 1, NullJ] == moves[i]) {
-            number = matrix[NullI, NullJ]
-            matrix[NullI, NullJ] = matrix[NullI + 1, NullJ]
-            matrix[NullI + 1, NullJ] = number
-            NullI += 1
+        if (INull + 1 in 0..3) if (matrix1[INull + 1, JNull] == moves[i]) {
+            matrix1 = swap(matrix1, INull, JNull, INull + 1, JNull)
+            INull += 1
             continue
         }
-        if (NullJ - 1 in 0..3) if (matrix[NullI, NullJ - 1] == moves[i]) {
-            number = matrix[NullI, NullJ]
-            matrix[NullI, NullJ] = matrix[NullI, NullJ - 1]
-            matrix[NullI, NullJ - 1] = number
-            NullJ -= 1
+        if (JNull - 1 in 0..3) if (matrix1[INull, JNull - 1] == moves[i]) {
+            matrix1 = swap(matrix1, INull, JNull, INull, JNull - 1)
+            JNull -= 1
             continue
         }
-        if (NullJ + 1 in 0..3) if (matrix[NullI, NullJ + 1] == moves[i]) {
-            number = matrix[NullI, NullJ]
-            matrix[NullI, NullJ] = matrix[NullI, NullJ + 1]
-            matrix[NullI, NullJ + 1] = number
-            NullJ += 1
+        if (JNull + 1 in 0..3) if (matrix1[INull, JNull + 1] == moves[i]) {
+            matrix1 = swap(matrix1, INull, JNull, INull, JNull + 1)
+            JNull += 1
             continue
         }
         throw IllegalStateException()
     }
-return matrix
+return matrix1
 }
 /**
  * Очень сложная
@@ -516,31 +517,42 @@ return matrix
  *
  * Перед решением этой задачи НЕОБХОДИМО решить предыдущую
  */
-fun fifteenGameSolution(matrix: Matrix<Int>): List<Int> =TODO()
-/**{
+fun fifteenGameSolution(matrix: Matrix<Int>): List<Int> = TODO()
+//fun nul(matrix: Matrix<Int>): List<Int> //{//нахожу 0
+/**    for (i in 0..3) for (j in 0..3) if (matrix[i, j] == 0) return listOf(i, j)
+    return listOf(-1)              //исключение
+}
+
+fun next(matrix: Matrix<Int>, number: Int): List<Int> {//следующая цифра
+    for (i in 0..3) for (j in 0..3) if (matrix[i, j] == number) return listOf(i, j)
+    return listOf(-1)
+}
+
+fun near(matrix: Matrix<Int>, nul: List<Int>, number: List<Int>): List<Int> {
+    var nulI= nul[0]
+    var nulJ= nul[1]
+    val numberI= number[0]
+    val numberJ = number[1]
+    val moves = mutableListOf<Int>()
+    while (abs(nulI-numberI) !=1 || abs(nulJ-numberJ) != 1) {
+
+
+    }
+}
+
+... {
     //нахожу 0
-    var i1=-1
-    var j1=-1
-    for (i in 0..3)
-        for (j in 0..3) {
-            if (matrix[i, j] == 0) {i1 = i;j1 = j}
-            if (i1!=-1) break
-        }
+    val i1 = nul(matrix)[0]
+    val j1 = nul(matrix)[1]
     //
-    for (num in 1..15) {
+    for (number in 1..15) {
         //находим место следующей ячейки
-        var pointI = -1
-        var pointJ = -1
-        for (i in 0..3) for (j in 0..3) {
-            if (matrix[i, j] == num) {
-                pointI = i;pointJ = j
-            }
-            if (pointI != -1) break
-        }
-        if
-        if (pointI== (num-1)/4) && (pointJ==(num % 4)-1)
+        val INumber=next(matrix, number)[0]
+        val JNumber=next(matrix, number)[1]
         //
+        //подвожу '0' к number
+
     }
 
-
-}*/
+*/
+//}
