@@ -232,7 +232,8 @@ fun top20Words(inputName: String): Map<String, Int> {
         map.remove(word[i], 1)
         map.put(word[i], sum + 1)
     }
-    val list = map.toList().sortedByDescending { it.second }
+    var list = map.toList().sortedByDescending { it.first }
+    list = list.sortedByDescending { it.second }
     return if (list.size <= 20) list.toMap() else list.take(20).toMap()
 }
 
@@ -335,8 +336,8 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
         if (max == value.length && index in different) {
             if (j!=0) output.write(", ")
             output.write(value)
+            j += 1
         }
-        j += 1
     }
     output.close()
 }
