@@ -231,7 +231,6 @@ fun top20Words(inputName: String): Map<String, Int> {
     for (str in string) word.add(str.value)
     for (i in 0 until word.size) {
         sum = if (word[i] !in map) 0 else map[word[i]]!!
-        map.remove(word[i], 1)
         map[word[i]]=sum+1
     }
 
