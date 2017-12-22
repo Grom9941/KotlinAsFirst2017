@@ -186,10 +186,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             sum = 0
             val line1 = line.trim().split(' ') as MutableList<String>
             var j=0
-                while (j < line1.size) {
-                    if (line1[j].isEmpty()) line1.removeAt(j) else j += 1
-                }
-
+            while (j < line1.size) if (line1[j].isEmpty()) line1.removeAt(j) else j += 1
             for (i in 0 until line1.size) sum += line1[i].length
 
             if (line1.size == 1) output.write(line1[0]) else {
@@ -198,8 +195,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                 for (i in 0 until line1.size) {
                     if (i == space1) space -= 1
                     output.write(line1[i])
-                    if (i != line1.size - 1)
-                        for (k in 0 until space) output.write(" ")
+                    if (i != line1.size - 1) for (k in 0 until space) output.write(" ")
                 }
             }
             output.newLine()
@@ -688,5 +684,23 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
+}
+//биграма
+
+fun myFun(text: String): Map<String,Int> {
+    val result = mutableMapOf<String,Int>()
+
+    val all=Regex("""[A-ZА-Яa-za-яё.,;!?()-]""").findAll(text).toList()
+    if (all.size!=text.length || text.isEmpty()) throw IllegalArgumentException()
+
+    val without = Regex("""[a-zа-яё]+""").findAll(text.toLowerCase()).toList()
+
+
+    for (word in without)
+        for (i in 0 until word.value.length-1) {
+            val str = "" + word.value[i] + word.value[i + 1]
+            if (str in result) result[str] = result[str]!!+1 else result.put(str, 1)
+        }
+    return result
 }
 
